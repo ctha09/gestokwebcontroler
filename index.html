@@ -589,6 +589,23 @@
   .receipt-grid{grid-template-columns:repeat(3,1fr)}
 }
 
+
+/* ============================================================
+   V23 · CORRECCIÓN DE VISIBILIDAD EN EL PORTAL
+   En escritorio, un panel oculto debe permanecer oculto.
+   ============================================================ */
+@media (min-width:1024px){
+  .app.hidden{
+    display:none!important;
+  }
+  .portal.hidden{
+    display:none!important;
+  }
+  #loginPanel.hidden{
+    display:none!important;
+  }
+}
+
 </style>
 </head>
 <body>
