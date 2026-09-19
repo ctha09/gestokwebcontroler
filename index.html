@@ -257,7 +257,7 @@
 </div></section>
 
 <section id="app" class="app hidden">
-<header class="top"><div class="commerce-brand"><div class="commerce-logo-row"><div class="commerce-wordmark">Gest<span class="ok">OK</span></div><span class="commerce-module">COMERCIO</span></div><div class="commerce-control-line"><span class="commerce-live-dot"></span>WEB CONTROL · SISTEMA ACTIVO</div><h1 id="title">Resumen</h1></div><div id="role" class="role">Administrador</div></header>
+<header class="top"><div class="commerce-brand"><div class="commerce-logo-row"><div class="commerce-wordmark">Gest<span class="ok">OK</span></div><span class="commerce-module">COMERCIO</span></div><div class="commerce-control-line"><span class="commerce-live-dot"></span>WEB CONTROL · SUPABASE ACTIVO</div><h1 id="title">Resumen</h1></div><div id="role" class="role">Administrador</div></header>
 <div id="licenseNotice" class="license-notice"><span id="licenseText"></span><button class="btn secondary" style="min-height:34px;padding:6px 8px;font-size:8px" onclick="go('gestok')">Ver</button></div>
 <main class="main">
   <section id="home" class="view active">
@@ -349,12 +349,20 @@
 <div id="userModal" class="modalbg hidden"><div class="modal"><h3>Agregar usuario</h3><p>El usuario se crea dentro de esta empresa.</p><div class="form"><div><label>Nombre</label><input id="uName" class="input"></div><div><label>Rol</label><select id="uRole" class="select"></select></div></div><div class="mactions"><button class="btn secondary" onclick="closeUser()">Cancelar</button><button id="saveUser" class="btn primary">Crear</button></div></div></div>
 <div id="toast" class="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://zvmcjmjbedwaftejdduu.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable__kUv47MYA0ym6Fw7WF4c8A_jLozY3mQ";
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{
+  auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,storageKey:"gestok-web-auth-v15"}
+});
+</script>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const DB_KEY='gestok_unified_platform_v4',WA='5493751232618';
 const COMMERCE_ST=['Prioritario','Pendiente','En proceso','Enviado a impresion','Finalizado'];
 const BARBER_ST=['Pendiente','Confirmado','En proceso','Finalizado','Cancelado'];
-let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily';
+let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null;
 
 function baseDB(){return{organizations:[],records:{},notifications:[],payments:[]}}
 function loadDB(){try{let d=JSON.parse(localStorage.getItem(DB_KEY))||baseDB();d.organizations=d.organizations||[];d.records=d.records||{};d.notifications=d.notifications||[];d.payments=d.payments||[];return d}catch{return baseDB()}}
@@ -412,7 +420,7 @@ function launchBarber(orgId){
   frame.srcdoc=html;
   document.body.appendChild(frame);
 }
-window.closeBarberApp=function(){
+window.closeBarberApp=async function(){await sb.auth.signOut();
   const frame=document.getElementById('gestokBarberFrame');
   if(frame)frame.remove();
   sessionStorage.removeItem('gestok_current_org');
@@ -424,19 +432,102 @@ window.closeBarberApp=function(){
   selectedType=null;
 };
 
-function login(){
+function slugifyCompany(value){
+ return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')
+}
+async function login(){
+ const company=companyName.value.trim(),password=companyPassword.value;
+ if(!company||!password)return toast('Completá empresa y contraseña');
+ const email=`${slugifyCompany(company)}@login.gestok.local`;
+ loginBtn.disabled=true;loginBtn.textContent='Ingresando...';
+
+ const {data:authData,error:authError}=await sb.auth.signInWithPassword({email,password});
+ if(authError||!authData.user){
+   loginBtn.disabled=false;loginBtn.textContent='Ingresar';
+   return toast('Empresa o contraseña incorrectos');
+ }
+
+ const {data:member,error:memberError}=await sb.from('organization_members')
+   .select('id,organization_id,display_name,role,active')
+   .eq('auth_user_id',authData.user.id)
+   .eq('active',true)
+   .maybeSingle();
+
+ if(memberError||!member){
+   await sb.auth.signOut();loginBtn.disabled=false;loginBtn.textContent='Ingresar';
+   return toast('El acceso no está vinculado a una empresa activa');
+ }
+
+ const [{data:org,error:orgError},{data:sub,error:subError}]=await Promise.all([
+   sb.from('organizations').select('id,name,type,phone,monthly_fee,active,created_at').eq('id',member.organization_id).single(),
+   sb.from('subscriptions').select('status,start_date,next_due_date,reason,updated_at').eq('organization_id',member.organization_id).maybeSingle()
+ ]);
+
+ loginBtn.disabled=false;loginBtn.textContent='Ingresar';
+
+ if(orgError||!org||org.active===false){await sb.auth.signOut();return toast('Este acceso está desactivado')}
+ if(subError){await sb.auth.signOut();return toast('No se pudo cargar la suscripción')}
+ if(org.type!==selectedType){await sb.auth.signOut();return toast(org.type==='commerce'?'Esta empresa pertenece a Comercio.':'Esta empresa pertenece a Barbería.')}
+
  DB=loadDB();
- let o=DB.organizations.find(x=>norm(x.name)===norm(companyName.value)&&x.password===companyPassword.value&&x.active!==false);
- if(!o)return toast('Empresa o contraseña incorrectos');
- if(o.type!==selectedType)return toast(o.type==='commerce'?'Esta empresa pertenece a Comercio.':'Esta empresa pertenece a Barbería.');
- if(o.type==='barbershop'){launchBarber(o.id);return}
- ORG=o;initOrgState();enterApp();
+ let mirror=DB.organizations.find(x=>x.id===org.id);
+ const mirrorData={
+   id:org.id,name:org.name,type:org.type,phone:org.phone||'',monthlyFee:Number(org.monthly_fee||0),active:org.active!==false,
+   subscription:{status:sub?.status||'Activo',startDate:sub?.start_date||today(),nextDueDate:sub?.next_due_date||today(),reason:sub?.reason||'',updatedAt:sub?.updated_at||new Date().toISOString()}
+ };
+ if(mirror)Object.assign(mirror,mirrorData);else{mirror=mirrorData;DB.organizations.push(mirror)}
+ if(!DB.records[org.id])DB.records[org.id]={users:[],sales:[],orders:[],ledger:[],activity:[],stock:[],services:[],clients:[],expenses:[],salaryPayments:[]};
+ saveDB();
+
+ ORG=mirror;
+ AUTH_MEMBER_ID=member.id;
+ if(ORG.type==='barbershop'){
+   initOrgState();U=S.users.find(x=>x.role==='admin')||S.users[0];if(U)U.name=member.display_name||'Administrador';
+   launchBarber(ORG.id);return
+ }
+ await loadCommerceFromSupabase(member.id);
+ enterApp();
+ await startCommerceRealtime();
 }
 loginBtn.onclick=login;companyPassword.onkeydown=e=>{if(e.key==='Enter')login()};
 
 function freshState(){
  return{users:[],sales:[],orders:[],ledger:[],activity:[],stock:[],services:[],clients:[],expenses:[],salaryPayments:[]}
 }
+function isoForChosenDate(date){const now=new Date(),[y,m,d]=String(date).split('-').map(Number);return new Date(y,m-1,d,now.getHours(),now.getMinutes(),now.getSeconds()).toISOString()}
+async function loadCommerceFromSupabase(preferredMemberId=AUTH_MEMBER_ID){
+ if(!ORG||ORG.type!=='commerce')return;
+ const orgId=ORG.id;
+ const results=await Promise.all([
+  sb.from('organization_members').select('id,auth_user_id,display_name,role,active,fixed_salary,commission_percent,created_at').eq('organization_id',orgId).order('created_at'),
+  sb.from('stock_items').select('*').eq('organization_id',orgId).eq('active',true).order('created_at',{ascending:false}),
+  sb.from('sales').select('*').eq('organization_id',orgId).order('sale_at',{ascending:false}),
+  sb.from('orders').select('*').eq('organization_id',orgId).order('created_at',{ascending:false}),
+  sb.from('activities').select('*').eq('organization_id',orgId).order('created_at',{ascending:false}),
+  sb.from('expenses').select('*').eq('organization_id',orgId).order('expense_at',{ascending:false}),
+  sb.from('salary_payments').select('*').eq('organization_id',orgId).order('paid_at',{ascending:false}),
+  sb.from('notifications').select('*').eq('organization_id',orgId).order('created_at',{ascending:false}),
+  sb.from('subscriptions').select('status,start_date,next_due_date,reason,updated_at').eq('organization_id',orgId).maybeSingle()
+ ]);
+ const fail=results.find(r=>r.error)?.error;if(fail){toast('Error sincronizando Comercio: '+fail.message);return}
+ const [membersR,stockR,salesR,ordersR,activityR,expensesR,salaryR,noticesR,subR]=results;
+ const members=membersR.data||[],orders=ordersR.data||[],memberMap=new Map(members.map(m=>[m.id,m])),orderMap=new Map(orders.map(o=>[o.id,o]));
+ const next=freshState();
+ next.users=members.map(m=>({id:m.id,authUserId:m.auth_user_id,name:m.display_name,role:m.role,active:m.active!==false,fixedSalary:Number(m.fixed_salary||0),commission:Number(m.commission_percent||0)}));
+ next.stock=(stockR.data||[]).map(p=>({id:p.id,name:p.name,price:Number(p.sale_price||0),qty:Number(p.quantity||0),min:Number(p.min_quantity||0),unit:p.unit,updatedAt:p.updated_at}));
+ next.sales=(salesR.data||[]).map(x=>({id:x.id,date:x.sale_at,client:x.customer_name,concept:x.concept,amount:Number(x.amount||0),payment:x.payment_method||'Otro',notes:x.notes||'',userId:x.member_id,userName:memberMap.get(x.member_id)?.display_name||'Usuario',mode:x.sale_type,productId:x.stock_item_id||'',qty:Number(x.quantity||1)}));
+ next.orders=orders.map(o=>({id:o.id,createdAt:o.created_at,updatedAt:o.updated_at,client:o.client_name,title:o.title,amount:Number(o.amount||0),status:o.status,due:o.due_date||'',ownerId:o.responsible_member_id,ownerName:memberMap.get(o.responsible_member_id)?.display_name||'Sin asignar',description:o.description||'',ledgerPosted:o.ledger_posted===true,finalizedAt:o.finalized_at}));
+ next.activity=(activityR.data||[]).map(a=>({id:a.id,date:a.created_at,title:a.title,comment:a.comment||'',orderId:a.order_id||'',orderTitle:orderMap.get(a.order_id)?.title||'',userId:a.member_id,userName:memberMap.get(a.member_id)?.display_name||'Usuario'}));
+ next.expenses=(expensesR.data||[]).map(x=>({id:x.id,date:x.expense_at,concept:x.concept,amount:Number(x.amount||0),payment:x.payment_method||'Otro',notes:x.notes||'',userId:x.member_id,userName:memberMap.get(x.member_id)?.display_name||'Usuario'}));
+ next.salaryPayments=(salaryR.data||[]).map(x=>({id:x.id,date:x.paid_at,userId:x.employee_member_id,userName:memberMap.get(x.employee_member_id)?.display_name||'Empleado',amount:Number(x.amount||0),payment:x.payment_method||'Otro',notes:x.notes||'',registeredBy:memberMap.get(x.registered_by_member_id)?.display_name||'Administrador'}));
+ next.ledger=[...next.sales.map(x=>({id:'sale-'+x.id,source:'sale',sourceId:x.id,date:x.date,amount:x.amount,description:x.concept,client:x.client,userName:x.userName})),...next.orders.filter(x=>x.ledgerPosted).map(x=>({id:'order-'+x.id,source:'order',sourceId:x.id,date:x.finalizedAt||x.updatedAt,amount:x.amount,description:x.title,client:x.client,userName:x.ownerName}))].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+ S=next;U=S.users.find(x=>x.id===preferredMemberId)||S.users.find(x=>x.role==='admin'||x.role==='Administrador')||S.users[0];
+ DB=loadDB();DB.notifications=(DB.notifications||[]).filter(n=>n.orgId!==orgId).concat((noticesR.data||[]).map(n=>({id:n.id,orgId:n.organization_id,date:n.created_at,title:n.title,message:n.message,reason:n.reason||'',read:n.read===true})));
+ const localOrg=DB.organizations.find(x=>x.id===orgId);if(localOrg&&subR.data){localOrg.subscription={status:subR.data.status,startDate:subR.data.start_date,nextDueDate:subR.data.next_due_date,reason:subR.data.reason||'',updatedAt:subR.data.updated_at};ORG=localOrg}saveDB();
+}
+function scheduleCommerceReload(){clearTimeout(commerceReloadTimer);commerceReloadTimer=setTimeout(async()=>{if(!ORG||ORG.type!=='commerce')return;const selected=U?.id||AUTH_MEMBER_ID;await loadCommerceFromSupabase(selected);render();if($('#stats')?.classList.contains('active'))requestAnimationFrame(drawStatsChart)},180)}
+async function stopCommerceRealtime(){if(commerceChannel){await sb.removeChannel(commerceChannel);commerceChannel=null}}
+async function startCommerceRealtime(){await stopCommerceRealtime();if(!ORG||ORG.type!=='commerce')return;const filter=`organization_id=eq.${ORG.id}`;commerceChannel=sb.channel(`gestok-commerce-${ORG.id}-${Date.now()}`);for(const table of ['organization_members','stock_items','sales','orders','activities','expenses','salary_payments','subscriptions','notifications'])commerceChannel.on('postgres_changes',{event:'*',schema:'public',table,filter},scheduleCommerceReload);commerceChannel.subscribe()}
 function initOrgState(){
  if(!DB.records[ORG.id])DB.records[ORG.id]=freshState();
  S=DB.records[ORG.id];
@@ -460,7 +551,7 @@ function openCommerceMore(){positionCommerceRadial();commerceRadial.classList.ad
 function closeMore(){clearCommerceHot();commerceRadial.classList.remove('open');back.classList.remove('open');commerceActions.classList.remove('open')}
 function toggleCommerceMore(){commerceRadial.classList.contains('open')?closeMore():openCommerceMore()}
 function go(v){if(['stock','expenses','payroll'].includes(v)&&ORG.type==='barbershop')v='home';$$('.view').forEach(x=>x.classList.remove('active'));$('#'+v).classList.add('active');$$('.nav button[data-v]').forEach(x=>x.classList.toggle('active',x.dataset.v===v));title.textContent={home:'Resumen',orders:ORG.type==='barbershop'?'Turnos':'Pedidos',activity:'Actividad',balance:'Balance',sales:'Ventas',history:'Historial',stats:'Estadísticas',stock:'Stock',expenses:'Gastos',payroll:'Sueldos',users:'Usuarios',gestok:'GestOK'}[v];closeMore();render();if(v==='stats')requestAnimationFrame(drawStatsChart);if(v==='gestok')markNoticesRead()}
-window.go=go;$$('.nav button[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));back.onclick=closeMore;plus.onclick=()=>choice.classList.remove('hidden');logoutCompany.onclick=()=>{closeMore();app.classList.add('hidden');portal.classList.remove('hidden');ORG=null;S=null;U=null;backType()};function closeChoice(){choice.classList.add('hidden')}window.closeChoice=closeChoice;
+window.go=go;$$('.nav button[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));back.onclick=closeMore;plus.onclick=()=>choice.classList.remove('hidden');logoutCompany.onclick=async()=>{closeMore();await stopCommerceRealtime();await sb.auth.signOut();app.classList.add('hidden');portal.classList.remove('hidden');ORG=null;S=null;U=null;AUTH_MEMBER_ID=null;backType()};function closeChoice(){choice.classList.add('hidden')}window.closeChoice=closeChoice;
 
 /* Dock táctil Comercio */
 const commerceDock=$('.nav'),commerceDockButtons=$$('.nav button');let commerceDockPointer=null,commerceDockHot=null,commerceDockStartX=0,commerceDockStartY=0,commerceDockMoved=false,commerceSuppress=false;
@@ -487,53 +578,45 @@ function productOptions(){saleProduct.innerHTML=S.stock.length?S.stock.map(p=>`<
 function updateSaleMode(){let use=saleMode.value==='stock';stockSaleFields.classList.toggle('hidden',!use);freeSaleFields.classList.toggle('hidden',use);if(use)productOptions()}
 saleMode.onchange=updateSaleMode;saleProduct.onchange=()=>{let p=S.stock.find(x=>x.id===saleProduct.value);saleUnitPrice.value=p?.price||0;recalcStockSale()};saleQty.oninput=recalcStockSale;saleUnitPrice.oninput=recalcStockSale;
 function recalcStockSale(){let q=Math.max(1,Number(saleQty.value)||1),p=Number(saleUnitPrice.value)||0;saleAmount.value=q*p}
-saveSale.onclick=()=>{
- let mode=saleMode.value,client=saleClient.value.trim()||'Cliente ocasional',amount=Number(saleAmount.value),date=saleDate.value,concept='',productId='',qty=0;
- if(!date||amount<=0)return toast('Completá monto y fecha');
- if(mode==='stock'){
-   let p=S.stock.find(x=>x.id===saleProduct.value);qty=Math.max(1,Number(saleQty.value)||1);
-   if(!p)return toast('Seleccioná un producto');if(Number(p.qty)<qty)return toast('No hay stock suficiente');
-   p.qty=Number(p.qty)-qty;productId=p.id;concept=`${p.name} × ${qty}`;
- }else{concept=saleConcept.value.trim();if(!concept)return toast('Ingresá el concepto de la venta')}
- let now=new Date(),dt=`${date}T${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`,sid=uid();
- S.sales.unshift({id:sid,date:dt,client,concept,amount,payment:salePay.value,notes:saleNotes.value.trim(),userId:U.id,userName:U.name,mode,productId,qty});
- S.ledger.unshift({id:uid(),source:'sale',sourceId:sid,date:dt,amount,description:concept,client,userName:U.name});
- save();closeSale();render();toast(mode==='stock'?'Venta registrada y stock descontado':'Venta libre registrada');
+saveSale.onclick=async()=>{
+ let mode=saleMode.value,client=saleClient.value.trim()||'Cliente ocasional',amount=Number(saleAmount.value),date=saleDate.value,concept='',productId=null,qty=1;
+ if(!date||amount<=0)return toast('Completá monto y fecha');if(!U)return toast('Seleccioná un usuario');
+ if(mode==='stock'){let p=S.stock.find(x=>x.id===saleProduct.value);qty=Math.max(1,Number(saleQty.value)||1);if(!p)return toast('Seleccioná un producto');if(Number(p.qty)<qty)return toast('No hay stock suficiente');productId=p.id;concept=`${p.name} × ${qty}`}else{concept=saleConcept.value.trim();if(!concept)return toast('Ingresá el concepto de la venta')}
+ saveSale.disabled=true;const {error}=await sb.rpc('commerce_create_sale',{p_organization_id:ORG.id,p_member_id:U.id,p_sale_type:mode,p_stock_item_id:productId,p_customer_name:client,p_concept:concept,p_quantity:qty,p_amount:amount,p_payment_method:salePay.value,p_notes:saleNotes.value.trim(),p_sale_at:isoForChosenDate(date)});saveSale.disabled=false;
+ if(error)return toast(error.message);closeSale();await loadCommerceFromSupabase(U.id);render();toast(mode==='stock'?'Venta registrada y stock sincronizado':'Venta libre sincronizada');
 };
 
 /* Pedidos / turnos */
 function ownerOptions(){oOwner.innerHTML=S.users.filter(x=>x.active!==false).map(x=>`<option value="${x.id}">${x.name}</option>`).join('');oStatus.innerHTML=states().filter(x=>x!=='Finalizado'&&x!=='Cancelado').map(x=>`<option>${x}</option>`).join('');aOrder.innerHTML='<option value="">Sin relación</option>'+S.orders.filter(o=>!['Finalizado','Cancelado'].includes(o.status)).map(o=>`<option value="${o.id}">${o.title} · ${o.client}</option>`).join('')}
 function openOrder(){closeChoice();ownerOptions();orderModal.classList.remove('hidden');oClient.value='';oTitle.value='';oAmount.value='';oDue.value=today();oDesc.value='';oStatus.value=ORG.type==='commerce'?'Pendiente':'Pendiente';oOwner.value=U?.id||S.users[0]?.id}
 function closeOrder(){orderModal.classList.add('hidden')}window.openOrder=openOrder;window.closeOrder=closeOrder;
-saveOrder.onclick=()=>{let c=oClient.value.trim(),t=oTitle.value.trim(),a=Number(oAmount.value),own=S.users.find(x=>x.id===oOwner.value)||U;if(!c||!t||a<=0)return toast('Completá cliente, descripción y monto');S.orders.unshift({id:uid(),createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),client:c,title:t,amount:a,status:oStatus.value,due:oDue.value,ownerId:own.id,ownerName:own.name,description:oDesc.value.trim(),ledgerPosted:false,finalizedAt:null});save();closeOrder();render();toast(ORG.type==='barbershop'?'Turno creado':'Pedido creado')};
-function postOrder(o){if(o.ledgerPosted)return;S.ledger.unshift({id:uid(),source:'order',sourceId:o.id,date:new Date().toISOString(),amount:o.amount,description:o.title,client:o.client,userName:o.ownerName});o.ledgerPosted=true;o.finalizedAt=new Date().toISOString()}
-window.changeStatus=(oid,s)=>{let o=S.orders.find(x=>x.id===oid);if(!o)return;let first=s==='Finalizado'&&!o.ledgerPosted;o.status=s;o.updatedAt=new Date().toISOString();if(first)postOrder(o);save();render();toast(first?'Finalizado: monto sumado al balance':'Estado actualizado')};
+saveOrder.onclick=async()=>{let c=oClient.value.trim(),t=oTitle.value.trim(),a=Number(oAmount.value),own=S.users.find(x=>x.id===oOwner.value)||U;if(!c||!t||a<=0||!own)return toast('Completá cliente, descripción, monto y responsable');saveOrder.disabled=true;const {error}=await sb.from('orders').insert({organization_id:ORG.id,responsible_member_id:own.id,client_name:c,title:t,amount:a,status:oStatus.value,due_date:oDue.value||null,description:oDesc.value.trim()||null,ledger_posted:false});saveOrder.disabled=false;if(error)return toast(error.message);closeOrder();await loadCommerceFromSupabase(U?.id);render();toast('Pedido sincronizado')};
+window.changeStatus=async(oid,status)=>{let before=S.orders.find(x=>x.id===oid),first=status==='Finalizado'&&!before?.ledgerPosted;const {error}=await sb.rpc('commerce_set_order_status',{p_organization_id:ORG.id,p_order_id:oid,p_status:status});if(error)return toast(error.message);await loadCommerceFromSupabase(U?.id);render();toast(first?'Finalizado: monto sumado al balance':'Estado sincronizado')};
 window.setFilter=x=>{F=x;renderOrders()};
 
 /* Actividad */
 function openActivity(){closeChoice();ownerOptions();activityModal.classList.remove('hidden');aTitle.value='';aComment.value=''}
 function closeActivity(){activityModal.classList.add('hidden')}window.openActivity=openActivity;window.closeActivity=closeActivity;
-saveActivity.onclick=()=>{let t=aTitle.value.trim(),c=aComment.value.trim(),order=S.orders.find(o=>o.id===aOrder.value);if(!t&&!c)return toast('Agregá un título o comentario');S.activity.unshift({id:uid(),date:new Date().toISOString(),title:t||'Actividad',comment:c,orderId:order?.id||'',orderTitle:order?.title||'',userId:U.id,userName:U.name});save();closeActivity();render();toast('Actividad registrada')};
+saveActivity.onclick=async()=>{let t=aTitle.value.trim(),c=aComment.value.trim(),order=S.orders.find(o=>o.id===aOrder.value);if(!t&&!c)return toast('Agregá un título o comentario');const {error}=await sb.from('activities').insert({organization_id:ORG.id,member_id:U.id,order_id:order?.id||null,title:t||'Actividad',comment:c||null});if(error)return toast(error.message);closeActivity();await loadCommerceFromSupabase(U.id);render();toast('Actividad sincronizada')};
 
 /* Stock */
 function openStock(){stockModal.classList.remove('hidden');stockName.value='';stockPrice.value='';stockQty.value='';stockMin.value='5'}function closeStock(){stockModal.classList.add('hidden')}window.openStock=openStock;window.closeStock=closeStock;
-saveStock.onclick=()=>{let name=stockName.value.trim(),price=Number(stockPrice.value)||0,qty=Math.max(0,Number(stockQty.value)||0),min=Math.max(0,Number(stockMin.value)||0);if(!name)return toast('Ingresá el producto');S.stock.unshift({id:uid(),name,price,qty,min,unit:stockUnit.value,updatedAt:new Date().toISOString()});save();closeStock();render();toast('Producto agregado')};
-window.adjustStock=(id,delta)=>{let p=S.stock.find(x=>x.id===id);if(!p)return;p.qty=Math.max(0,Number(p.qty)+delta);save();renderStock()};
-window.deleteStock=id=>{S.stock=S.stock.filter(x=>x.id!==id);save();renderStock()};
-
+saveStock.onclick=async()=>{let name=stockName.value.trim(),price=Number(stockPrice.value)||0,qty=Math.max(0,Number(stockQty.value)||0),min=Math.max(0,Number(stockMin.value)||0);if(!name)return toast('Ingresá el producto');const {error}=await sb.from('stock_items').insert({organization_id:ORG.id,name,sale_price:price,quantity:qty,min_quantity:min,unit:stockUnit.value,active:true});if(error)return toast(error.message);closeStock();await loadCommerceFromSupabase(U?.id);render();toast('Producto sincronizado')};
+window.adjustStock=async(id,delta)=>{const {error}=await sb.rpc('commerce_adjust_stock',{p_organization_id:ORG.id,p_item_id:id,p_delta:Number(delta)});if(error)return toast(error.message);await loadCommerceFromSupabase(U?.id);renderStock()};
+window.deleteStock=async id=>{const {error}=await sb.from('stock_items').update({active:false,updated_at:new Date().toISOString()}).eq('id',id).eq('organization_id',ORG.id);if(error)return toast(error.message);await loadCommerceFromSupabase(U?.id);renderStock()};
 
 /* Gastos */
 function openExpense(){if(ORG.type!=='commerce')return;expenseModal.classList.remove('hidden');expenseConcept.value='';expenseAmount.value='';expenseDate.value=today();expenseDate.max=today();expenseNotes.value=''}
 function closeExpense(){expenseModal.classList.add('hidden')}window.openExpense=openExpense;window.closeExpense=closeExpense;
-saveExpense.onclick=()=>{let concept=expenseConcept.value.trim(),amount=Number(expenseAmount.value),date=expenseDate.value;if(!concept||amount<=0||!date)return toast('Completá concepto, monto y fecha');let now=new Date(),dt=`${date}T${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;S.expenses.unshift({id:uid(),date:dt,concept,amount,payment:expensePay.value,notes:expenseNotes.value.trim(),userId:U.id,userName:U.name});save();closeExpense();render();toast('Gasto registrado')};
+saveExpense.onclick=async()=>{let concept=expenseConcept.value.trim(),amount=Number(expenseAmount.value),date=expenseDate.value;if(!concept||amount<=0||!date)return toast('Completá concepto, monto y fecha');const {error}=await sb.from('expenses').insert({organization_id:ORG.id,member_id:U.id,concept,amount,payment_method:expensePay.value,notes:expenseNotes.value.trim()||null,expense_at:isoForChosenDate(date)});if(error)return toast(error.message);closeExpense();await loadCommerceFromSupabase(U.id);render();toast('Gasto sincronizado')};
 
 /* Sueldos */
 function employeeUsers(){return S.users.filter(u=>u.role!=='admin'&&u.active!==false)}
 function openSalary(preselect=''){if(ORG.type!=='commerce')return;let emps=employeeUsers();if(!emps.length)return toast('Primero creá un empleado');salaryUser.innerHTML=emps.map(u=>`<option value="${u.id}">${u.name} · ${u.role}</option>`).join('');salaryUser.value=preselect&&emps.some(u=>u.id===preselect)?preselect:emps[0].id;let u=emps.find(x=>x.id===salaryUser.value);salaryAmount.value=Number(u?.fixedSalary||0)||'';salaryDate.value=today();salaryDate.max=today();salaryNotes.value='';salaryModal.classList.remove('hidden')}
 function closeSalary(){salaryModal.classList.add('hidden')}window.openSalary=openSalary;window.closeSalary=closeSalary;
 salaryUser.onchange=()=>{let u=S.users.find(x=>x.id===salaryUser.value);salaryAmount.value=Number(u?.fixedSalary||0)||''};
-saveSalary.onclick=()=>{let u=S.users.find(x=>x.id===salaryUser.value),amount=Number(salaryAmount.value),date=salaryDate.value;if(!u||amount<=0||!date)return toast('Completá empleado, monto y fecha');let now=new Date(),dt=`${date}T${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;S.salaryPayments.unshift({id:uid(),date:dt,userId:u.id,userName:u.name,amount,payment:salaryPay.value,notes:salaryNotes.value.trim(),registeredBy:U.name});save();closeSalary();render();toast('Sueldo registrado')};
-window.setFixedSalary=(id,val)=>{let u=S.users.find(x=>x.id===id);if(!u)return;u.fixedSalary=Math.max(0,Number(val)||0);save();renderPayroll()};
+saveSalary.onclick=async()=>{let u=S.users.find(x=>x.id===salaryUser.value),amount=Number(salaryAmount.value),date=salaryDate.value;if(!u||amount<=0||!date)return toast('Completá empleado, monto y fecha');const {error}=await sb.from('salary_payments').insert({organization_id:ORG.id,employee_member_id:u.id,registered_by_member_id:U.id,amount,payment_method:salaryPay.value,notes:salaryNotes.value.trim()||null,paid_at:isoForChosenDate(date)});if(error)return toast(error.message);closeSalary();await loadCommerceFromSupabase(U.id);render();toast('Sueldo sincronizado')};
+window.setFixedSalary=async(id,val)=>{const value=Math.max(0,Number(val)||0);const {error}=await sb.from('organization_members').update({fixed_salary:value}).eq('id',id).eq('organization_id',ORG.id);if(error)return toast(error.message);await loadCommerceFromSupabase(U?.id);renderPayroll()};
 window.quickSalary=id=>openSalary(id);
 
 function renderExpenses(){let total=S.expenses.reduce((a,x)=>a+Number(x.amount||0),0),tod=S.expenses.filter(x=>String(x.date).slice(0,10)===today()).reduce((a,x)=>a+Number(x.amount||0),0);eTotal.textContent=money(total);eToday.textContent=money(tod);expensesList.innerHTML=S.expenses.length?S.expenses.map(x=>`<div class="row"><div><strong>${x.concept}</strong><small>${x.userName} · ${x.payment} · ${new Date(x.date).toLocaleDateString('es-AR')}${x.notes?' · '+x.notes:''}</small></div><span class="outflow">−${money(x.amount)}</span></div>`).join(''):'<div class="empty">Todavía no hay gastos registrados.</div>'}
@@ -542,8 +625,8 @@ function renderPayroll(){let emps=employeeUsers(),total=S.salaryPayments.reduce(
 /* Usuarios */
 function rolesForType(){return ORG.type==='commerce'?['Empleado','Ventas','Producción','Diseñador']:['Barbero','Recepción','Empleado']}
 function openUser(){uName.value='';uRole.innerHTML=rolesForType().map(x=>`<option>${x}</option>`).join('');userModal.classList.remove('hidden')}function closeUser(){userModal.classList.add('hidden')}window.openUser=openUser;window.closeUser=closeUser;
-saveUser.onclick=()=>{let n=uName.value.trim();if(!n)return toast('Ingresá un nombre');S.users.push({id:uid(),name:n,role:uRole.value,active:true,fixedSalary:0});save();closeUser();render();toast('Usuario creado')};
-window.toggleUser=id=>{let u=S.users.find(x=>x.id===id);if(!u||u.role==='admin')return;u.active=u.active===false?true:false;save();renderUsers()};
+saveUser.onclick=async()=>{let n=uName.value.trim();if(!n)return toast('Ingresá un nombre');const {error}=await sb.from('organization_members').insert({organization_id:ORG.id,auth_user_id:null,display_name:n,role:uRole.value,active:true,fixed_salary:0,commission_percent:0});if(error)return toast(error.message);closeUser();await loadCommerceFromSupabase(U?.id);render();toast('Usuario sincronizado')};
+window.toggleUser=async id=>{let u=S.users.find(x=>x.id===id);if(!u||u.role==='admin'||u.role==='Administrador')return;const {error}=await sb.from('organization_members').update({active:u.active===false}).eq('id',id).eq('organization_id',ORG.id);if(error)return toast(error.message);await loadCommerceFromSupabase(U?.id);renderUsers()};
 activeUserSelect.onchange=()=>{U=S.users.find(x=>x.id===activeUserSelect.value)||U;role.textContent=`${U.name} · ${U.role==='admin'?'Administrador':U.role}`;render()};
 
 /* Render */
