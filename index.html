@@ -772,6 +772,14 @@
   }
 }
 
+
+/* V28 · empleados y permisos */
+.user-card-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px}
+.user-card-actions .btn{min-height:34px;padding:7px 8px;font-size:8px;border-radius:10px}
+.user-card-actions .user-delete{color:var(--red);border-color:rgba(255,107,107,.24)}
+.user-card-actions .user-toggle{grid-column:1/-1}
+.admin-only-finance.hidden-by-role{display:none!important}
+
 </style>
 </head>
 <body>
@@ -793,7 +801,7 @@
 <main class="main">
   <section id="home" class="view active">
     <div class="quick"><button onclick="openSale()"><span>＋</span><b>Nueva venta</b></button><button onclick="openOrder()"><span>＋</span><b id="quickOrder">Nuevo pedido</b></button><button onclick="openActivity()"><span>＋</span><b id="quickActivity">Registrar avance</b></button></div>
-    <div id="homeStats" class="stats"><div class="card metric"><span>Balance total</span><strong id="kBal">$0</strong><small>Ingresos confirmados</small></div><div class="card metric"><span>Ingresos de hoy</span><strong id="kToday">$0</strong><small id="kTodayN">0 movimientos</small></div><div id="scrHomeEgress" class="card metric scr-only scr-home-egress"><span>Egresos del mes</span><strong id="kEgress">$0</strong><small id="kEgressN">Gastos + sueldos</small></div><div class="card metric"><span id="kActiveLabel">Pedidos activos</span><strong id="kActive">0</strong><small>En curso</small></div><div class="card metric"><span>Actividad del equipo</span><strong id="kActivity">0</strong><small>Registros</small></div></div>
+    <div id="homeStats" class="stats"><div class="card metric admin-only-finance"><span>Balance total</span><strong id="kBal">$0</strong><small>Ingresos confirmados</small></div><div class="card metric admin-only-finance"><span>Ingresos de hoy</span><strong id="kToday">$0</strong><small id="kTodayN">0 movimientos</small></div><div id="scrHomeEgress" class="card metric scr-only scr-home-egress admin-only-finance"><span>Egresos del mes</span><strong id="kEgress">$0</strong><small id="kEgressN">Gastos + sueldos</small></div><div class="card metric"><span id="kActiveLabel">Pedidos activos</span><strong id="kActive">0</strong><small>En curso</small></div><div class="card metric"><span>Actividad del equipo</span><strong id="kActivity">0</strong><small>Registros</small></div></div>
     <div class="twocol"><div class="card"><div class="head"><div><h3 id="attentionTitle">Pedidos que requieren atención</h3><p>Prioritarios y trabajos activos</p></div><span class="badge red">Activo</span></div><div id="attention" class="list"></div></div><div class="card"><div class="head"><div><h3>Última actividad</h3><p>Lo que registró el equipo</p></div><span class="badge">Equipo</span></div><div id="recentActivity" class="list"></div></div></div>
   </section>
 
@@ -833,7 +841,7 @@
     <div class="card" style="margin-top:8px"><div class="head"><div><h3>Historial de sueldos</h3><p>Pagos efectivamente registrados.</p></div></div><div id="salaryHistory" class="list"></div></div>
   </section>
 
-  <section id="users" class="view"><div class="section"><div><h2>Usuarios</h2><p>El administrador crea los perfiles que trabajan en la empresa.</p></div><button class="btn primary" onclick="openUser()">+ Usuario</button></div><div class="card" style="margin-bottom:8px"><label>Usuario activo en este dispositivo</label><select id="activeUserSelect" class="select"></select></div><div id="usersList" class="profilegrid"></div></section>
+  <section id="users" class="view"><div class="section"><div><h2>Usuarios</h2><p>El administrador crea los perfiles que trabajan en la empresa.</p></div><button id="addUserBtn" class="btn primary" onclick="openUser()">+ Usuario</button></div><div class="card" style="margin-bottom:8px"><label>Usuario activo en este dispositivo</label><select id="activeUserSelect" class="select"></select></div><div id="usersList" class="profilegrid"></div></section>
 
   <section id="gestok" class="view"><div class="section"><div><h2>GestOK y mensualidad</h2><p>Estado del servicio y contacto.</p></div></div><div class="card"><span id="gBadge" class="badge"></span><div id="gStatus" class="gstatus"></div><p id="gMessage" style="color:var(--muted);font-size:9px;line-height:1.55"></p><div class="ginfo"><div><small>Empresa</small><strong id="gCompany"></strong></div><div><small>Contacto GestOK</small><strong>3751232618</strong></div><div><small>Inicio</small><strong id="gStart"></strong></div><div><small>Vencimiento</small><strong id="gDue"></strong></div></div><div id="gReasonWrap" class="ginfo hidden" style="grid-template-columns:1fr"><div><small>Motivo</small><strong id="gReason"></strong></div></div><a id="waLink" class="wa" target="_blank" rel="noopener">Contactar por WhatsApp</a></div><div class="card" style="margin-top:8px"><div class="head"><div><h3>Avisos de GestOK</h3></div></div><div id="gNotices"></div></div></section>
 </main>
@@ -929,7 +937,7 @@
 
 <div id="salaryModal" class="modalbg hidden"><div class="modal"><h3 id="salaryModalTitle">Registrar sueldo pagado</h3><p id="salaryModalText">El pago se descuenta del resultado neto y queda en el historial.</p><div class="form"><div><label>Empleado</label><select id="salaryUser" class="select"></select></div><div><label>Monto</label><input id="salaryAmount" class="input" type="number" min="0" placeholder="$"></div><div><label>Fecha</label><input id="salaryDate" class="input" type="date"></div><div><label>Medio de pago</label><select id="salaryPay" class="select"><option>Transferencia</option><option>Efectivo</option><option>Otro</option></select></div><div><label>Nota</label><textarea id="salaryNotes" class="textarea" placeholder="Ej. Sueldo septiembre"></textarea></div></div><div class="mactions"><button class="btn secondary" onclick="closeSalary()">Cancelar</button><button id="saveSalary" class="btn primary">Registrar pago</button></div></div></div>
 
-<div id="userModal" class="modalbg hidden"><div class="modal"><h3>Agregar usuario</h3><p>El usuario se crea dentro de esta empresa.</p><div class="form"><div><label>Nombre</label><input id="uName" class="input"></div><div><label>Rol</label><select id="uRole" class="select"></select></div></div><div class="mactions"><button class="btn secondary" onclick="closeUser()">Cancelar</button><button id="saveUser" class="btn primary">Crear</button></div></div></div>
+<div id="userModal" class="modalbg hidden"><div class="modal"><h3 id="userModalTitle">Agregar usuario</h3><p id="userModalText">El usuario se crea dentro de esta empresa.</p><div class="form"><div><label>Nombre</label><input id="uName" class="input"></div><div><label>Rol</label><select id="uRole" class="select"></select></div></div><div class="mactions"><button class="btn secondary" onclick="closeUser()">Cancelar</button><button id="saveUser" class="btn primary">Crear</button></div></div></div>
 <div id="toast" class="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -945,7 +953,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const DB_KEY='gestok_unified_platform_v4',WA='5493751232618';
 const COMMERCE_ST=['Prioritario','Pendiente','En proceso','Enviado a impresion','Finalizado'];
 const BARBER_ST=['Pendiente','Confirmado','En proceso','Finalizado','Cancelado'];
-let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null;
+let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null;
 
 function baseDB(){return{organizations:[],records:{},notifications:[],payments:[]}}
 function loadDB(){try{let d=JSON.parse(localStorage.getItem(DB_KEY))||baseDB();d.organizations=d.organizations||[];d.records=d.records||{};d.notifications=d.notifications||[];d.payments=d.payments||[];return d}catch{return baseDB()}}
@@ -1199,7 +1207,24 @@ function clearCommerceHot(){$$('.commerce-option').forEach(x=>x.classList.remove
 function openCommerceMore(){positionCommerceRadial();commerceRadial.classList.add('open');back.classList.add('open');commerceActions.classList.add('open')}
 function closeMore(){clearCommerceHot();commerceRadial.classList.remove('open');back.classList.remove('open');commerceActions.classList.remove('open')}
 function toggleCommerceMore(){commerceRadial.classList.contains('open')?closeMore():openCommerceMore()}
-function go(v){if(['stock','expenses','payroll'].includes(v)&&ORG.type==='barbershop')v='home';$$('.view').forEach(x=>x.classList.remove('active'));$('#'+v).classList.add('active');$$('.nav button[data-v]').forEach(x=>x.classList.toggle('active',x.dataset.v===v));title.textContent={home:'Resumen',orders:ORG.type==='barbershop'?'Turnos':'Pedidos',activity:'Actividad',balance:'Balance',sales:'Ventas',history:'Historial',stats:'Estadísticas',stock:'Stock',expenses:'Gastos',payroll:'Sueldos',users:'Usuarios',gestok:'GestOK'}[v];closeMore();render();if(v==='stats')requestAnimationFrame(drawStatsChart);if(v==='gestok')markNoticesRead()}
+function isActiveAdmin(){
+  const r=norm(U?.role);
+  return r==='admin'||r==='administrador';
+}
+function applyActiveRolePermissions(){
+  const admin=isActiveAdmin();
+  $$('.commerce-option[data-v="balance"],.commerce-option[data-v="stats"]').forEach(el=>el.classList.toggle('hidden',!admin));
+  $$('.admin-only-finance').forEach(el=>el.classList.toggle('hidden-by-role',!admin));
+  if($('#addUserBtn'))$('#addUserBtn').classList.toggle('hidden',!admin);
+
+  if(!admin && ($('#balance')?.classList.contains('active')||$('#stats')?.classList.contains('active'))){
+    $$('.view').forEach(x=>x.classList.remove('active'));
+    $('#home').classList.add('active');
+    title.textContent='Resumen';
+  }
+}
+
+function go(v){if(['balance','stats'].includes(v)&&!isActiveAdmin()){toast('Solo el administrador puede acceder a esta sección');v='home'}if(['stock','expenses','payroll'].includes(v)&&ORG.type==='barbershop')v='home';$$('.view').forEach(x=>x.classList.remove('active'));$('#'+v).classList.add('active');$$('.nav button[data-v]').forEach(x=>x.classList.toggle('active',x.dataset.v===v));title.textContent={home:'Resumen',orders:ORG.type==='barbershop'?'Turnos':'Pedidos',activity:'Actividad',balance:'Balance',sales:'Ventas',history:'Historial',stats:'Estadísticas',stock:'Stock',expenses:'Gastos',payroll:'Sueldos',users:'Usuarios',gestok:'GestOK'}[v];closeMore();render();if(v==='stats'&&isActiveAdmin())requestAnimationFrame(drawStatsChart);if(v==='gestok')markNoticesRead()}
 window.go=go;$$('.nav button[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-action="whatsapp"]').forEach(x=>x.onclick=()=>{closeMore();openGestokWhatsApp()});back.onclick=closeMore;plus.onclick=()=>choice.classList.remove('hidden');logoutCompany.onclick=async()=>{closeMore();await stopCommerceRealtime();await sb.auth.signOut();hideSubscriptionBlocker();app.classList.add('hidden');portal.classList.remove('hidden');ORG=null;S=null;U=null;AUTH_MEMBER_ID=null;backType()};function closeChoice(){choice.classList.add('hidden')}window.closeChoice=closeChoice;
 
 /* Dock táctil Comercio */
@@ -1679,11 +1704,119 @@ function renderPayroll(){
 
 /* Usuarios */
 function rolesForType(){return ORG.type==='commerce'?['Empleado','Ventas','Producción','Diseñador']:['Barbero','Recepción','Empleado']}
-function openUser(){uName.value='';uRole.innerHTML=rolesForType().map(x=>`<option>${x}</option>`).join('');userModal.classList.remove('hidden')}function closeUser(){userModal.classList.add('hidden')}window.openUser=openUser;window.closeUser=closeUser;
-saveUser.onclick=async()=>{let n=uName.value.trim();if(!n)return toast('Ingresá un nombre');const {error}=await sb.from('organization_members').insert({organization_id:ORG.id,auth_user_id:null,display_name:n,role:uRole.value,active:true,fixed_salary:0,commission_percent:0});if(error)return toast(error.message);closeUser();await loadCommerceFromSupabase(U?.id);render();toast('Usuario sincronizado')};
-window.toggleUser=async id=>{let u=S.users.find(x=>x.id===id);if(!u||u.role==='admin'||u.role==='Administrador')return;const {error}=await sb.from('organization_members').update({active:u.active===false}).eq('id',id).eq('organization_id',ORG.id);if(error)return toast(error.message);await loadCommerceFromSupabase(U?.id);renderUsers()};
-activeUserSelect.onchange=()=>{U=S.users.find(x=>x.id===activeUserSelect.value)||U;role.textContent=`${U.name} · ${U.role==='admin'?'Administrador':U.role}`;render()};
 
+function openUser(){
+  if(!isActiveAdmin())return toast('Solo el administrador puede crear usuarios');
+  userEditingId=null;
+  userModalTitle.textContent='Agregar usuario';
+  userModalText.textContent='El usuario se crea dentro de esta empresa.';
+  saveUser.textContent='Crear';
+  uName.value='';
+  uRole.innerHTML=rolesForType().map(x=>`<option>${x}</option>`).join('');
+  userModal.classList.remove('hidden');
+}
+window.openEditUser=id=>{
+  if(!isActiveAdmin())return toast('Solo el administrador puede editar empleados');
+  const u=S.users.find(x=>x.id===id);
+  if(!u||['admin','administrador'].includes(norm(u.role)))return;
+
+  userEditingId=id;
+  userModalTitle.textContent='Editar empleado';
+  userModalText.textContent='Modificá el nombre o el rol sin perder su historial.';
+  saveUser.textContent='Guardar cambios';
+  uName.value=u.name;
+  uRole.innerHTML=rolesForType().map(x=>`<option ${x===u.role?'selected':''}>${x}</option>`).join('');
+  userModal.classList.remove('hidden');
+};
+function closeUser(){
+  userEditingId=null;
+  userModal.classList.add('hidden');
+}
+window.openUser=openUser;
+window.closeUser=closeUser;
+
+saveUser.onclick=async()=>{
+  if(!isActiveAdmin())return toast('Solo el administrador puede modificar usuarios');
+  const name=uName.value.trim();
+  if(!name)return toast('Ingresá un nombre');
+
+  saveUser.disabled=true;
+
+  if(userEditingId){
+    const {error}=await sb.rpc('commerce_update_employee',{
+      p_organization_id:ORG.id,
+      p_member_id:userEditingId,
+      p_display_name:name,
+      p_role:uRole.value
+    });
+    saveUser.disabled=false;
+    if(error)return toast(error.message);
+
+    closeUser();
+    await loadCommerceFromSupabase(U?.id);
+    render();
+    toast('Empleado actualizado');
+    return;
+  }
+
+  const {error}=await sb.from('organization_members').insert({
+    organization_id:ORG.id,
+    auth_user_id:null,
+    display_name:name,
+    role:uRole.value,
+    active:true,
+    fixed_salary:0,
+    commission_percent:0
+  });
+
+  saveUser.disabled=false;
+  if(error)return toast(error.message);
+
+  closeUser();
+  await loadCommerceFromSupabase(U?.id);
+  render();
+  toast('Usuario sincronizado');
+};
+
+window.toggleUser=async id=>{
+  if(!isActiveAdmin())return toast('Solo el administrador puede activar o desactivar empleados');
+  const u=S.users.find(x=>x.id===id);
+  if(!u||['admin','administrador'].includes(norm(u.role)))return;
+
+  const {error}=await sb.from('organization_members')
+    .update({active:u.active===false})
+    .eq('id',id)
+    .eq('organization_id',ORG.id);
+
+  if(error)return toast(error.message);
+  await loadCommerceFromSupabase(U?.id);
+  render();
+};
+
+window.deleteEmployee=async id=>{
+  if(!isActiveAdmin())return toast('Solo el administrador puede eliminar empleados');
+  const u=S.users.find(x=>x.id===id);
+  if(!u||['admin','administrador'].includes(norm(u.role)))return;
+
+  if(!confirm(`¿Eliminar a ${u.name}?\n\nSi tiene historial asociado, GestOK bloqueará la eliminación para conservar los registros.`))return;
+
+  const {error}=await sb.rpc('commerce_delete_employee',{
+    p_organization_id:ORG.id,
+    p_member_id:id
+  });
+
+  if(error)return toast(error.message);
+
+  await loadCommerceFromSupabase(U?.id);
+  render();
+  toast('Empleado eliminado');
+};
+
+activeUserSelect.onchange=()=>{
+  U=S.users.find(x=>x.id===activeUserSelect.value)||U;
+  role.textContent=`${U.name} · ${isActiveAdmin()?'Administrador':U.role}`;
+  render();
+};
 
 /* Filtro mensual de revisión */
 function commerceMonthKey(date){
@@ -1746,7 +1879,39 @@ function renderActivity(){
 }
 function renderStock(){activityList.innerHTML=S.activity.length?S.activity.map(a=>`<div class="row"><div><strong>${a.title}</strong><small>${a.userName} · ${new Date(a.date).toLocaleString('es-AR',{dateStyle:'short',timeStyle:'short'})}${a.orderTitle?' · '+a.orderTitle:''}${a.comment?' · '+a.comment:''}</small></div><span class="badge">Actividad</span></div>`).join(''):'<div class="empty">Todavía no hay actividad.</div>';recentActivity.innerHTML=S.activity.slice(0,5).length?S.activity.slice(0,5).map(a=>`<div class="row"><div><strong>${a.title}</strong><small>${a.userName}</small></div><span class="badge">Nota</span></div>`).join(''):'<div class="empty">Sin actividad reciente.</div>'}
 function renderStock(){stockItems.textContent=S.stock.length;stockLow.textContent=S.stock.filter(p=>Number(p.qty)<=Number(p.min)).length;stockList.innerHTML=S.stock.length?S.stock.map(p=>`<article class="stockcard ${Number(p.qty)<=Number(p.min)?'low':''}"><div class="stocktop"><div><div class="stockname">${p.name}</div><div class="stockunit">${money(p.price)} · ${p.unit}</div></div><span class="badge ${Number(p.qty)<=Number(p.min)?'red':''}">${Number(p.qty)<=Number(p.min)?'Stock bajo':'Disponible'}</span></div><div class="stockqty">${p.qty} <span style="font-size:10px;color:var(--muted)">${p.unit}</span></div><div class="stockmin">Alerta en ${p.min}</div><div class="stockactions"><button onclick="adjustStock('${p.id}',-1)">−</button><input class="input" value="${p.qty}" readonly style="text-align:center"><button onclick="adjustStock('${p.id}',1)">＋</button></div>${admin()?`<button class="btn danger" style="width:100%;margin-top:7px" onclick="deleteStock('${p.id}')">Eliminar</button>`:''}</article>`).join(''):'<div class="empty">No hay productos cargados.</div>'}
-function renderUsers(){activeUserSelect.innerHTML=S.users.filter(u=>u.active!==false).map(u=>`<option value="${u.id}">${u.name} · ${u.role==='admin'?'Administrador':u.role}</option>`).join('');activeUserSelect.value=U.id;usersList.innerHTML=S.users.map(u=>`<article class="profilecard"><div style="display:flex;gap:8px;align-items:center"><div class="avatar">${initials(u.name)}</div><div><strong style="font-size:11px">${u.name}</strong><small style="display:block;color:var(--muted);font-size:8px;margin-top:3px">${u.role==='admin'?'Administrador':u.role}${u.active===false?' · Desactivado':''}</small></div></div>${u.role==='admin'?'':`<button class="btn secondary" style="width:100%;margin-top:9px" onclick="toggleUser('${u.id}')">${u.active===false?'Activar':'Desactivar'}</button>`}</article>`).join('')}
+function renderUsers(){
+  const admin=isActiveAdmin();
+
+  activeUserSelect.innerHTML=S.users
+    .filter(u=>u.active!==false)
+    .map(u=>`<option value="${u.id}">${u.name} · ${['admin','administrador'].includes(norm(u.role))?'Administrador':u.role}</option>`)
+    .join('');
+
+  activeUserSelect.value=U.id;
+
+  usersList.innerHTML=S.users.map(u=>{
+    const targetIsAdmin=['admin','administrador'].includes(norm(u.role));
+
+    return `<article class="profilecard">
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="avatar">${initials(u.name)}</div>
+        <div>
+          <strong style="font-size:11px">${u.name}</strong>
+          <small style="display:block;color:var(--muted);font-size:8px;margin-top:3px">${targetIsAdmin?'Administrador':u.role}${u.active===false?' · Desactivado':''}</small>
+        </div>
+      </div>
+      ${!targetIsAdmin&&admin?`
+        <div class="user-card-actions">
+          <button class="btn secondary" onclick="openEditUser('${u.id}')">Editar</button>
+          <button class="btn secondary user-delete" onclick="deleteEmployee('${u.id}')">Eliminar</button>
+          <button class="btn secondary user-toggle" onclick="toggleUser('${u.id}')">${u.active===false?'Activar':'Desactivar'}</button>
+        </div>
+      `:''}
+    </article>`;
+  }).join('');
+
+  applyActiveRolePermissions();
+}
 
 function render(){
  renderCommerceMonthSelectors();
@@ -1814,7 +1979,8 @@ function render(){
 
  historyList.innerHTML=hist.length?hist.map(x=>`<div class="row ${x.kind==='sale'?'sale-click':''}" ${x.kind==='sale'?`onclick="openSaleReceipt('${x.id}')"`:''}><div><strong>${x.name}</strong><small>${x.sub} · ${new Date(x.date).toLocaleString('es-AR',{dateStyle:'short',timeStyle:'short'})}</small>${x.kind==='sale'?'<span class="sale-open-hint">Ver comprobante digital</span>':''}</div>${x.amount!=null?`<span class="${x.out?'outflow':'money'}">${x.out?'−':''}${money(x.amount)}</span>`:''}</div>`).join(''):'<div class="empty">Sin movimientos para el mes seleccionado.</div>';
 
- role.textContent=`${U.name} · ${U.role==='admin'?'Administrador':U.role}`;
+ role.textContent=`${U.name} · ${isActiveAdmin()?'Administrador':U.role}`;
+ applyActiveRolePermissions();
  renderOrders();
  renderActivity();
  renderStock();
