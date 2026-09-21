@@ -703,6 +703,75 @@
   .scr-daily-row .day{grid-column:1/-1}
 }
 
+
+/* ============================================================
+   V27 · ALINEACIÓN DE MÉTRICAS DEL RESUMEN
+   ============================================================ */
+
+/* SCR: mantener la tarjeta de egresos como flex, igual que las demás métricas */
+.card.metric.scr-enabled{
+  display:flex!important;
+}
+
+/* Todas las métricas del Resumen usan la misma distribución vertical */
+#homeStats .metric{
+  justify-content:center!important;
+  align-items:flex-start!important;
+  min-width:0;
+}
+
+#homeStats .metric > span,
+#homeStats .metric > strong,
+#homeStats .metric > small{
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  width:auto!important;
+  max-width:100%;
+  text-align:left!important;
+}
+
+#homeStats .metric > span{
+  min-height:12px;
+  line-height:1.2;
+}
+
+#homeStats .metric > strong{
+  display:block;
+  margin-top:7px!important;
+  line-height:1.05!important;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+#homeStats .metric > small{
+  display:block;
+  margin-top:7px!important;
+  line-height:1.2!important;
+}
+
+/* En escritorio todos los importes mantienen el mismo tamaño y línea base */
+@media(min-width:1024px){
+  #homeStats .metric{
+    min-height:118px!important;
+    padding:16px!important;
+  }
+
+  #homeStats .metric > strong{
+    font-size:24px!important;
+    min-height:26px;
+  }
+
+  #homeStats .metric > span{
+    font-size:9px!important;
+  }
+
+  #homeStats .metric > small{
+    font-size:8px!important;
+  }
+}
+
 </style>
 </head>
 <body>
