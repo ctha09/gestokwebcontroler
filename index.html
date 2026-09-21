@@ -665,6 +665,44 @@
   }
 }
 
+
+/* ============================================================
+   V26 · EXTENSIONES EXCLUSIVAS SCR
+   ============================================================ */
+.scr-only{display:none!important}
+.scr-enabled{display:block!important}
+.card.scr-enabled{display:block!important}
+.scr-home-egress strong{color:var(--red)!important}
+.scr-daily-grid{display:grid;gap:7px}
+.scr-daily-row{
+  display:grid;
+  grid-template-columns:minmax(105px,.9fr) repeat(3,minmax(90px,1fr));
+  gap:7px;
+  align-items:center;
+  padding:10px;
+  border-radius:13px;
+  border:1px solid var(--border);
+  background:var(--panel2)
+}
+.scr-daily-row .day{font-size:9px;font-weight:950}
+.scr-daily-cell span{display:block;color:var(--muted);font-size:7px}
+.scr-daily-cell strong{display:block;margin-top:3px;font-size:9px}
+.scr-daily-cell.out strong{color:var(--red)}
+.scr-daily-cell.net.negative strong{color:var(--red)}
+.scr-daily-cell.net:not(.negative) strong{color:var(--green)}
+.salary-history-actions{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.salary-history-actions .btn{min-height:32px;padding:6px 9px;font-size:8px;border-radius:10px}
+.salary-history-actions .delete{color:var(--red);border-color:rgba(255,107,107,.24)}
+@media(min-width:1024px){
+  #homeStats.scr-five{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+}
+@media(max-width:600px){
+  .scr-daily-row{
+    grid-template-columns:1fr 1fr;
+  }
+  .scr-daily-row .day{grid-column:1/-1}
+}
+
 </style>
 </head>
 <body>
@@ -686,13 +724,13 @@
 <main class="main">
   <section id="home" class="view active">
     <div class="quick"><button onclick="openSale()"><span>＋</span><b>Nueva venta</b></button><button onclick="openOrder()"><span>＋</span><b id="quickOrder">Nuevo pedido</b></button><button onclick="openActivity()"><span>＋</span><b id="quickActivity">Registrar avance</b></button></div>
-    <div class="stats"><div class="card metric"><span>Balance total</span><strong id="kBal">$0</strong><small>Ingresos confirmados</small></div><div class="card metric"><span>Ingresos de hoy</span><strong id="kToday">$0</strong><small id="kTodayN">0 movimientos</small></div><div class="card metric"><span id="kActiveLabel">Pedidos activos</span><strong id="kActive">0</strong><small>En curso</small></div><div class="card metric"><span>Actividad del equipo</span><strong id="kActivity">0</strong><small>Registros</small></div></div>
+    <div id="homeStats" class="stats"><div class="card metric"><span>Balance total</span><strong id="kBal">$0</strong><small>Ingresos confirmados</small></div><div class="card metric"><span>Ingresos de hoy</span><strong id="kToday">$0</strong><small id="kTodayN">0 movimientos</small></div><div id="scrHomeEgress" class="card metric scr-only scr-home-egress"><span>Egresos del mes</span><strong id="kEgress">$0</strong><small id="kEgressN">Gastos + sueldos</small></div><div class="card metric"><span id="kActiveLabel">Pedidos activos</span><strong id="kActive">0</strong><small>En curso</small></div><div class="card metric"><span>Actividad del equipo</span><strong id="kActivity">0</strong><small>Registros</small></div></div>
     <div class="twocol"><div class="card"><div class="head"><div><h3 id="attentionTitle">Pedidos que requieren atención</h3><p>Prioritarios y trabajos activos</p></div><span class="badge red">Activo</span></div><div id="attention" class="list"></div></div><div class="card"><div class="head"><div><h3>Última actividad</h3><p>Lo que registró el equipo</p></div><span class="badge">Equipo</span></div><div id="recentActivity" class="list"></div></div></div>
   </section>
 
   <section id="orders" class="view"><div class="section"><div><h2 id="ordersTitle">Pedidos</h2><p id="ordersSubtitle">Seguimiento de trabajos por estado.</p></div><button class="btn primary" onclick="openOrder()" id="orderAddBtn">+ Pedido</button></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div><div id="filters" class="filters"></div><div id="ordersList" class="orders"></div></section>
   <section id="activity" class="view"><div class="section"><div><h2>Actividad</h2><p>Registro escrito de lo realizado por el equipo.</p></div><button class="btn primary" onclick="openActivity()">+ Registrar</button></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div><div id="activityList" class="list"></div></section>
-  <section id="balance" class="view"><div class="section"><div><h2>Balance</h2><p>Ingresos menos gastos y sueldos pagados.</p></div></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div><div class="stats"><div class="card metric"><span>Resultado neto</span><strong id="bTotal">$0</strong></div><div class="card metric"><span>Ventas directas</span><strong id="bSales">$0</strong></div><div class="card metric"><span id="bOrdersLabel">Pedidos finalizados</span><strong id="bOrders">$0</strong></div><div class="card metric"><span>Ticket promedio</span><strong id="bAvg">$0</strong></div></div><div class="card" style="margin-top:8px"><div class="head"><div><h3>Movimientos</h3><p>Ingresos confirmados</p></div></div><div id="ledgerList" class="list"></div></div></section>
+  <section id="balance" class="view"><div class="section"><div><h2>Balance</h2><p>Ingresos menos gastos y sueldos pagados.</p></div></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div><div class="stats"><div class="card metric"><span>Resultado neto</span><strong id="bTotal">$0</strong></div><div class="card metric"><span>Ventas directas</span><strong id="bSales">$0</strong></div><div class="card metric"><span id="bOrdersLabel">Pedidos finalizados</span><strong id="bOrders">$0</strong></div><div class="card metric"><span>Ticket promedio</span><strong id="bAvg">$0</strong></div></div><div id="scrDailyReport" class="card scr-only" style="margin-top:8px"><div class="head"><div><h3>Parte diario</h3><p>Ingresos, egresos y resultado neto por día del período seleccionado.</p></div><span id="scrDailyBadge" class="badge">SCR</span></div><div id="scrDailyReportList" class="scr-daily-grid"></div></div><div class="card" style="margin-top:8px"><div class="head"><div><h3>Movimientos</h3><p>Ingresos confirmados</p></div></div><div id="ledgerList" class="list"></div></div></section>
   <section id="sales" class="view"><div class="section"><div><h2>Ventas</h2><p>Ventas libres o utilizando productos de stock.</p></div><button class="btn primary" onclick="openSale()">+ Venta</button></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div><div class="stats"><div class="card metric"><span>Ventas</span><strong id="sCount">0</strong></div><div class="card metric"><span>Total vendido</span><strong id="sTotal">$0</strong></div></div><div class="card" style="margin-top:8px"><div id="salesList" class="list"></div></div></section>
   <section id="history" class="view"><div class="section"><div><h2>Historial</h2><p>Ventas, pedidos/turnos y actividad.</p></div></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div><div class="card"><div id="historyList" class="list"></div></div></section>
 
@@ -820,7 +858,7 @@
 
 <div id="expenseModal" class="modalbg hidden"><div class="modal"><h3>Registrar gasto</h3><p>Ingresá cualquier gasto del comercio de forma libre.</p><div class="form"><div><label>Concepto</label><input id="expenseConcept" class="input" placeholder="Ej. Limpieza, luz, mercadería..."></div><div><label>Monto</label><input id="expenseAmount" class="input" type="number" min="0" placeholder="$"></div><div><label>Fecha</label><input id="expenseDate" class="input" type="date"></div><div><label>Medio de pago</label><select id="expensePay" class="select"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Otro</option></select></div><div><label>Nota</label><textarea id="expenseNotes" class="textarea" placeholder="Opcional"></textarea></div></div><div class="mactions"><button class="btn secondary" onclick="closeExpense()">Cancelar</button><button id="saveExpense" class="btn primary">Registrar gasto</button></div></div></div>
 
-<div id="salaryModal" class="modalbg hidden"><div class="modal"><h3>Registrar sueldo pagado</h3><p>El pago se descuenta del resultado neto y queda en el historial.</p><div class="form"><div><label>Empleado</label><select id="salaryUser" class="select"></select></div><div><label>Monto</label><input id="salaryAmount" class="input" type="number" min="0" placeholder="$"></div><div><label>Fecha</label><input id="salaryDate" class="input" type="date"></div><div><label>Medio de pago</label><select id="salaryPay" class="select"><option>Transferencia</option><option>Efectivo</option><option>Otro</option></select></div><div><label>Nota</label><textarea id="salaryNotes" class="textarea" placeholder="Ej. Sueldo septiembre"></textarea></div></div><div class="mactions"><button class="btn secondary" onclick="closeSalary()">Cancelar</button><button id="saveSalary" class="btn primary">Registrar pago</button></div></div></div>
+<div id="salaryModal" class="modalbg hidden"><div class="modal"><h3 id="salaryModalTitle">Registrar sueldo pagado</h3><p id="salaryModalText">El pago se descuenta del resultado neto y queda en el historial.</p><div class="form"><div><label>Empleado</label><select id="salaryUser" class="select"></select></div><div><label>Monto</label><input id="salaryAmount" class="input" type="number" min="0" placeholder="$"></div><div><label>Fecha</label><input id="salaryDate" class="input" type="date"></div><div><label>Medio de pago</label><select id="salaryPay" class="select"><option>Transferencia</option><option>Efectivo</option><option>Otro</option></select></div><div><label>Nota</label><textarea id="salaryNotes" class="textarea" placeholder="Ej. Sueldo septiembre"></textarea></div></div><div class="mactions"><button class="btn secondary" onclick="closeSalary()">Cancelar</button><button id="saveSalary" class="btn primary">Registrar pago</button></div></div></div>
 
 <div id="userModal" class="modalbg hidden"><div class="modal"><h3>Agregar usuario</h3><p>El usuario se crea dentro de esta empresa.</p><div class="form"><div><label>Nombre</label><input id="uName" class="input"></div><div><label>Rol</label><select id="uRole" class="select"></select></div></div><div class="mactions"><button class="btn secondary" onclick="closeUser()">Cancelar</button><button id="saveUser" class="btn primary">Crear</button></div></div></div>
 <div id="toast" class="toast"></div>
@@ -838,7 +876,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const DB_KEY='gestok_unified_platform_v4',WA='5493751232618';
 const COMMERCE_ST=['Prioritario','Pendiente','En proceso','Enviado a impresion','Finalizado'];
 const BARBER_ST=['Pendiente','Confirmado','En proceso','Finalizado','Cancelado'];
-let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null;
+let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null;
 
 function baseDB(){return{organizations:[],records:{},notifications:[],payments:[]}}
 function loadDB(){try{let d=JSON.parse(localStorage.getItem(DB_KEY))||baseDB();d.organizations=d.organizations||[];d.records=d.records||{};d.notifications=d.notifications||[];d.payments=d.payments||[];return d}catch{return baseDB()}}
@@ -847,6 +885,46 @@ function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2
 function today(){return new Date().toISOString().slice(0,10)}
 function money(n){return new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(Number(n)||0)}
 function norm(s){return String(s||'').trim().toLowerCase().replace(/\s+/g,' ')}
+function isSCRBusiness(){
+  return ORG?.type==='commerce' && norm(ORG?.name)==='scr';
+}
+function setSCRVisibility(){
+  const enabled=isSCRBusiness();
+  $$('.scr-only').forEach(el=>el.classList.toggle('scr-enabled',enabled));
+  $('#homeStats')?.classList.toggle('scr-five',enabled);
+}
+function dateOnlyKey(value){
+  return String(value||'').slice(0,10);
+}
+function renderSCRDailyReport(reviewLedger,reviewExpenses,reviewSalaries){
+  const box=$('#scrDailyReportList');
+  if(!box||!isSCRBusiness())return;
+
+  const map=new Map();
+  const ensure=(date)=>{
+    const key=dateOnlyKey(date);
+    if(!key)return null;
+    if(!map.has(key))map.set(key,{date:key,income:0,expenses:0,salaries:0});
+    return map.get(key);
+  };
+
+  reviewLedger.forEach(x=>{const r=ensure(x.date);if(r)r.income+=Number(x.amount||0)});
+  reviewExpenses.forEach(x=>{const r=ensure(x.date);if(r)r.expenses+=Number(x.amount||0)});
+  reviewSalaries.forEach(x=>{const r=ensure(x.date);if(r)r.salaries+=Number(x.amount||0)});
+
+  const rows=[...map.values()].sort((a,b)=>b.date.localeCompare(a.date));
+
+  box.innerHTML=rows.length?rows.map(r=>{
+    const out=r.expenses+r.salaries,net=r.income-out;
+    return `<div class="scr-daily-row">
+      <div class="day">${new Date(r.date+'T12:00:00').toLocaleDateString('es-AR',{weekday:'short',day:'2-digit',month:'2-digit'})}</div>
+      <div class="scr-daily-cell"><span>Ingresos</span><strong>${money(r.income)}</strong></div>
+      <div class="scr-daily-cell out"><span>Egresos</span><strong>−${money(out)}</strong></div>
+      <div class="scr-daily-cell net ${net<0?'negative':''}"><span>Resultado</span><strong>${money(net)}</strong></div>
+    </div>`;
+  }).join(''):'<div class="empty">No hay movimientos para generar el parte diario.</div>';
+}
+
 function initials(n){return(n||'?').split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase()}
 function toast(t){let e=$('#toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1800)}
 function parseDate(s){let [y,m,d]=String(s||'').slice(0,10).split('-').map(Number);return new Date(y,m-1,d,12)}
@@ -1354,11 +1432,156 @@ saveExpense.onclick=async()=>{let concept=expenseConcept.value.trim(),amount=Num
 
 /* Sueldos */
 function employeeUsers(){return S.users.filter(u=>u.role!=='admin'&&u.active!==false)}
-function openSalary(preselect=''){if(ORG.type!=='commerce')return;let emps=employeeUsers();if(!emps.length)return toast('Primero creá un empleado');salaryUser.innerHTML=emps.map(u=>`<option value="${u.id}">${u.name} · ${u.role}</option>`).join('');salaryUser.value=preselect&&emps.some(u=>u.id===preselect)?preselect:emps[0].id;let u=emps.find(x=>x.id===salaryUser.value);salaryAmount.value=Number(u?.fixedSalary||0)||'';salaryDate.value=today();salaryDate.max=today();salaryNotes.value='';salaryModal.classList.remove('hidden')}
-function closeSalary(){salaryModal.classList.add('hidden')}window.openSalary=openSalary;window.closeSalary=closeSalary;
-salaryUser.onchange=()=>{let u=S.users.find(x=>x.id===salaryUser.value);salaryAmount.value=Number(u?.fixedSalary||0)||''};
-saveSalary.onclick=async()=>{let u=S.users.find(x=>x.id===salaryUser.value),amount=Number(salaryAmount.value),date=salaryDate.value;if(!u||amount<=0||!date)return toast('Completá empleado, monto y fecha');const {error}=await sb.from('salary_payments').insert({organization_id:ORG.id,employee_member_id:u.id,registered_by_member_id:U.id,amount,payment_method:salaryPay.value,notes:salaryNotes.value.trim()||null,paid_at:isoForChosenDate(date)});if(error)return toast(error.message);closeSalary();await loadCommerceFromSupabase(U.id);render();toast('Sueldo sincronizado')};
-window.setFixedSalary=async(id,val)=>{const value=Math.max(0,Number(val)||0);const {error}=await sb.from('organization_members').update({fixed_salary:value}).eq('id',id).eq('organization_id',ORG.id);if(error)return toast(error.message);await loadCommerceFromSupabase(U?.id);renderPayroll()};
+function salaryDateIso(date,originalIso=''){
+  const [y,m,d]=String(date).split('-').map(Number);
+  const original=originalIso?new Date(originalIso):new Date();
+  return new Date(y,m-1,d,original.getHours(),original.getMinutes(),original.getSeconds()).toISOString();
+}
+
+function openSalary(preselect=''){
+  if(ORG.type!=='commerce')return;
+  salaryEditingId=null;
+  let emps=employeeUsers();
+  if(!emps.length)return toast('Primero creá un empleado');
+
+  salaryModalTitle.textContent='Registrar sueldo pagado';
+  salaryModalText.textContent='El pago se descuenta del resultado neto y queda en el historial.';
+  saveSalary.textContent='Registrar pago';
+
+  salaryUser.innerHTML=emps.map(u=>`<option value="${u.id}">${u.name} · ${u.role}</option>`).join('');
+  salaryUser.value=preselect&&emps.some(u=>u.id===preselect)?preselect:emps[0].id;
+  let u=emps.find(x=>x.id===salaryUser.value);
+
+  salaryAmount.value=Number(u?.fixedSalary||0)||'';
+  salaryDate.value=today();
+  salaryDate.max=today();
+  salaryPay.value='Transferencia';
+  salaryNotes.value='';
+  salaryModal.classList.remove('hidden');
+}
+
+window.openEditSalary=id=>{
+  if(!isSCRBusiness())return toast('Esta opción está disponible únicamente para SCR');
+  const payment=S.salaryPayments.find(x=>x.id===id);
+  if(!payment)return toast('Pago de sueldo no encontrado');
+
+  salaryEditingId=id;
+  let emps=S.users.filter(x=>x.id===payment.userId||x.active!==false);
+
+  salaryModalTitle.textContent='Editar sueldo pagado';
+  salaryModalText.textContent='Corregí el registro. El balance y las estadísticas se recalculan automáticamente.';
+  saveSalary.textContent='Guardar cambios';
+
+  salaryUser.innerHTML=emps.map(u=>`<option value="${u.id}">${u.name} · ${u.role}</option>`).join('');
+  salaryUser.value=payment.userId;
+  salaryAmount.value=Number(payment.amount||0);
+  salaryDate.value=String(payment.date).slice(0,10);
+  salaryDate.max=today();
+  salaryPay.value=payment.payment||'Otro';
+  salaryNotes.value=payment.notes||'';
+
+  salaryModal.classList.remove('hidden');
+};
+
+function closeSalary(){
+  salaryEditingId=null;
+  salaryModal.classList.add('hidden');
+}
+window.openSalary=openSalary;
+window.closeSalary=closeSalary;
+
+salaryUser.onchange=()=>{
+  if(salaryEditingId)return;
+  let u=S.users.find(x=>x.id===salaryUser.value);
+  salaryAmount.value=Number(u?.fixedSalary||0)||'';
+};
+
+saveSalary.onclick=async()=>{
+  let u=S.users.find(x=>x.id===salaryUser.value),
+      amount=Number(salaryAmount.value),
+      date=salaryDate.value;
+
+  if(!u||amount<=0||!date)return toast('Completá empleado, monto y fecha');
+
+  saveSalary.disabled=true;
+
+  if(salaryEditingId){
+    if(!isSCRBusiness()){
+      saveSalary.disabled=false;
+      return toast('Edición disponible únicamente para SCR');
+    }
+
+    const original=S.salaryPayments.find(x=>x.id===salaryEditingId);
+    const {error}=await sb.rpc('scr_update_salary_payment',{
+      p_organization_id:ORG.id,
+      p_salary_payment_id:salaryEditingId,
+      p_employee_member_id:u.id,
+      p_amount:amount,
+      p_payment_method:salaryPay.value,
+      p_notes:salaryNotes.value.trim(),
+      p_paid_at:salaryDateIso(date,original?.date)
+    });
+
+    saveSalary.disabled=false;
+    if(error)return toast(error.message);
+
+    closeSalary();
+    await loadCommerceFromSupabase(U.id);
+    render();
+    toast('Sueldo corregido');
+    return;
+  }
+
+  const {error}=await sb.from('salary_payments').insert({
+    organization_id:ORG.id,
+    employee_member_id:u.id,
+    registered_by_member_id:U.id,
+    amount,
+    payment_method:salaryPay.value,
+    notes:salaryNotes.value.trim()||null,
+    paid_at:isoForChosenDate(date)
+  });
+
+  saveSalary.disabled=false;
+  if(error)return toast(error.message);
+
+  closeSalary();
+  await loadCommerceFromSupabase(U.id);
+  render();
+  toast('Sueldo sincronizado');
+};
+
+window.deleteSalaryPayment=async id=>{
+  if(!isSCRBusiness())return toast('Esta opción está disponible únicamente para SCR');
+
+  const payment=S.salaryPayments.find(x=>x.id===id);
+  if(!payment)return toast('Pago no encontrado');
+
+  if(!confirm(`¿Eliminar este pago de sueldo?\n\n${payment.userName}\n${money(payment.amount)}\n${new Date(payment.date).toLocaleDateString('es-AR')}\n\nEl balance y las estadísticas se recalcularán automáticamente.`))return;
+
+  const {error}=await sb.rpc('scr_delete_salary_payment',{
+    p_organization_id:ORG.id,
+    p_salary_payment_id:id
+  });
+
+  if(error)return toast(error.message);
+
+  await loadCommerceFromSupabase(U?.id);
+  render();
+  toast('Pago de sueldo eliminado');
+};
+
+window.setFixedSalary=async(id,val)=>{
+  const value=Math.max(0,Number(val)||0);
+  const {error}=await sb.from('organization_members')
+    .update({fixed_salary:value})
+    .eq('id',id)
+    .eq('organization_id',ORG.id);
+  if(error)return toast(error.message);
+  await loadCommerceFromSupabase(U?.id);
+  renderPayroll();
+};
+
 window.quickSalary=id=>openSalary(id);
 
 function renderExpenses(){
@@ -1373,13 +1596,16 @@ function renderPayroll(){
  let emps=employeeUsers(),
      review=S.salaryPayments.filter(x=>commerceMonthMatch(x.date)),
      total=review.reduce((a,x)=>a+Number(x.amount||0),0);
+
  pTotal.textContent=money(total);
  pMonth.textContent=COMMERCE_REVIEW_MONTH==='all'
    ?money(S.salaryPayments.filter(x=>commerceMonthKey(x.date)===commerceMonthKey(new Date())).reduce((a,x)=>a+Number(x.amount||0),0))
    :money(total);
  pEmployees.textContent=emps.length;
+
  payrollList.innerHTML=emps.length?emps.map(u=>`<article class="payrollcard"><div class="payrolltop"><div style="display:flex;gap:8px;align-items:center"><div class="avatar">${initials(u.name)}</div><div><strong style="font-size:11px">${u.name}</strong><small style="display:block;color:var(--muted);font-size:8px;margin-top:3px">${u.role}</small></div></div><span class="badge">Empleado</span></div><div class="payrollbase"><div><label>Sueldo base</label><input class="input" type="number" min="0" value="${Number(u.fixedSalary||0)}" onchange="setFixedSalary('${u.id}',this.value)"></div><button class="btn primary" onclick="quickSalary('${u.id}')">Pagar</button></div></article>`).join(''):'<div class="empty">Todavía no hay empleados configurados.</div>';
- salaryHistory.innerHTML=review.length?review.map(x=>`<div class="row"><div><strong>${x.userName}</strong><small>${x.payment} · ${new Date(x.date).toLocaleDateString('es-AR')}${x.notes?' · '+x.notes:''}</small></div><span class="outflow">−${money(x.amount)}</span></div>`).join(''):'<div class="empty">No hay sueldos para el mes seleccionado.</div>';
+
+ salaryHistory.innerHTML=review.length?review.map(x=>`<div class="row"><div><strong>${x.userName}</strong><small>${x.payment} · ${new Date(x.date).toLocaleDateString('es-AR')}${x.notes?' · '+x.notes:''}</small></div><div class="salary-history-actions"><span class="outflow">−${money(x.amount)}</span>${isSCRBusiness()?`<button class="btn secondary" onclick="openEditSalary('${x.id}')">Editar</button><button class="btn secondary delete" onclick="deleteSalaryPayment('${x.id}')">Eliminar</button>`:''}</div></div>`).join(''):'<div class="empty">No hay sueldos para el mes seleccionado.</div>';
 }
 
 /* Usuarios */
@@ -1469,6 +1695,16 @@ function render(){
  kActive.textContent=active.length;
  kActivity.textContent=S.activity.length;
 
+ setSCRVisibility();
+ if(isSCRBusiness()){
+   const currentMonth=commerceMonthKey(new Date()),
+         monthExpenses=S.expenses.filter(x=>commerceMonthKey(x.date)===currentMonth),
+         monthSalaries=S.salaryPayments.filter(x=>commerceMonthKey(x.date)===currentMonth),
+         monthOut=monthExpenses.reduce((a,x)=>a+Number(x.amount||0),0)+monthSalaries.reduce((a,x)=>a+Number(x.amount||0),0);
+   kEgress.textContent=money(monthOut);
+   kEgressN.textContent=`${monthExpenses.length} gastos · ${monthSalaries.length} sueldos`;
+ }
+
  attention.innerHTML=active.slice(0,5).length?active.slice(0,5).map(x=>`<div class="row"><div><strong>${x.title}</strong><small>${x.client} · ${x.status}</small></div><span class="money">${money(x.amount)}</span></div>`).join(''):'<div class="empty">No hay pendientes.</div>';
 
  const reviewSales=S.sales.filter(x=>commerceMonthMatch(x.date));
@@ -1489,6 +1725,8 @@ function render(){
  bSales.textContent=money(sl.reduce((a,x)=>a+Number(x.amount||0),0));
  bOrders.textContent=money(ol.reduce((a,x)=>a+Number(x.amount||0),0));
  bAvg.textContent=money(reviewLedger.length?reviewIncome/reviewLedger.length:0);
+
+ if(isSCRBusiness())renderSCRDailyReport(reviewLedger,reviewExpenses,reviewSalaries);
 
  let balanceMov=[
    ...reviewLedger.map(x=>({date:x.date,name:x.description,sub:`${x.client} · ${x.source==='sale'?'Venta':'Pedido finalizado'}`,amount:Number(x.amount),out:false})),
