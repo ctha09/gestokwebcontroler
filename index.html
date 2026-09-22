@@ -807,6 +807,217 @@
   }
 }
 
+
+/* V30 · SCR pedidos editables + resumen por período */
+.order-admin-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.order-admin-actions .btn{min-height:32px;padding:6px 10px;font-size:8px;border-radius:10px}
+.order-admin-actions .danger-order{color:var(--red);border-color:rgba(255,107,107,.24)}
+.scr-home-period{display:none;margin-bottom:10px;padding:10px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.025)}
+.scr-home-period.active{display:block}
+.scr-home-period-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.scr-home-period-buttons{display:flex;gap:6px;flex-wrap:wrap}
+.scr-home-period-buttons button{min-height:34px;padding:6px 10px;border:1px solid var(--border);border-radius:999px;background:var(--panel2);color:var(--text);font-size:8px;font-weight:900}
+.scr-home-period-buttons button.active{background:var(--orange);color:#17110a;border-color:var(--orange)}
+.scr-home-month{min-width:180px;max-width:230px}
+.scr-home-period-label{margin-top:7px;color:var(--muted);font-size:8px}
+@media(max-width:600px){.scr-home-month{width:100%;max-width:none}}
+
+
+/* ============================================================
+   V31 · BALANCE GENERAL DE COMERCIO
+   ============================================================ */
+.balance-toolbar{
+  padding:12px;
+  margin-bottom:10px
+}
+.balance-toolbar-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap
+}
+.balance-periods{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap
+}
+.balance-periods button{
+  min-height:36px;
+  padding:7px 12px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--panel2);
+  color:var(--text);
+  font-size:8px;
+  font-weight:950
+}
+.balance-periods button.active{
+  background:var(--orange);
+  border-color:var(--orange);
+  color:#17110a
+}
+.balance-date-control{
+  width:auto!important;
+  min-width:180px;
+  max-width:240px
+}
+.balance-search-line{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:7px;
+  margin-top:9px
+}
+.balance-search-wrap{
+  position:relative
+}
+.balance-search-wrap .input{
+  padding-right:40px
+}
+.balance-search-clear{
+  position:absolute;
+  right:6px;
+  top:50%;
+  transform:translateY(-50%);
+  width:30px;
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  color:var(--muted);
+  font-size:15px;
+  cursor:pointer
+}
+.balance-filter-btn{
+  position:relative;
+  min-width:96px
+}
+.balance-filter-count{
+  position:absolute;
+  right:-5px;
+  top:-6px;
+  min-width:18px;
+  height:18px;
+  padding:0 4px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--orange);
+  color:#17110a;
+  font-size:7px;
+  font-weight:1000
+}
+.balance-three{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important
+}
+.balance-three .metric:nth-child(1) strong{color:var(--text)}
+.balance-three .metric:nth-child(2) strong{color:var(--green)}
+.balance-three .metric:nth-child(3) strong{color:var(--red)}
+.balance-day-list{
+  display:grid;
+  gap:7px
+}
+.balance-day-row{
+  display:grid;
+  grid-template-columns:minmax(105px,.8fr) repeat(3,minmax(100px,1fr));
+  gap:8px;
+  align-items:center;
+  padding:10px;
+  border:1px solid var(--border);
+  background:var(--panel2);
+  border-radius:13px
+}
+.balance-day-row .date{
+  font-size:9px;
+  font-weight:950
+}
+.balance-day-row span{
+  display:block;
+  color:var(--muted);
+  font-size:7px
+}
+.balance-day-row strong{
+  display:block;
+  margin-top:3px;
+  font-size:9px
+}
+.balance-day-row .expense strong{color:var(--red)}
+.balance-day-row .net.positive strong{color:var(--green)}
+.balance-day-row .net.negative strong{color:var(--red)}
+.balance-movement{
+  cursor:default
+}
+.balance-movement-main{
+  min-width:0
+}
+.balance-movement-main small{
+  line-height:1.55
+}
+.balance-kind{
+  display:inline-flex;
+  align-items:center;
+  margin-right:5px;
+  padding:3px 6px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-size:7px;
+  font-weight:900
+}
+.balance-filter-section{
+  margin-top:14px
+}
+.balance-filter-section:first-of-type{margin-top:4px}
+.balance-filter-title{
+  display:block;
+  margin-bottom:7px;
+  font-size:9px;
+  font-weight:950
+}
+.balance-filter-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px
+}
+.balance-filter-chip{
+  min-height:32px;
+  padding:6px 9px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--panel2);
+  color:var(--text);
+  font-size:8px;
+  font-weight:850
+}
+.balance-filter-chip.active{
+  background:rgba(242,140,40,.14);
+  border-color:rgba(242,140,40,.48);
+  color:var(--orange)
+}
+.balance-filter-footer{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin-top:16px
+}
+.balance-filter-footer .clear{
+  color:var(--text);
+  background:transparent
+}
+@media(max-width:700px){
+  .balance-toolbar-top{align-items:stretch}
+  .balance-date-control{width:100%!important;max-width:none}
+  .balance-search-line{grid-template-columns:1fr}
+  .balance-filter-btn{width:100%}
+  .balance-three{grid-template-columns:1fr!important}
+  .balance-day-row{grid-template-columns:1fr 1fr}
+  .balance-day-row .date{grid-column:1/-1}
+}
+
 </style>
 </head>
 <body>
@@ -828,14 +1039,95 @@
 <main class="main">
   <section id="home" class="view active">
     <div class="quick"><button onclick="openSale()"><span>＋</span><b>Nueva venta</b></button><button onclick="openOrder()"><span>＋</span><b id="quickOrder">Nuevo pedido</b></button><button onclick="openActivity()"><span>＋</span><b id="quickActivity">Registrar avance</b></button></div>
-    <div id="homeStats" class="stats"><div class="card metric admin-only-finance"><span>Balance total</span><strong id="kBal">$0</strong><small>Ingresos confirmados</small></div><div class="card metric admin-only-finance"><span>Ingresos de hoy</span><strong id="kToday">$0</strong><small id="kTodayN">0 movimientos</small></div><div id="scrHomeEgress" class="card metric scr-only scr-home-egress admin-only-finance"><span>Egresos del mes</span><strong id="kEgress">$0</strong><small id="kEgressN">Gastos + sueldos</small></div><div class="card metric"><span id="kActiveLabel">Pedidos activos</span><strong id="kActive">0</strong><small>En curso</small></div><div class="card metric"><span>Actividad del equipo</span><strong id="kActivity">0</strong><small>Registros</small></div></div>
+    <div id="scrHomePeriod" class="scr-home-period">
+  <div class="scr-home-period-top">
+    <div class="scr-home-period-buttons">
+      <button data-home-period="today" onclick="setSCRHomePeriod('today')">Hoy</button>
+      <button data-home-period="week" onclick="setSCRHomePeriod('week')">Semana</button>
+      <button data-home-period="month" onclick="setSCRHomePeriod('month')">Mes</button>
+      <button data-home-period="year" onclick="setSCRHomePeriod('year')">Año</button>
+      <button data-home-period="all" onclick="setSCRHomePeriod('all')">Todos</button>
+    </div>
+    <select id="scrHomeMonth" class="select scr-home-month" onchange="setSCRHomeMonth(this.value)"></select>
+  </div>
+  <div id="scrHomePeriodLabel" class="scr-home-period-label"></div>
+</div>
+<div id="homeStats" class="stats"><div class="card metric admin-only-finance"><span>Balance total</span><strong id="kBal">$0</strong><small>Ingresos confirmados</small></div><div class="card metric admin-only-finance"><span>Ingresos de hoy</span><strong id="kToday">$0</strong><small id="kTodayN">0 movimientos</small></div><div id="scrHomeEgress" class="card metric scr-only scr-home-egress admin-only-finance"><span>Egresos del mes</span><strong id="kEgress">$0</strong><small id="kEgressN">Gastos + sueldos</small></div><div class="card metric"><span id="kActiveLabel">Pedidos activos</span><strong id="kActive">0</strong><small>En curso</small></div><div class="card metric"><span>Actividad del equipo</span><strong id="kActivity">0</strong><small>Registros</small></div></div>
     <div class="twocol"><div class="card"><div class="head"><div><h3 id="attentionTitle">Pedidos que requieren atención</h3><p>Prioritarios y trabajos activos</p></div><span class="badge red">Activo</span></div><div id="attention" class="list"></div></div><div class="card"><div class="head"><div><h3>Última actividad</h3><p>Lo que registró el equipo</p></div><span class="badge">Equipo</span></div><div id="recentActivity" class="list"></div></div></div>
   </section>
 
   <section id="orders" class="view"><div class="section"><div><h2 id="ordersTitle">Pedidos</h2><p id="ordersSubtitle">Seguimiento de trabajos por estado.</p></div><button class="btn primary" onclick="openOrder()" id="orderAddBtn">+ Pedido</button></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div><div id="filters" class="filters"></div><div id="ordersList" class="orders"></div></section>
   <section id="activity" class="view"><div class="section"><div><h2>Actividad</h2><p>Registro escrito de lo realizado por el equipo.</p></div><button class="btn primary" onclick="openActivity()">+ Registrar</button></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div><div id="activityList" class="list"></div></section>
-  <section id="balance" class="view"><div class="section"><div><h2>Balance</h2><p>Ingresos menos gastos y sueldos pagados.</p></div></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div><div class="stats"><div class="card metric"><span>Resultado neto</span><strong id="bTotal">$0</strong></div><div class="card metric"><span>Ventas directas</span><strong id="bSales">$0</strong></div><div class="card metric"><span id="bOrdersLabel">Pedidos finalizados</span><strong id="bOrders">$0</strong></div><div class="card metric"><span>Ticket promedio</span><strong id="bAvg">$0</strong></div></div><div id="scrDailyReport" class="card scr-only" style="margin-top:8px"><div class="head"><div><h3>Parte diario</h3><p>Ingresos, egresos y resultado neto por día del período seleccionado.</p></div><span id="scrDailyBadge" class="badge">SCR</span></div><div id="scrDailyReportList" class="scr-daily-grid"></div></div><div class="card" style="margin-top:8px"><div class="head"><div><h3>Movimientos</h3><p>Ingresos confirmados</p></div></div><div id="ledgerList" class="list"></div></div></section>
-  <section id="sales" class="view"><div class="section"><div><h2>Ventas</h2><p>Ventas libres o utilizando productos de stock.</p></div><button class="btn primary" onclick="openSale()">+ Venta</button></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div><div class="stats"><div class="card metric"><span>Ventas</span><strong id="sCount">0</strong></div><div class="card metric"><span>Total vendido</span><strong id="sTotal">$0</strong></div></div><div class="card" style="margin-top:8px"><div id="salesList" class="list"></div></div></section>
+  <section id="balance" class="view">
+  <div class="section">
+    <div>
+      <h2>Balance</h2>
+      <p>Ingresos y egresos del período seleccionado.</p>
+    </div>
+  </div>
+
+  <div class="card balance-toolbar">
+    <div class="balance-toolbar-top">
+      <div class="balance-periods">
+        <button data-balance-period="daily" onclick="setBalancePeriod('daily')">Diario</button>
+        <button data-balance-period="weekly" onclick="setBalancePeriod('weekly')">Semanal</button>
+        <button data-balance-period="monthly" onclick="setBalancePeriod('monthly')">Mensual</button>
+      </div>
+      <input id="balanceDateControl" class="input balance-date-control">
+    </div>
+
+    <div class="balance-search-line">
+      <div class="balance-search-wrap">
+        <input id="balanceSearch" class="input" placeholder="Buscar venta, cliente, concepto o empleado..." oninput="setBalanceSearch(this.value)">
+        <button id="balanceSearchClear" class="balance-search-clear hidden" onclick="clearBalanceSearch()" type="button">×</button>
+      </div>
+      <button class="btn secondary balance-filter-btn" onclick="openBalanceFilters()" type="button">
+        Filtros
+        <span id="balanceFilterCount" class="balance-filter-count hidden">0</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="stats balance-three">
+    <div class="card metric">
+      <span>Balance</span>
+      <strong id="bBalance">$0</strong>
+      <small>Ingresos − egresos</small>
+    </div>
+    <div class="card metric">
+      <span>Ingresos</span>
+      <strong id="bIncome">$0</strong>
+      <small id="bIncomeCount">0 movimientos</small>
+    </div>
+    <div class="card metric">
+      <span>Egresos</span>
+      <strong id="bOutflow">$0</strong>
+      <small id="bOutflowCount">0 movimientos</small>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:8px">
+    <div class="head">
+      <div>
+        <h3>Resumen diario</h3>
+        <p>Ingresos, egresos y resultado por día dentro del período.</p>
+      </div>
+      <span id="balancePeriodBadge" class="badge">Mensual</span>
+    </div>
+    <div id="balanceDailyList" class="balance-day-list"></div>
+  </div>
+
+  <div class="card" style="margin-top:8px">
+    <div class="head">
+      <div>
+        <h3>Movimientos</h3>
+        <p id="balanceMovementSubtitle">Todos los movimientos del período.</p>
+      </div>
+    </div>
+    <div id="ledgerList" class="list"></div>
+  </div>
+</section>
+<section id="sales" class="view"><div class="section"><div><h2>Ventas</h2><p>Ventas libres o utilizando productos de stock.</p></div><button class="btn primary" onclick="openSale()">+ Venta</button></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div><div class="stats"><div class="card metric"><span>Ventas</span><strong id="sCount">0</strong></div><div class="card metric"><span>Total vendido</span><strong id="sTotal">$0</strong></div></div><div class="card" style="margin-top:8px"><div id="salesList" class="list"></div></div></section>
   <section id="history" class="view"><div class="section"><div><h2>Historial</h2><p>Ventas, pedidos/turnos y actividad.</p></div></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div><div class="card"><div id="historyList" class="list"></div></div></section>
 
   <section id="stats" class="view">
@@ -965,6 +1257,33 @@
 <div id="salaryModal" class="modalbg hidden"><div class="modal"><h3 id="salaryModalTitle">Registrar sueldo pagado</h3><p id="salaryModalText">El pago se descuenta del resultado neto y queda en el historial.</p><div class="form"><div><label>Empleado</label><select id="salaryUser" class="select"></select></div><div><label>Monto</label><input id="salaryAmount" class="input" type="number" min="0" placeholder="$"></div><div><label>Fecha</label><input id="salaryDate" class="input" type="date"></div><div><label>Medio de pago</label><select id="salaryPay" class="select"><option>Transferencia</option><option>Efectivo</option><option>Otro</option></select></div><div><label>Nota</label><textarea id="salaryNotes" class="textarea" placeholder="Ej. Sueldo septiembre"></textarea></div></div><div class="mactions"><button class="btn secondary" onclick="closeSalary()">Cancelar</button><button id="saveSalary" class="btn primary">Registrar pago</button></div></div></div>
 
 <div id="userModal" class="modalbg hidden"><div class="modal"><h3 id="userModalTitle">Agregar usuario</h3><p id="userModalText">El usuario se crea dentro de esta empresa.</p><div class="form"><div><label>Nombre</label><input id="uName" class="input"></div><div><label>Rol</label><select id="uRole" class="select"></select></div></div><div class="mactions"><button class="btn secondary" onclick="closeUser()">Cancelar</button><button id="saveUser" class="btn primary">Crear</button></div></div></div>
+<div id="balanceFilterModal" class="modalbg hidden">
+  <div class="modal">
+    <h3>Filtros</h3>
+    <p>Combiná filtros para encontrar movimientos específicos.</p>
+
+    <div class="balance-filter-section">
+      <span class="balance-filter-title">Métodos de pago</span>
+      <div id="balancePaymentChips" class="balance-filter-chips"></div>
+    </div>
+
+    <div class="balance-filter-section">
+      <label class="balance-filter-title">Empleado</label>
+      <select id="balanceEmployeeFilter" class="select" onchange="setBalanceEmployeeFilter(this.value)"></select>
+    </div>
+
+    <div class="balance-filter-section">
+      <label class="balance-filter-title">Cliente</label>
+      <select id="balanceClientFilter" class="select" onchange="setBalanceClientFilter(this.value)"></select>
+    </div>
+
+    <div class="balance-filter-footer">
+      <button class="btn secondary clear" onclick="clearBalanceFilters()" type="button">Limpiar filtros</button>
+      <button class="btn primary" onclick="closeBalanceFilters()" type="button">Aplicar</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast" class="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -980,7 +1299,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const DB_KEY='gestok_unified_platform_v4',WA='5493751232618';
 const COMMERCE_ST=['Prioritario','Pendiente','En proceso','Enviado a impresion','Finalizado'];
 const BARBER_ST=['Pendiente','Confirmado','En proceso','Finalizado','Cancelado'];
-let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null;
+let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null,orderEditingId=null,SCR_HOME_PERIOD='month',SCR_HOME_MONTH='',BALANCE_PERIOD='monthly',BALANCE_DAY='',BALANCE_WEEK='',BALANCE_MONTH='',BALANCE_SEARCH='',BALANCE_FILTERS={payments:[],employee:'all',client:'all'};
 
 function baseDB(){return{organizations:[],records:{},notifications:[],payments:[]}}
 function loadDB(){try{let d=JSON.parse(localStorage.getItem(DB_KEY))||baseDB();d.organizations=d.organizations||[];d.records=d.records||{};d.notifications=d.notifications||[];d.payments=d.payments||[];return d}catch{return baseDB()}}
@@ -992,6 +1311,45 @@ function norm(s){return String(s||'').trim().toLowerCase().replace(/\s+/g,' ')}
 function isSCRBusiness(){
   return ORG?.type==='commerce' && norm(ORG?.name)==='scr';
 }
+function scrStartWeek(d){const x=new Date(d),day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);x.setHours(0,0,0,0);return x}
+function scrMonthKey(date){return date?String(date).slice(0,7):''}
+function scrHomePeriodMatch(date){
+  if(SCR_HOME_PERIOD==='all')return true;
+  const d=new Date(date),now=new Date();
+  if(SCR_HOME_PERIOD==='today')return d.toDateString()===now.toDateString();
+  if(SCR_HOME_PERIOD==='week'){const s=scrStartWeek(now),e=new Date(s);e.setDate(e.getDate()+7);return d>=s&&d<e}
+  if(SCR_HOME_PERIOD==='month')return scrMonthKey(date)===(SCR_HOME_MONTH||scrMonthKey(now.toISOString()));
+  if(SCR_HOME_PERIOD==='year')return d.getFullYear()===Number((SCR_HOME_MONTH||String(now.getFullYear())).slice(0,4));
+  return true;
+}
+function scrHomeMonths(){
+  const dates=[...S.ledger.map(x=>x.date),...S.expenses.map(x=>x.date),...S.salaryPayments.map(x=>x.date),...S.orders.map(x=>x.updatedAt||x.createdAt||x.due)].filter(Boolean);
+  return [...new Set(dates.map(scrMonthKey).filter(Boolean))].sort().reverse();
+}
+function scrMonthLabel(k){if(!k)return '';const [y,m]=k.split('-').map(Number);return new Date(y,m-1,1).toLocaleDateString('es-AR',{month:'long',year:'numeric'})}
+function renderSCRHomePeriodControls(){
+  const box=$('#scrHomePeriod');if(!box)return;
+  box.classList.toggle('active',isSCRBusiness());
+  if(!isSCRBusiness())return;
+  const months=scrHomeMonths(),now=new Date();
+  if(!SCR_HOME_MONTH)SCR_HOME_MONTH=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  if(months.length&&!months.includes(SCR_HOME_MONTH))SCR_HOME_MONTH=months[0];
+
+  scrHomeMonth.innerHTML=months.map(k=>`<option value="${k}" ${k===SCR_HOME_MONTH?'selected':''}>${scrMonthLabel(k)}</option>`).join('');
+  scrHomeMonth.classList.toggle('hidden',!['month','year'].includes(SCR_HOME_PERIOD));
+  $$('#scrHomePeriod [data-home-period]').forEach(b=>b.classList.toggle('active',b.dataset.homePeriod===SCR_HOME_PERIOD));
+
+  scrHomePeriodLabel.textContent='Mostrando: '+({
+    today:'Hoy',
+    week:'Semana actual',
+    month:scrMonthLabel(SCR_HOME_MONTH),
+    year:`Año ${SCR_HOME_MONTH.slice(0,4)}`,
+    all:'Todos los registros'
+  }[SCR_HOME_PERIOD]);
+}
+window.setSCRHomePeriod=v=>{SCR_HOME_PERIOD=v;render()};
+window.setSCRHomeMonth=v=>{SCR_HOME_MONTH=v;render()};
+
 function setSCRVisibility(){
   const enabled=isSCRBusiness();
   $$('.scr-only').forEach(el=>el.classList.toggle('scr-enabled',enabled));
@@ -1176,7 +1534,7 @@ async function login(){
 loginBtn.onclick=login;companyPassword.onkeydown=e=>{if(e.key==='Enter')login()};
 
 function freshState(){
- return{users:[],sales:[],orders:[],ledger:[],activity:[],stock:[],services:[],clients:[],expenses:[],salaryPayments:[]}
+ return{users:[],sales:[],orders:[],ledger:[],balanceMovements:[],activity:[],stock:[],services:[],clients:[],expenses:[],salaryPayments:[]}
 }
 function isoForChosenDate(date){const now=new Date(),[y,m,d]=String(date).split('-').map(Number);return new Date(y,m-1,d,now.getHours(),now.getMinutes(),now.getSeconds()).toISOString()}
 async function loadCommerceFromSupabase(preferredMemberId=AUTH_MEMBER_ID){
@@ -1205,6 +1563,44 @@ async function loadCommerceFromSupabase(preferredMemberId=AUTH_MEMBER_ID){
  next.expenses=(expensesR.data||[]).map(x=>({id:x.id,date:x.expense_at,concept:x.concept,amount:Number(x.amount||0),payment:x.payment_method||'Otro',notes:x.notes||'',userId:x.member_id,userName:memberMap.get(x.member_id)?.display_name||'Usuario'}));
  next.salaryPayments=(salaryR.data||[]).map(x=>({id:x.id,date:x.paid_at,userId:x.employee_member_id,userName:memberMap.get(x.employee_member_id)?.display_name||'Empleado',amount:Number(x.amount||0),payment:x.payment_method||'Otro',notes:x.notes||'',registeredBy:memberMap.get(x.registered_by_member_id)?.display_name||'Administrador'}));
  next.ledger=[...next.sales.map(x=>({id:'sale-'+x.id,source:'sale',sourceId:x.id,date:x.date,amount:x.amount,description:x.concept,client:x.client,userName:x.userName})),...next.orders.filter(x=>x.ledgerPosted).map(x=>({id:'order-'+x.id,source:'order',sourceId:x.id,date:x.finalizedAt||x.updatedAt,amount:x.amount,description:x.title,client:x.client,userName:x.ownerName}))].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+ const localBalanceFallback=[
+   ...next.sales.map(x=>({
+     id:x.id,kind:'sale',date:x.date,concept:x.concept,client:x.client,
+     employee:x.userName,payment:x.payment,amount:x.amount,direction:'income'
+   })),
+   ...next.orders.filter(x=>x.ledgerPosted).map(x=>({
+     id:x.id,kind:'order',date:x.finalizedAt||x.updatedAt,concept:x.title,client:x.client,
+     employee:x.ownerName,payment:'Sin especificar',amount:x.amount,direction:'income'
+   })),
+   ...next.expenses.map(x=>({
+     id:x.id,kind:'expense',date:x.date,concept:x.concept,client:'',
+     employee:x.userName,payment:x.payment,amount:x.amount,direction:'expense'
+   })),
+   ...next.salaryPayments.map(x=>({
+     id:x.id,kind:'salary',date:x.date,concept:`Sueldo de ${x.userName}`,client:'',
+     employee:x.userName,payment:x.payment,amount:x.amount,direction:'expense'
+   }))
+ ].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+
+ const {data:balanceReport,error:balanceReportError}=await sb.rpc(
+   'commerce_balance_report',
+   {p_organization_id:orgId}
+ );
+
+ next.balanceMovements=balanceReportError
+   ?localBalanceFallback
+   :(balanceReport||[]).map(x=>({
+      id:x.movement_id,
+      kind:x.movement_kind,
+      date:x.movement_date,
+      concept:x.concept||'Movimiento',
+      client:x.client_name||'',
+      employee:x.employee_name||'',
+      payment:x.payment_method||'Otro',
+      amount:Number(x.amount||0),
+      direction:x.direction
+    }));
+
  S=next;U=S.users.find(x=>x.id===preferredMemberId)||S.users.find(x=>x.role==='admin'||x.role==='Administrador')||S.users[0];
  DB=loadDB();DB.notifications=(DB.notifications||[]).filter(n=>n.orgId!==orgId).concat((noticesR.data||[]).map(n=>({id:n.id,orgId:n.organization_id,date:n.created_at,title:n.title,message:n.message,reason:n.reason||'',read:n.read===true})));
  const localOrg=DB.organizations.find(x=>x.id===orgId);if(localOrg&&subR.data){localOrg.subscription={status:subR.data.status,startDate:subR.data.start_date,nextDueDate:subR.data.next_due_date,reason:subR.data.reason||'',updatedAt:subR.data.updated_at};ORG=localOrg}saveDB();
@@ -1215,7 +1611,7 @@ async function startCommerceRealtime(){await stopCommerceRealtime();if(!ORG||ORG
 function initOrgState(){
  if(!DB.records[ORG.id])DB.records[ORG.id]=freshState();
  S=DB.records[ORG.id];
- for(const k of ['users','sales','orders','ledger','activity','stock','services','clients','expenses','salaryPayments'])S[k]=S[k]||[];
+ for(const k of ['users','sales','orders','ledger','balanceMovements','activity','stock','services','clients','expenses','salaryPayments'])S[k]=S[k]||[];
  if(!S.users.some(x=>x.role==='admin'))S.users.unshift({id:'owner',name:'Administrador',role:'admin',active:true});
  U=S.users.find(x=>x.role==='admin')||S.users[0];
  save();
@@ -1227,7 +1623,7 @@ function enterApp(){portal.classList.add('hidden');app.classList.remove('hidden'
 
 function configureType(){
  let barber=ORG.type==='barbershop';
- navOrders.textContent=barber?'Turnos':'Pedidos';ordersTitle.textContent=barber?'Turnos':'Pedidos';ordersSubtitle.textContent=barber?'Agenda y estado de los turnos.':'Seguimiento de trabajos por estado.';orderAddBtn.textContent=barber?'+ Turno':'+ Pedido';quickOrder.textContent=barber?'Nuevo turno':'Nuevo pedido';quickActivity.textContent=barber?'Registrar actividad':'Registrar avance';choiceOrder.textContent=barber?'Crear turno':'Crear pedido';attentionTitle.textContent=barber?'Turnos que requieren atención':'Pedidos que requieren atención';kActiveLabel.textContent=barber?'Turnos activos':'Pedidos activos';bOrdersLabel.textContent=barber?'Turnos finalizados':'Pedidos finalizados';stFinishedLabel.textContent=barber?'Turnos finalizados':'Pedidos finalizados';orderModalTitle.textContent=barber?'Nuevo turno':'Nuevo pedido';orderModalDesc.textContent=barber?'El turno finalizado puede impactar en el balance.':'Solo impacta en el balance cuando pasa a Finalizado.';oTitleLabel.textContent=barber?'Servicio':'Trabajo / pedido';stockMenuBtn.classList.toggle('hidden',barber);expensesMenuBtn.classList.toggle('hidden',barber);payrollMenuBtn.classList.toggle('hidden',barber);choiceExpense.classList.toggle('hidden',barber);
+ navOrders.textContent=barber?'Turnos':'Pedidos';ordersTitle.textContent=barber?'Turnos':'Pedidos';ordersSubtitle.textContent=barber?'Agenda y estado de los turnos.':'Seguimiento de trabajos por estado.';orderAddBtn.textContent=barber?'+ Turno':'+ Pedido';quickOrder.textContent=barber?'Nuevo turno':'Nuevo pedido';quickActivity.textContent=barber?'Registrar actividad':'Registrar avance';choiceOrder.textContent=barber?'Crear turno':'Crear pedido';attentionTitle.textContent=barber?'Turnos que requieren atención':'Pedidos que requieren atención';kActiveLabel.textContent=barber?'Turnos activos':'Pedidos activos';stFinishedLabel.textContent=barber?'Turnos finalizados':'Pedidos finalizados';orderModalTitle.textContent=barber?'Nuevo turno':'Nuevo pedido';orderModalDesc.textContent=barber?'El turno finalizado puede impactar en el balance.':'Solo impacta en el balance cuando pasa a Finalizado.';oTitleLabel.textContent=barber?'Servicio':'Trabajo / pedido';stockMenuBtn.classList.toggle('hidden',barber);expensesMenuBtn.classList.toggle('hidden',barber);payrollMenuBtn.classList.toggle('hidden',barber);choiceExpense.classList.toggle('hidden',barber);
 }
 function positionCommerceRadial(){const r=more.getBoundingClientRect();commerceRadial.style.setProperty('--cx',(r.left+r.width/2)+'px');commerceRadial.style.setProperty('--cy',(r.top+r.height/2)+'px')}
 function clearCommerceHot(){$$('.commerce-option').forEach(x=>x.classList.remove('hot'))}
@@ -1529,9 +1925,77 @@ receiptDelete.onclick=async()=>{
 
 /* Pedidos / turnos */
 function ownerOptions(){oOwner.innerHTML=S.users.filter(x=>x.active!==false).map(x=>`<option value="${x.id}">${x.name}</option>`).join('');oStatus.innerHTML=states().filter(x=>x!=='Finalizado'&&x!=='Cancelado').map(x=>`<option>${x}</option>`).join('');aOrder.innerHTML='<option value="">Sin relación</option>'+S.orders.filter(o=>!['Finalizado','Cancelado'].includes(o.status)).map(o=>`<option value="${o.id}">${o.title} · ${o.client}</option>`).join('')}
-function openOrder(){closeChoice();ownerOptions();orderModal.classList.remove('hidden');oClient.value='';oTitle.value='';oAmount.value='';oDue.value=today();oDesc.value='';oStatus.value=ORG.type==='commerce'?'Pendiente':'Pendiente';oOwner.value=U?.id||S.users[0]?.id}
-function closeOrder(){orderModal.classList.add('hidden')}window.openOrder=openOrder;window.closeOrder=closeOrder;
-saveOrder.onclick=async()=>{let c=oClient.value.trim(),t=oTitle.value.trim(),a=Number(oAmount.value),own=S.users.find(x=>x.id===oOwner.value)||U;if(!c||!t||a<=0||!own)return toast('Completá cliente, descripción, monto y responsable');saveOrder.disabled=true;const {error}=await sb.from('orders').insert({organization_id:ORG.id,responsible_member_id:own.id,client_name:c,title:t,amount:a,status:oStatus.value,due_date:oDue.value||null,description:oDesc.value.trim()||null,ledger_posted:false});saveOrder.disabled=false;if(error)return toast(error.message);closeOrder();await loadCommerceFromSupabase(U?.id);render();toast('Pedido sincronizado')};
+function openOrder(){
+  closeChoice();ownerOptions();orderEditingId=null;
+  orderModalTitle.textContent='Nuevo pedido';
+  orderModalDesc.textContent='Solo impacta en el balance cuando pasa a Finalizado.';
+  saveOrder.textContent='Crear';
+  orderModal.classList.remove('hidden');
+  oClient.value='';oTitle.value='';oAmount.value='';oDue.value=today();oDesc.value='';
+  oStatus.disabled=false;oStatus.value='Pendiente';oOwner.value=U?.id||S.users[0]?.id;
+}
+window.openEditOrder=id=>{
+  if(!isSCRBusiness())return toast('Esta opción está habilitada únicamente para SCR');
+  const o=S.orders.find(x=>x.id===id);if(!o)return toast('Pedido no encontrado');
+
+  ownerOptions();orderEditingId=id;
+  orderModalTitle.textContent='Editar pedido';
+  orderModalDesc.textContent='Corregí los datos sin perder el estado ni el historial.';
+  saveOrder.textContent='Guardar cambios';
+  orderModal.classList.remove('hidden');
+
+  oClient.value=o.client||'';oTitle.value=o.title||'';oAmount.value=Number(o.amount||0);
+  oDue.value=o.due||today();oDesc.value=o.description||'';
+  oOwner.value=o.ownerId;
+  oStatus.innerHTML=`<option>${o.status}</option>`;
+  oStatus.value=o.status;
+  oStatus.disabled=true;
+};
+function closeOrder(){orderEditingId=null;oStatus.disabled=false;orderModal.classList.add('hidden')}
+window.openOrder=openOrder;window.closeOrder=closeOrder;
+
+saveOrder.onclick=async()=>{
+  const c=oClient.value.trim(),t=oTitle.value.trim(),a=Number(oAmount.value),
+        own=S.users.find(x=>x.id===oOwner.value)||U;
+  if(!c||!t||a<=0||!own)return toast('Completá cliente, descripción, monto y responsable');
+
+  saveOrder.disabled=true;
+
+  if(orderEditingId){
+    const {error}=await sb.rpc('scr_update_order',{
+      p_organization_id:ORG.id,p_order_id:orderEditingId,p_client_name:c,p_title:t,
+      p_amount:a,p_due_date:oDue.value||null,p_responsible_member_id:own.id,p_description:oDesc.value.trim()
+    });
+    saveOrder.disabled=false;
+    if(error)return toast(error.message);
+    closeOrder();await loadCommerceFromSupabase(U?.id);render();toast('Pedido actualizado');return;
+  }
+
+  const {error}=await sb.from('orders').insert({
+    organization_id:ORG.id,responsible_member_id:own.id,client_name:c,title:t,amount:a,
+    status:oStatus.value,due_date:oDue.value||null,description:oDesc.value.trim()||null,ledger_posted:false
+  });
+  saveOrder.disabled=false;
+  if(error)return toast(error.message);
+  closeOrder();await loadCommerceFromSupabase(U?.id);render();toast('Pedido sincronizado');
+};
+
+window.deleteOrder=async id=>{
+  if(!isSCRBusiness())return toast('Esta opción está habilitada únicamente para SCR');
+  const o=S.orders.find(x=>x.id===id);if(!o)return toast('Pedido no encontrado');
+
+  const text=o.ledgerPosted
+    ?`¿Eliminar "${o.title}"?\n\nComo está finalizado, al eliminarlo también dejará de aparecer como ingreso en Balance.`
+    :`¿Eliminar "${o.title}"?\n\nEsta acción no se puede deshacer.`;
+
+  if(!confirm(text))return;
+
+  const {error}=await sb.rpc('scr_delete_order',{p_organization_id:ORG.id,p_order_id:id});
+  if(error)return toast(error.message);
+
+  await loadCommerceFromSupabase(U?.id);render();toast('Pedido eliminado');
+};
+
 window.changeStatus=async(oid,status)=>{let before=S.orders.find(x=>x.id===oid),first=status==='Finalizado'&&!before?.ledgerPosted;const {error}=await sb.rpc('commerce_set_order_status',{p_organization_id:ORG.id,p_order_id:oid,p_status:status});if(error)return toast(error.message);await loadCommerceFromSupabase(U?.id);render();toast(first?'Finalizado: monto sumado al balance':'Estado sincronizado')};
 window.setFilter=x=>{F=x;renderOrders()};
 
@@ -1892,12 +2356,273 @@ window.setCommerceReviewMonth=value=>{
   if($('#stats')?.classList.contains('active'))requestAnimationFrame(drawStatsChart);
 };
 
+
+/* Balance general de Comercio */
+function localDateInput(d=new Date()){
+  const x=new Date(d);
+  return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
+}
+function localMonthInput(d=new Date()){
+  const x=new Date(d);
+  return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}`;
+}
+function isoWeekInput(d=new Date()){
+  const x=new Date(d);
+  x.setHours(0,0,0,0);
+  x.setDate(x.getDate()+3-((x.getDay()+6)%7));
+  const week1=new Date(x.getFullYear(),0,4);
+  const week=1+Math.round(((x-week1)/86400000-3+((week1.getDay()+6)%7))/7);
+  return `${x.getFullYear()}-W${String(week).padStart(2,'0')}`;
+}
+function isoWeekRange(value){
+  const m=String(value||'').match(/^(\d{4})-W(\d{2})$/);
+  if(!m)return null;
+  const year=Number(m[1]),week=Number(m[2]);
+  const jan4=new Date(year,0,4);
+  const jan4Day=(jan4.getDay()+6)%7;
+  const start=new Date(year,0,4-jan4Day+(week-1)*7);
+  start.setHours(0,0,0,0);
+  const end=new Date(start);end.setDate(end.getDate()+7);
+  return {start,end};
+}
+function ensureBalanceDefaults(){
+  if(!BALANCE_DAY)BALANCE_DAY=localDateInput();
+  if(!BALANCE_WEEK)BALANCE_WEEK=isoWeekInput();
+  if(!BALANCE_MONTH)BALANCE_MONTH=localMonthInput();
+}
+function balancePeriodMatch(date){
+  ensureBalanceDefaults();
+  const d=new Date(date);
+  if(Number.isNaN(d.getTime()))return false;
+
+  if(BALANCE_PERIOD==='daily'){
+    return localDateInput(d)===BALANCE_DAY;
+  }
+
+  if(BALANCE_PERIOD==='weekly'){
+    const range=isoWeekRange(BALANCE_WEEK);
+    return range?d>=range.start&&d<range.end:false;
+  }
+
+  return localMonthInput(d)===BALANCE_MONTH;
+}
+function balanceKindLabel(kind){
+  return {sale:'Venta',order:'Pedido',expense:'Gasto',salary:'Sueldo'}[kind]||'Movimiento';
+}
+function allBalanceMovements(){
+  return Array.isArray(S?.balanceMovements)?S.balanceMovements:[];
+}
+function balanceFilterCountValue(){
+  return BALANCE_FILTERS.payments.length+
+    (BALANCE_FILTERS.employee!=='all'?1:0)+
+    (BALANCE_FILTERS.client!=='all'?1:0);
+}
+function filteredBalanceMovements(){
+  const q=norm(BALANCE_SEARCH);
+
+  return allBalanceMovements().filter(x=>{
+    if(!balancePeriodMatch(x.date))return false;
+
+    if(BALANCE_FILTERS.payments.length && !BALANCE_FILTERS.payments.includes(x.payment))return false;
+    if(BALANCE_FILTERS.employee!=='all' && x.employee!==BALANCE_FILTERS.employee)return false;
+    if(BALANCE_FILTERS.client!=='all' && x.client!==BALANCE_FILTERS.client)return false;
+
+    if(q){
+      const haystack=norm([
+        x.concept,x.client,x.employee,x.payment,balanceKindLabel(x.kind),x.amount
+      ].join(' '));
+      if(!haystack.includes(q))return false;
+    }
+
+    return true;
+  }).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+}
+function balancePeriodText(){
+  ensureBalanceDefaults();
+
+  if(BALANCE_PERIOD==='daily'){
+    return new Date(BALANCE_DAY+'T12:00:00').toLocaleDateString('es-AR',{
+      weekday:'long',day:'2-digit',month:'long',year:'numeric'
+    });
+  }
+
+  if(BALANCE_PERIOD==='weekly'){
+    const r=isoWeekRange(BALANCE_WEEK);
+    if(!r)return 'Semana';
+    const last=new Date(r.end);last.setDate(last.getDate()-1);
+    return `${r.start.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'})} — ${last.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'})}`;
+  }
+
+  const [y,m]=BALANCE_MONTH.split('-').map(Number);
+  return new Date(y,m-1,1).toLocaleDateString('es-AR',{month:'long',year:'numeric'});
+}
+function renderBalanceControls(){
+  ensureBalanceDefaults();
+
+  $$('#balance [data-balance-period]').forEach(b=>{
+    b.classList.toggle('active',b.dataset.balancePeriod===BALANCE_PERIOD);
+  });
+
+  if(BALANCE_PERIOD==='daily'){
+    balanceDateControl.type='date';
+    balanceDateControl.value=BALANCE_DAY;
+  }else if(BALANCE_PERIOD==='weekly'){
+    balanceDateControl.type='week';
+    balanceDateControl.value=BALANCE_WEEK;
+  }else{
+    balanceDateControl.type='month';
+    balanceDateControl.value=BALANCE_MONTH;
+  }
+
+  balanceSearch.value=BALANCE_SEARCH;
+  balanceSearchClear.classList.toggle('hidden',!BALANCE_SEARCH);
+
+  const count=balanceFilterCountValue();
+  balanceFilterCount.textContent=count;
+  balanceFilterCount.classList.toggle('hidden',count===0);
+
+  balancePeriodBadge.textContent={
+    daily:'Diario',weekly:'Semanal',monthly:'Mensual'
+  }[BALANCE_PERIOD];
+}
+function renderBalanceFilterOptions(){
+  const rows=allBalanceMovements();
+
+  const payments=[...new Set(rows.map(x=>x.payment).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+  balancePaymentChips.innerHTML=payments.map(p=>`
+    <button type="button" class="balance-filter-chip ${BALANCE_FILTERS.payments.includes(p)?'active':''}"
+      onclick='toggleBalancePayment(${JSON.stringify(p)})'>${p}</button>
+  `).join('')||'<span style="color:var(--muted);font-size:8px">Sin métodos registrados.</span>';
+
+  const employees=[...new Set(rows.map(x=>x.employee).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+  balanceEmployeeFilter.innerHTML=
+    `<option value="all">Todos los empleados</option>`+
+    employees.map(x=>`<option value="${x.replaceAll('"','&quot;')}">${x}</option>`).join('');
+  balanceEmployeeFilter.value=employees.includes(BALANCE_FILTERS.employee)?BALANCE_FILTERS.employee:'all';
+
+  const clients=[...new Set(rows.map(x=>x.client).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+  balanceClientFilter.innerHTML=
+    `<option value="all">Todos los clientes</option>`+
+    clients.map(x=>`<option value="${x.replaceAll('"','&quot;')}">${x}</option>`).join('');
+  balanceClientFilter.value=clients.includes(BALANCE_FILTERS.client)?BALANCE_FILTERS.client:'all';
+}
+window.setBalancePeriod=p=>{
+  BALANCE_PERIOD=p;
+  renderBalanceReport();
+};
+balanceDateControl.onchange=()=>{
+  if(BALANCE_PERIOD==='daily')BALANCE_DAY=balanceDateControl.value;
+  else if(BALANCE_PERIOD==='weekly')BALANCE_WEEK=balanceDateControl.value;
+  else BALANCE_MONTH=balanceDateControl.value;
+  renderBalanceReport();
+};
+window.setBalanceSearch=value=>{
+  BALANCE_SEARCH=value||'';
+  renderBalanceReport();
+};
+window.clearBalanceSearch=()=>{
+  BALANCE_SEARCH='';
+  renderBalanceReport();
+};
+window.openBalanceFilters=()=>{
+  renderBalanceFilterOptions();
+  balanceFilterModal.classList.remove('hidden');
+};
+window.closeBalanceFilters=()=>{
+  balanceFilterModal.classList.add('hidden');
+  renderBalanceReport();
+};
+window.toggleBalancePayment=payment=>{
+  const i=BALANCE_FILTERS.payments.indexOf(payment);
+  if(i>=0)BALANCE_FILTERS.payments.splice(i,1);
+  else BALANCE_FILTERS.payments.push(payment);
+  renderBalanceFilterOptions();
+  renderBalanceReport();
+};
+window.setBalanceEmployeeFilter=value=>{
+  BALANCE_FILTERS.employee=value||'all';
+  renderBalanceReport();
+};
+window.setBalanceClientFilter=value=>{
+  BALANCE_FILTERS.client=value||'all';
+  renderBalanceReport();
+};
+window.clearBalanceFilters=()=>{
+  BALANCE_FILTERS={payments:[],employee:'all',client:'all'};
+  renderBalanceFilterOptions();
+  renderBalanceReport();
+};
+function renderBalanceReport(){
+  if(!S||ORG?.type!=='commerce')return;
+
+  renderBalanceControls();
+
+  const rows=filteredBalanceMovements();
+  const incomes=rows.filter(x=>x.direction==='income');
+  const outflows=rows.filter(x=>x.direction==='expense');
+
+  const incomeTotal=incomes.reduce((a,x)=>a+Number(x.amount||0),0);
+  const outflowTotal=outflows.reduce((a,x)=>a+Number(x.amount||0),0);
+  const net=incomeTotal-outflowTotal;
+
+  bBalance.textContent=money(net);
+  bBalance.className=net<0?'red':'';
+  bIncome.textContent=money(incomeTotal);
+  bOutflow.textContent=money(outflowTotal);
+  bIncomeCount.textContent=`${incomes.length} movimiento${incomes.length===1?'':'s'}`;
+  bOutflowCount.textContent=`${outflows.length} movimiento${outflows.length===1?'':'s'}`;
+
+  const byDay=new Map();
+  rows.forEach(x=>{
+    const key=localDateInput(new Date(x.date));
+    if(!byDay.has(key))byDay.set(key,{income:0,outflow:0});
+    const r=byDay.get(key);
+    if(x.direction==='income')r.income+=Number(x.amount||0);
+    else r.outflow+=Number(x.amount||0);
+  });
+
+  balanceDailyList.innerHTML=[...byDay.entries()]
+    .sort((a,b)=>b[0].localeCompare(a[0]))
+    .map(([key,r])=>{
+      const netDay=r.income-r.outflow;
+      return `<div class="balance-day-row">
+        <div class="date">${new Date(key+'T12:00:00').toLocaleDateString('es-AR',{weekday:'short',day:'2-digit',month:'2-digit'})}</div>
+        <div><span>Ingresos</span><strong>${money(r.income)}</strong></div>
+        <div class="expense"><span>Egresos</span><strong>−${money(r.outflow)}</strong></div>
+        <div class="net ${netDay<0?'negative':'positive'}"><span>Balance</span><strong>${money(netDay)}</strong></div>
+      </div>`;
+    }).join('')||'<div class="empty">No hay movimientos para este período.</div>';
+
+  const filterCount=balanceFilterCountValue();
+  balanceMovementSubtitle.textContent=`${balancePeriodText()} · ${rows.length} movimiento${rows.length===1?'':'s'}${filterCount?' · filtros activos':''}`;
+
+  ledgerList.innerHTML=rows.length?rows.map(x=>{
+    const isIncome=x.direction==='income';
+    const details=[
+      x.client?`Cliente: ${x.client}`:'',
+      x.employee?`Empleado: ${x.employee}`:'',
+      x.payment?`Pago: ${x.payment}`:'',
+      new Date(x.date).toLocaleString('es-AR',{dateStyle:'short',timeStyle:'short'})
+    ].filter(Boolean).join(' · ');
+
+    const click=x.kind==='sale'?` onclick="openSaleReceipt('${x.id}')" style="cursor:pointer"`:'';
+
+    return `<div class="row balance-movement"${click}>
+      <div class="balance-movement-main">
+        <strong><span class="balance-kind">${balanceKindLabel(x.kind)}</span>${x.concept}</strong>
+        <small>${details}</small>
+      </div>
+      <span class="${isIncome?'money':'outflow'}">${isIncome?'+':'−'}${money(x.amount)}</span>
+    </div>`;
+  }).join(''):'<div class="empty">No encontramos movimientos con estos criterios.</div>';
+}
+
 /* Render */
 function renderOrders(){
  let st=states(),all=['Todos',...st],monthOrders=S.orders.filter(o=>commerceMonthMatch(commerceOrderReviewDate(o)));
  filters.innerHTML=all.map(x=>`<button class="filter ${F===x?'active':''}" onclick="setFilter('${x}')">${x}${x==='Todos'?'':` · ${monthOrders.filter(o=>o.status===x).length}`}</button>`).join('');
  let arr=F==='Todos'?monthOrders:monthOrders.filter(o=>o.status===F);
- ordersList.innerHTML=arr.length?arr.map(o=>`<article class="order ${o.status==='Prioritario'?'prio':''}"><div class="otop"><div><div class="otitle">${o.title}</div><div class="oclient">${o.client}</div></div><span class="badge ${o.status==='Prioritario'?'red':o.status==='Pendiente'?'yellow':o.status==='En proceso'?'blue':o.status==='Finalizado'?'green':'purple'}">${o.status}</span></div>${o.description?`<div class="odesc">${o.description}</div>`:''}<div class="ometa"><div><span>Monto</span><strong>${money(o.amount)}</strong></div><div><span>Responsable</span><strong>${o.ownerName}</strong></div><div><span>Fecha</span><strong>${o.due||'Sin fecha'}</strong></div><div><span>Balance</span><strong>${o.ledgerPosted?'Sumado ✓':'Pendiente'}</strong></div></div><div class="oaction"><select class="select" onchange="changeStatus('${o.id}',this.value)">${st.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select></div></article>`).join(''):'<div class="empty">No hay registros para el mes seleccionado.</div>';
+ ordersList.innerHTML=arr.length?arr.map(o=>`<article class="order ${o.status==='Prioritario'?'prio':''}"><div class="otop"><div><div class="otitle">${o.title}</div><div class="oclient">${o.client}</div></div><span class="badge ${o.status==='Prioritario'?'red':o.status==='Pendiente'?'yellow':o.status==='En proceso'?'blue':o.status==='Finalizado'?'green':'purple'}">${o.status}</span></div>${o.description?`<div class="odesc">${o.description}</div>`:''}<div class="ometa"><div><span>Monto</span><strong>${money(o.amount)}</strong></div><div><span>Responsable</span><strong>${o.ownerName}</strong></div><div><span>Fecha</span><strong>${o.due||'Sin fecha'}</strong></div><div><span>Balance</span><strong>${o.ledgerPosted?'Sumado ✓':'Pendiente'}</strong></div></div><div class="oaction"><select class="select" onchange="changeStatus('${o.id}',this.value)">${st.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select>${isSCRBusiness()?`<div class="order-admin-actions"><button class="btn secondary" onclick="openEditOrder('${o.id}')">Editar pedido</button><button class="btn secondary danger-order" onclick="deleteOrder('${o.id}')">Eliminar</button></div>`:''}</div></article>`).join(''):'<div class="empty">No hay registros para el mes seleccionado.</div>';
 }
 function renderActivity(){
  const review=S.activity.filter(a=>commerceMonthMatch(a.date));
@@ -1943,27 +2668,36 @@ function renderUsers(){
 function render(){
  renderCommerceMonthSelectors();
 
- let income=S.ledger.reduce((a,x)=>a+Number(x.amount||0),0),
-     expenseTotal=S.expenses.reduce((a,x)=>a+Number(x.amount||0),0),
-     salaryTotal=S.salaryPayments.reduce((a,x)=>a+Number(x.amount||0),0),
+ renderSCRHomePeriodControls();
+ let homeLedger=isSCRBusiness()?S.ledger.filter(x=>scrHomePeriodMatch(x.date)):S.ledger,
+     homeExpenses=isSCRBusiness()?S.expenses.filter(x=>scrHomePeriodMatch(x.date)):S.expenses,
+     homeSalaries=isSCRBusiness()?S.salaryPayments.filter(x=>scrHomePeriodMatch(x.date)):S.salaryPayments,
+     homeOrders=isSCRBusiness()?S.orders.filter(x=>scrHomePeriodMatch(x.updatedAt||x.createdAt||x.due)):S.orders,
+     income=homeLedger.reduce((a,x)=>a+Number(x.amount||0),0),
+     expenseTotal=homeExpenses.reduce((a,x)=>a+Number(x.amount||0),0),
+     salaryTotal=homeSalaries.reduce((a,x)=>a+Number(x.amount||0),0),
      bal=income-expenseTotal-salaryTotal,
-     tod=S.ledger.filter(x=>String(x.date).slice(0,10)===today()),
-     active=S.orders.filter(x=>!['Finalizado','Cancelado'].includes(x.status));
+     tod=isSCRBusiness()?homeLedger:S.ledger.filter(x=>String(x.date).slice(0,10)===today()),
+     active=homeOrders.filter(x=>!['Finalizado','Cancelado'].includes(x.status));
 
  kBal.textContent=money(bal);
  kToday.textContent=money(tod.reduce((a,x)=>a+Number(x.amount||0),0));
  kTodayN.textContent=`${tod.length} movimientos`;
+ if(isSCRBusiness()){
+   const incomeLabel=kToday.parentElement.querySelector('span');
+   if(incomeLabel)incomeLabel.textContent=SCR_HOME_PERIOD==='today'?'Ingresos de hoy':'Ingresos del período';
+ }
  kActive.textContent=active.length;
- kActivity.textContent=S.activity.length;
+ kActivity.textContent=isSCRBusiness()?S.activity.filter(x=>scrHomePeriodMatch(x.date)).length:S.activity.length;
 
  setSCRVisibility();
  if(isSCRBusiness()){
-   const currentMonth=commerceMonthKey(new Date()),
-         monthExpenses=S.expenses.filter(x=>commerceMonthKey(x.date)===currentMonth),
-         monthSalaries=S.salaryPayments.filter(x=>commerceMonthKey(x.date)===currentMonth),
-         monthOut=monthExpenses.reduce((a,x)=>a+Number(x.amount||0),0)+monthSalaries.reduce((a,x)=>a+Number(x.amount||0),0);
-   kEgress.textContent=money(monthOut);
-   kEgressN.textContent=`${monthExpenses.length} gastos · ${monthSalaries.length} sueldos`;
+   const periodExpenses=homeExpenses,periodSalaries=homeSalaries,
+         periodOut=periodExpenses.reduce((a,x)=>a+Number(x.amount||0),0)+periodSalaries.reduce((a,x)=>a+Number(x.amount||0),0);
+   kEgress.textContent=money(periodOut);
+   kEgressN.textContent=`${periodExpenses.length} gastos · ${periodSalaries.length} sueldos`;
+   const egressLabel=kEgress.parentElement.querySelector('span');
+   if(egressLabel)egressLabel.textContent='Egresos del período';
  }
 
  attention.innerHTML=active.slice(0,5).length?active.slice(0,5).map(x=>`<div class="row"><div><strong>${x.title}</strong><small>${x.client} · ${x.status}</small></div><span class="money">${money(x.amount)}</span></div>`).join(''):'<div class="empty">No hay pendientes.</div>';
@@ -1973,28 +2707,7 @@ function render(){
  sTotal.textContent=money(reviewSales.reduce((a,x)=>a+Number(x.amount||0),0));
  salesList.innerHTML=reviewSales.length?reviewSales.map(x=>`<div class="row sale-click" onclick="openSaleReceipt('${x.id}')"><div><strong>${x.concept}</strong><small>${x.client} · ${x.userName} · ${x.payment} · ${new Date(x.date).toLocaleDateString('es-AR')}</small><span class="sale-open-hint">Ver comprobante</span></div><span class="money">${money(x.amount)}</span></div>`).join(''):'<div class="empty">No hay ventas para el mes seleccionado.</div>';
 
- const reviewLedger=S.ledger.filter(x=>commerceMonthMatch(x.date)),
-       reviewExpenses=S.expenses.filter(x=>commerceMonthMatch(x.date)),
-       reviewSalaries=S.salaryPayments.filter(x=>commerceMonthMatch(x.date)),
-       reviewIncome=reviewLedger.reduce((a,x)=>a+Number(x.amount||0),0),
-       reviewOut=reviewExpenses.reduce((a,x)=>a+Number(x.amount||0),0)+reviewSalaries.reduce((a,x)=>a+Number(x.amount||0),0),
-       reviewBalance=reviewIncome-reviewOut,
-       sl=reviewLedger.filter(x=>x.source==='sale'),
-       ol=reviewLedger.filter(x=>x.source==='order');
-
- bTotal.textContent=money(reviewBalance);
- bSales.textContent=money(sl.reduce((a,x)=>a+Number(x.amount||0),0));
- bOrders.textContent=money(ol.reduce((a,x)=>a+Number(x.amount||0),0));
- bAvg.textContent=money(reviewLedger.length?reviewIncome/reviewLedger.length:0);
-
- if(isSCRBusiness())renderSCRDailyReport(reviewLedger,reviewExpenses,reviewSalaries);
-
- let balanceMov=[
-   ...reviewLedger.map(x=>({date:x.date,name:x.description,sub:`${x.client} · ${x.source==='sale'?'Venta':'Pedido finalizado'}`,amount:Number(x.amount),out:false})),
-   ...reviewExpenses.map(x=>({date:x.date,name:x.concept,sub:`Gasto · ${x.payment}`,amount:Number(x.amount),out:true})),
-   ...reviewSalaries.map(x=>({date:x.date,name:`Sueldo · ${x.userName}`,sub:`Sueldo · ${x.payment}`,amount:Number(x.amount),out:true}))
- ].sort((a,b)=>b.date.localeCompare(a.date));
- ledgerList.innerHTML=balanceMov.length?balanceMov.map(x=>`<div class="row"><div><strong>${x.name}</strong><small>${x.sub} · ${new Date(x.date).toLocaleDateString('es-AR')}</small></div><span class="${x.out?'outflow':'money'}">${x.out?'−':''}${money(x.amount)}</span></div>`).join(''):'<div class="empty">No hay movimientos para el mes seleccionado.</div>';
+ renderBalanceReport();
 
  let hist=[
    ...S.ledger.map(x=>({date:x.date,name:x.description,sub:`Ingreso · ${x.client}${x.source==='sale'?' · '+(x.userName||'Usuario'):''}`,amount:Number(x.amount),out:false,kind:x.source,id:x.sourceId})),
