@@ -1,0 +1,25 @@
+{
+  "name": "GestOK Web Control",
+  "short_name": "GestOK",
+  "description": "Sistema de gestión GestOK Web Control",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0A0E13",
+  "theme_color": "#0A0E13",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "gestok-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "gestok-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
