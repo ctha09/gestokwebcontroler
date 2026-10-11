@@ -9,7 +9,7 @@
   --bg:#090c10;--panel:#151b22;--panel2:#1c232c;--panel3:#252e38;--border:#2c3642;
   --text:#f6f7f9;--muted:#96a2af;--orange:#f28c28;--green:#39c77d;--red:#ff6b6b;
   --yellow:#f0c85a;--blue:#5799ff;--purple:#aa7cff;--shadow:0 18px 48px rgba(0,0,0,.32)
-}
+}a
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}body{overflow:hidden}button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 .btn{border:0;border-radius:14px;min-height:44px;padding:10px 13px;font-weight:850;transition:.16s}.btn:active{transform:scale(.98)}.primary{background:var(--orange);color:#17100a}.secondary{background:var(--panel3);color:#fff;border:1px solid var(--border)}.danger{background:rgba(255,107,107,.12);color:var(--red);border:1px solid rgba(255,107,107,.24)}
 .input,.select,.textarea{width:100%;min-height:46px;border:1px solid var(--border);border-radius:14px;background:var(--panel2);color:#fff;padding:11px 12px;outline:none}.textarea{min-height:88px;resize:vertical}.input:focus,.select:focus,.textarea:focus{border-color:rgba(242,140,40,.7)}label{display:block;color:var(--muted);font-size:9px;margin:0 0 5px}.card{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:12px;box-shadow:var(--shadow)}.badge{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:8px;font-weight:900;background:rgba(242,140,40,.13);color:var(--orange)}.green{color:var(--green)!important}.red{color:var(--red)!important}.yellow{color:var(--yellow)!important}.blue{color:var(--blue)!important}.purple{color:var(--purple)!important}.money{color:var(--orange);font-weight:950}.row{display:flex;justify-content:space-between;align-items:center;gap:9px;padding:10px;background:var(--panel2);border:1px solid var(--border);border-radius:14px}.row strong{font-size:11px}.row small{display:block;color:var(--muted);font-size:8px;margin-top:3px;line-height:1.35}.empty{padding:22px;text-align:center;border:1px dashed var(--border);border-radius:14px;color:var(--muted);font-size:10px}.wordmark{font-weight:1000}.wordmark .ok{color:var(--orange)}.toast{position:fixed;left:12px;right:12px;bottom:calc(82px + env(safe-area-inset-bottom));z-index:1300;padding:11px 12px;border:1px solid var(--border);border-radius:14px;background:#14191f;font-size:9px;display:none}.toast.show{display:block}
@@ -1297,6 +1297,124 @@
   .install-banner .btn{width:100%}
 }
 
+
+/* ============================================================
+   V37 · CARLOS · GRÁFICOS Y MOVIMIENTOS COMERCIALES
+   ============================================================ */
+.carlos-bar-chart{
+  display:grid;
+  gap:9px;
+  margin-top:10px
+}
+.carlos-bar-row{
+  display:grid;
+  grid-template-columns:100px minmax(0,1fr) 120px;
+  gap:9px;
+  align-items:center
+}
+.carlos-bar-label{
+  font-size:8px;
+  font-weight:950
+}
+.carlos-bar-track{
+  height:16px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  overflow:hidden;
+  background:rgba(255,255,255,.025)
+}
+.carlos-bar-fill{
+  height:100%;
+  min-width:0;
+  border-radius:inherit;
+  background:linear-gradient(90deg,rgba(242,140,40,.65),var(--orange));
+  transition:width .35s ease
+}
+.carlos-bar-value{
+  text-align:right;
+  font-size:8px;
+  color:var(--muted)
+}
+.carlos-bar-value strong{
+  display:block;
+  color:var(--text);
+  font-size:9px
+}
+.carlos-movement-tabs{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap
+}
+.carlos-movement-tabs button{
+  min-height:34px;
+  padding:6px 11px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:var(--panel2);
+  color:var(--text);
+  font-size:8px;
+  font-weight:900
+}
+.carlos-movement-tabs button.active{
+  border-color:var(--orange);
+  background:rgba(242,140,40,.12);
+  color:var(--orange)
+}
+.carlos-flow-row{
+  cursor:pointer
+}
+.carlos-flow-row:hover{
+  border-color:rgba(242,140,40,.32)
+}
+.carlos-flow-hint{
+  display:block;
+  margin-top:4px;
+  color:var(--orange);
+  font-size:7px
+}
+.receipt-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin-top:10px
+}
+.receipt-cell{
+  padding:9px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:var(--panel2)
+}
+.receipt-cell span{
+  display:block;
+  color:var(--muted);
+  font-size:7px
+}
+.receipt-cell strong{
+  display:block;
+  margin-top:3px;
+  font-size:9px;
+  line-height:1.35
+}
+.receipt-cell.full{
+  grid-column:1/-1
+}
+.carlos-stats-movements{
+  margin-top:8px
+}
+@media(max-width:640px){
+  .carlos-bar-row{
+    grid-template-columns:82px minmax(0,1fr);
+  }
+  .carlos-bar-value{
+    grid-column:2;
+    text-align:left
+  }
+  .receipt-grid{
+    grid-template-columns:1fr
+  }
+  .receipt-cell.full{grid-column:auto}
+}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -1466,11 +1584,97 @@
     <div class="section"><div><h2>Estadísticas</h2><p>Elegí la temporalidad para analizar el negocio.</p></div></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div>
     <div class="periods" id="periodButtons"></div>
     <div class="summarygrid"><div class="card metric"><span>Ingresos del período</span><strong id="stRevenue">$0</strong></div><div class="card metric"><span>Ventas</span><strong id="stSalesCount">0</strong></div><div id="stFinishedCard" class="card metric"><span id="stFinishedLabel">Pedidos finalizados</span><strong id="stFinished">0</strong></div><div class="card metric"><span>Promedio por ingreso</span><strong id="stAverage">$0</strong></div></div><div class="summarygrid" style="margin-top:8px"><div class="card metric"><span>Gastos del período</span><strong id="stExpenses" class="red">$0</strong></div><div class="card metric"><span>Sueldos pagados</span><strong id="stSalaries" class="red">$0</strong></div><div class="card metric"><span>Resultado neto</span><strong id="stNet">$0</strong></div><div class="card metric"><span>Salidas totales</span><strong id="stOutflows" class="red">$0</strong></div></div>
-    <div id="carlosStatsPanel" class="carlos-only"><div class="carlos-compare"><div class="card metric"><span>Ingresos</span><strong id="carlosStatIncome">$0</strong><small>Ventas registradas</small></div><div class="card metric"><span>Egresos</span><strong id="carlosStatOutflow">$0</strong><small>Compras + gastos + sueldos</small></div><div class="card metric"><span>Resultado</span><strong id="carlosStatNet">$0</strong><small>Ingresos − egresos</small></div></div><div class="carlos-method-grid"><div class="carlos-method-card"><span>Efectivo</span><strong id="carlosCash">$0</strong></div><div class="carlos-method-card"><span>Transferencia</span><strong id="carlosTransfer">$0</strong></div><div class="carlos-method-card"><span>QR</span><strong id="carlosQR">$0</strong></div><div class="carlos-method-card"><span>Tarjeta</span><strong id="carlosCard">$0</strong></div></div></div><div class="card" style="margin-top:8px"><div class="head"><div><h3 id="chartTitle">Ingresos</h3><p id="chartSubtitle">Visualización del período seleccionado.</p></div></div><div class="chartbox"><canvas id="statsChart"></canvas></div></div>
+    <div id="carlosStatsPanel" class="carlos-only">
+  <div class="carlos-compare">
+    <div class="card metric"><span>Ingresos</span><strong id="carlosStatIncome">$0</strong><small>Ventas registradas</small></div>
+    <div class="card metric"><span>Egresos</span><strong id="carlosStatOutflow">$0</strong><small>Compras + gastos + sueldos</small></div>
+    <div class="card metric"><span>Resultado</span><strong id="carlosStatNet">$0</strong><small>Ingresos − egresos</small></div>
+  </div>
+
+  <div class="carlos-method-grid">
+    <div class="carlos-method-card"><span>Efectivo</span><strong id="carlosCash">$0</strong></div>
+    <div class="carlos-method-card"><span>Transferencia</span><strong id="carlosTransfer">$0</strong></div>
+    <div class="carlos-method-card"><span>QR</span><strong id="carlosQR">$0</strong></div>
+    <div class="carlos-method-card"><span>Tarjeta</span><strong id="carlosCard">$0</strong></div>
+  </div>
+
+  <div class="card" style="margin-top:8px">
+    <div class="head">
+      <div>
+        <h3>Métodos de pago</h3>
+        <p>Comparación por cantidad de ventas. También muestra el total ingresado.</p>
+      </div>
+      <span id="carlosMostUsedMethod" class="badge">Sin datos</span>
+    </div>
+    <div id="carlosPaymentBars" class="carlos-bar-chart"></div>
+  </div>
+
+  <div class="card carlos-stats-movements">
+    <div class="head">
+      <div>
+        <h3>Ventas y compras del período</h3>
+        <p>Tocá un movimiento para abrir su comprobante.</p>
+      </div>
+    </div>
+    <div id="carlosStatsMovementList" class="list"></div>
+  </div>
+</div><div class="card" style="margin-top:8px"><div class="head"><div><h3 id="chartTitle">Ingresos</h3><p id="chartSubtitle">Visualización del período seleccionado.</p></div></div><div class="chartbox"><canvas id="statsChart"></canvas></div></div>
     <div class="card" style="margin-top:8px"><div class="head"><div><h3>Detalle escrito</h3><p>Valores utilizados para construir la gráfica.</p></div></div><div id="statsWritten" class="list"></div></div>
   </section>
 
-  <section id="purchases" class="view"><div class="section"><div><h2>Compras</h2><p>Mercadería comprada y egresos asociados automáticamente.</p></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn secondary" onclick="go('suppliers')">Proveedores</button><button class="btn primary" onclick="openPurchase()">+ Compra</button></div></div><div class="stats"><div class="card metric"><span>Compras del mes</span><strong id="purchaseMonthTotal" class="red">$0</strong><small id="purchaseMonthCount">0 compras</small></div><div class="card metric"><span>Proveedores activos</span><strong id="purchaseSupplierCount">0</strong><small>Registrados</small></div></div><div class="card" style="margin-top:8px"><div class="head"><div><h3>Compras registradas</h3><p>Cada compra aparece también como egreso en Balance, Historial y Estadísticas.</p></div></div><div id="purchasesList" class="purchasegrid"></div></div></section>
+  <section id="commercialflow" class="view">
+  <div class="section">
+    <div>
+      <h2>Movimientos comerciales</h2>
+      <p>Ventas y compras registradas automáticamente desde Supabase.</p>
+    </div>
+  </div>
+
+  <div class="stats balance-three">
+    <div class="card metric">
+      <span>Ventas</span>
+      <strong id="flowSalesTotal" class="green">$0</strong>
+      <small id="flowSalesCount">0 ventas</small>
+    </div>
+    <div class="card metric">
+      <span>Compras</span>
+      <strong id="flowPurchasesTotal" class="red">$0</strong>
+      <small id="flowPurchasesCount">0 compras</small>
+    </div>
+    <div class="card metric">
+      <span>Diferencia</span>
+      <strong id="flowDifference">$0</strong>
+      <small>Ventas − compras</small>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:8px">
+    <div class="head">
+      <div>
+        <h3>Ventas vs compras</h3>
+        <p>Comparación del monto registrado en el período seleccionado.</p>
+      </div>
+    </div>
+    <div id="salesPurchaseBars" class="carlos-bar-chart"></div>
+  </div>
+
+  <div class="card" style="margin-top:8px">
+    <div class="head">
+      <div>
+        <h3>Registro automático</h3>
+        <p>Cada nueva venta o compra aparece acá sin tener que cargarla nuevamente.</p>
+      </div>
+      <div class="carlos-movement-tabs">
+        <button data-flow-filter="all" onclick="setCommercialFlowFilter('all')">Todos</button>
+        <button data-flow-filter="sale" onclick="setCommercialFlowFilter('sale')">Ventas</button>
+        <button data-flow-filter="purchase" onclick="setCommercialFlowFilter('purchase')">Compras</button>
+      </div>
+    </div>
+    <div id="commercialFlowList" class="list"></div>
+  </div>
+</section>
+
+<section id="purchases" class="view"><div class="section"><div><h2>Compras</h2><p>Mercadería comprada y egresos asociados automáticamente.</p></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn secondary" onclick="go('suppliers')">Proveedores</button><button class="btn primary" onclick="openPurchase()">+ Compra</button></div></div><div class="stats"><div class="card metric"><span>Compras del mes</span><strong id="purchaseMonthTotal" class="red">$0</strong><small id="purchaseMonthCount">0 compras</small></div><div class="card metric"><span>Proveedores activos</span><strong id="purchaseSupplierCount">0</strong><small>Registrados</small></div></div><div class="card" style="margin-top:8px"><div class="head"><div><h3>Compras registradas</h3><p>Cada compra aparece también como egreso en Balance, Historial y Estadísticas.</p></div></div><div id="purchasesList" class="purchasegrid"></div></div></section>
 <section id="suppliers" class="view"><div class="section"><div><h2>Proveedores</h2><p>Organizá de quién comprás y qué tipo de mercadería provee.</p></div><button class="btn primary" onclick="openSupplier()">+ Proveedor</button></div><div class="card"><div class="head"><div><h3>Listado de proveedores</h3><p>El rubro es opcional: bebidas, alimentos, limpieza, etc.</p></div></div><div id="suppliersList" class="suppliergrid"></div></div></section>
 <section id="stock" class="view"><div class="section"><div><h2>Stock</h2><p>Productos e insumos disponibles.</p></div><button class="btn primary" onclick="openStock()">+ Producto</button></div><div class="stats"><div class="card metric"><span>Productos</span><strong id="stockItems">0</strong></div><div class="card metric"><span>Stock bajo</span><strong id="stockLow">0</strong></div></div><div id="stockList" class="stockgrid" style="margin-top:8px"></div></section>
 
@@ -1560,6 +1764,11 @@
   <div class="clear-menu-group">
     <span class="clear-menu-group-title">Control y análisis</span>
     <div class="clear-menu-grid">
+      <button class="clear-menu-item carlos-only" data-clear-v="commercialflow" onclick="go('commercialflow')">
+        <span class="clear-menu-icon">🔄</span>
+        <span class="clear-menu-copy"><strong>Movimientos</strong><small>Ventas y compras en un solo registro.</small></span>
+      </button>
+
       <button class="clear-menu-item admin-clear-finance" data-clear-v="balance" onclick="go('balance')">
         <span class="clear-menu-icon">⚖️</span>
         <span class="clear-menu-copy"><strong>Balance</strong><small>Ingresos, egresos y resultado.</small></span>
@@ -1724,6 +1933,30 @@
   </div>
 </div>
 
+<div id="purchaseReceiptModal" class="modalbg hidden">
+  <div class="modal">
+    <h3>Comprobante de compra</h3>
+    <p>Detalle completo de la compra registrada.</p>
+
+    <div class="receipt-grid">
+      <div class="receipt-cell"><span>Comprobante</span><strong id="purchaseReceiptNumber">—</strong></div>
+      <div class="receipt-cell"><span>Fecha</span><strong id="purchaseReceiptDate">—</strong></div>
+      <div class="receipt-cell"><span>Proveedor</span><strong id="purchaseReceiptSupplier">—</strong></div>
+      <div class="receipt-cell"><span>Método de pago</span><strong id="purchaseReceiptPayment">—</strong></div>
+      <div class="receipt-cell"><span>Registrado por</span><strong id="purchaseReceiptUser">—</strong></div>
+      <div class="receipt-cell"><span>Monto</span><strong id="purchaseReceiptTotal">—</strong></div>
+      <div class="receipt-cell full"><span>Mercadería / concepto</span><strong id="purchaseReceiptDescription">—</strong></div>
+      <div id="purchaseReceiptNotesCell" class="receipt-cell full"><span>Notas</span><strong id="purchaseReceiptNotes">—</strong></div>
+    </div>
+
+    <div class="mactions">
+      <button class="btn secondary" onclick="closePurchaseReceipt()">Cerrar</button>
+      <button id="purchaseReceiptEdit" class="btn secondary">Editar</button>
+      <button id="purchaseReceiptDelete" class="btn secondary delete-sale">Eliminar</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast" class="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1739,7 +1972,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const DB_KEY='gestok_unified_platform_v4',WA='5493751232618';
 const COMMERCE_ST=['Prioritario','Pendiente','En proceso','Enviado a impresion','Finalizado'];
 const BARBER_ST=['Pendiente','Confirmado','En proceso','Finalizado','Cancelado'];
-let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null,orderEditingId=null,SCR_HOME_PERIOD='month',SCR_HOME_MONTH='',BALANCE_PERIOD='monthly',BALANCE_DAY='',BALANCE_WEEK='',BALANCE_MONTH='',BALANCE_SEARCH='',BALANCE_FILTERS={payments:[],employee:'all',client:'all'},HISTORY_FLOW='all',HISTORY_PERIOD='monthly',HISTORY_DAY='',HISTORY_WEEK='',HISTORY_MONTH='',HISTORY_YEAR='',HISTORY_SEARCH='',purchaseEditingId=null,supplierEditingId=null,expenseEditingId=null;
+let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null,orderEditingId=null,SCR_HOME_PERIOD='month',SCR_HOME_MONTH='',BALANCE_PERIOD='monthly',BALANCE_DAY='',BALANCE_WEEK='',BALANCE_MONTH='',BALANCE_SEARCH='',BALANCE_FILTERS={payments:[],employee:'all',client:'all'},HISTORY_FLOW='all',HISTORY_PERIOD='monthly',HISTORY_DAY='',HISTORY_WEEK='',HISTORY_MONTH='',HISTORY_YEAR='',HISTORY_SEARCH='',purchaseEditingId=null,supplierEditingId=null,expenseEditingId=null,purchaseReceiptId=null,COMMERCIAL_FLOW_FILTER='all';
 
 function baseDB(){return{organizations:[],records:{},notifications:[],payments:[]}}
 function loadDB(){try{let d=JSON.parse(localStorage.getItem(DB_KEY))||baseDB();d.organizations=d.organizations||[];d.records=d.records||{};d.notifications=d.notifications||[];d.payments=d.payments||[];return d}catch{return baseDB()}}
@@ -2117,8 +2350,8 @@ function applyActiveRolePermissions(){
   }
 }
 
-function go(v){if(isCarlosBusiness()&&v==='orders')v='purchases';if(!isCarlosBusiness()&&['purchases','suppliers'].includes(v))v='home';if(['balance','stats'].includes(v)&&!isActiveAdmin()){toast('Solo el administrador puede acceder a esta sección');v='home'}if(['stock','expenses','payroll'].includes(v)&&ORG.type==='barbershop')v='home';$$('.view').forEach(x=>x.classList.remove('active'));($('#'+v)||$('#home')).classList.add('active');$$('.nav button[data-v]').forEach(x=>x.classList.toggle('active',x.dataset.v===v));title.textContent={home:'Resumen',orders:ORG.type==='barbershop'?'Turnos':'Pedidos',purchases:'Compras',suppliers:'Proveedores',activity:'Actividad',balance:'Balance',sales:'Ventas',history:'Historial',stats:'Estadísticas',stock:'Stock',expenses:'Gastos',payroll:'Sueldos',users:'Usuarios',gestok:'GestOK'}[v]||'Resumen';if($('#clearMenuCurrent')){
- const menuNames={home:'Inicio',sales:'Ventas',orders:'Pedidos',purchases:'Compras',suppliers:'Proveedores',activity:'Actividad',balance:'Balance',history:'Historial',stats:'Estadísticas',stock:'Stock',expenses:'Gastos',payroll:'Sueldos',users:'Usuarios',gestok:'GestOK'};
+function go(v){if(isCarlosBusiness()&&v==='orders')v='purchases';if(!isCarlosBusiness()&&['purchases','suppliers'].includes(v))v='home';if(['balance','stats'].includes(v)&&!isActiveAdmin()){toast('Solo el administrador puede acceder a esta sección');v='home'}if(['stock','expenses','payroll'].includes(v)&&ORG.type==='barbershop')v='home';$$('.view').forEach(x=>x.classList.remove('active'));($('#'+v)||$('#home')).classList.add('active');$$('.nav button[data-v]').forEach(x=>x.classList.toggle('active',x.dataset.v===v));title.textContent={home:'Resumen',orders:ORG.type==='barbershop'?'Turnos':'Pedidos',purchases:'Compras',suppliers:'Proveedores',commercialflow:'Movimientos comerciales',activity:'Actividad',balance:'Balance',sales:'Ventas',history:'Historial',stats:'Estadísticas',stock:'Stock',expenses:'Gastos',payroll:'Sueldos',users:'Usuarios',gestok:'GestOK'}[v]||'Resumen';if($('#clearMenuCurrent')){
+ const menuNames={home:'Inicio',sales:'Ventas',orders:'Pedidos',purchases:'Compras',suppliers:'Proveedores',commercialflow:'Movimientos',activity:'Actividad',balance:'Balance',history:'Historial',stats:'Estadísticas',stock:'Stock',expenses:'Gastos',payroll:'Sueldos',users:'Usuarios',gestok:'GestOK'};
  clearMenuCurrent.innerHTML=`Sección actual: <strong>${menuNames[v]||'Inicio'}</strong>`;
  $$('#commerceClearMenu [data-clear-v]').forEach(x=>x.classList.toggle('active',x.dataset.clearV===v));
 }
@@ -2813,7 +3046,7 @@ window.deleteSupplier=async id=>{
  render();
  toast(used?'Proveedor desactivado':'Proveedor eliminado');
 };
-function renderPurchases(){if(!isCarlosBusiness())return;const month=commerceMonthKey(new Date()),cur=S.purchases.filter(x=>commerceMonthKey(x.date)===month);purchaseMonthTotal.textContent=money(cur.reduce((a,x)=>a+Number(x.amount||0),0));purchaseMonthCount.textContent=`${cur.length} compra${cur.length===1?'':'s'}`;purchaseSupplierCount.textContent=S.suppliers.length;purchasesList.innerHTML=S.purchases.length?S.purchases.map(p=>`<article class="purchase-card"><div class="purchase-top"><div><div class="purchase-title">${p.description}</div><div class="purchase-sub">${p.supplierName}${p.notes?' · '+p.notes:''}</div></div><span class="outflow">−${money(p.amount)}</span></div><div class="purchase-meta"><div><span>Fecha</span><strong>${new Date(p.date).toLocaleDateString('es-AR')}</strong></div><div><span>Pago</span><strong>${p.payment}</strong></div><div><span>Registró</span><strong>${p.userName}</strong></div></div><div class="purchase-actions"><button class="btn secondary" onclick="openPurchase('${p.id}')">Editar</button><button class="btn secondary delete-sale" onclick="deletePurchase('${p.id}')">Eliminar</button></div></article>`).join(''):'<div class="empty">Todavía no hay compras registradas.</div>'}
+function renderPurchases(){if(!isCarlosBusiness())return;const month=commerceMonthKey(new Date()),cur=S.purchases.filter(x=>commerceMonthKey(x.date)===month);purchaseMonthTotal.textContent=money(cur.reduce((a,x)=>a+Number(x.amount||0),0));purchaseMonthCount.textContent=`${cur.length} compra${cur.length===1?'':'s'}`;purchaseSupplierCount.textContent=S.suppliers.length;purchasesList.innerHTML=S.purchases.length?S.purchases.map(p=>`<article class="purchase-card"><div onclick="openPurchaseReceipt('${p.id}')" style="cursor:pointer"><div class="purchase-top"><div><div class="purchase-title">${p.description}</div><div class="purchase-sub">${p.supplierName}${p.notes?' · '+p.notes:''}</div></div><span class="outflow">−${money(p.amount)}</span></div><div class="purchase-meta"><div><span>Fecha</span><strong>${new Date(p.date).toLocaleDateString('es-AR')}</strong></div><div><span>Pago</span><strong>${p.payment}</strong></div><div><span>Registró</span><strong>${p.userName}</strong></div></div><span class="carlos-flow-hint">Ver comprobante</span></div><div class="purchase-actions"><button class="btn secondary" onclick="event.stopPropagation();openPurchase('${p.id}')">Editar</button><button class="btn secondary delete-sale" onclick="event.stopPropagation();deletePurchase('${p.id}')">Eliminar</button></div></article>`).join(''):'<div class="empty">Todavía no hay compras registradas.</div>'}
 function renderSuppliers(){if(!isCarlosBusiness())return;suppliersList.innerHTML=S.suppliers.length?S.suppliers.map(s=>{const ps=S.purchases.filter(p=>p.supplierId===s.id),total=ps.reduce((a,p)=>a+Number(p.amount||0),0);return `<article class="supplier-card"><div class="supplier-top"><div><div class="supplier-name">${s.name}</div><div class="supplier-sub">${s.category||'Sin rubro especificado'}${s.phone?' · '+s.phone:''}</div></div><span class="badge">${ps.length} compra${ps.length===1?'':'s'}</span></div><div class="supplier-sub" style="margin-top:8px">Total comprado: <strong style="color:var(--text)">${money(total)}</strong>${s.notes?' · '+s.notes:''}</div><div class="supplier-actions"><button class="btn secondary" onclick="openSupplier('${s.id}')">Editar</button><button class="btn secondary delete-sale" onclick="deleteSupplier('${s.id}')">Eliminar</button></div></article>`}).join(''):'<div class="empty">Todavía no hay proveedores cargados.</div>'}
 
 function renderExpenses(){
@@ -3262,7 +3495,7 @@ function renderBalanceReport(){
       new Date(x.date).toLocaleString('es-AR',{dateStyle:'short',timeStyle:'short'})
     ].filter(Boolean).join(' · ');
 
-    const click=x.kind==='sale'?` onclick="openSaleReceipt('${x.id}')" style="cursor:pointer"`:'';
+    const click=x.kind==='sale'?` onclick="openSaleReceipt('${x.id}')" style="cursor:pointer"`:x.kind==='purchase'?` onclick="openPurchaseReceipt('${x.id}')" style="cursor:pointer"`:'';
 
     return `<div class="row balance-movement"${click}>
       <div class="balance-movement-main">
@@ -3418,7 +3651,9 @@ function renderHistoryFinancial(){
 
     const click=x.kind==='sale'
       ?` onclick="openSaleReceipt('${x.id}')" style="cursor:pointer"`
-      :'';
+      :x.kind==='purchase'
+        ?` onclick="openPurchaseReceipt('${x.id}')" style="cursor:pointer"`
+        :'';
 
     return `<div class="row"${click}>
       <div>
@@ -3428,6 +3663,159 @@ function renderHistoryFinancial(){
       <span class="${isIncome?'history-income':'history-expense'}">${isIncome?'+':'−'}${money(x.amount)}</span>
     </div>`;
   }).join(''):'<div class="empty">No encontramos movimientos para este período.</div>';
+}
+
+
+/* ============================================================
+   Carlos · Movimientos comerciales + comprobantes
+   ============================================================ */
+function purchaseByMovementId(id){
+  return S.purchases.find(p=>p.id===id || p.expenseId===id);
+}
+window.openPurchaseReceipt=id=>{
+  const p=purchaseByMovementId(id);
+  if(!p)return toast('Compra no encontrada');
+
+  purchaseReceiptId=p.id;
+  purchaseReceiptNumber.textContent='#'+String(p.id).replaceAll('-','').slice(0,10).toUpperCase();
+  purchaseReceiptDate.textContent=new Date(p.date).toLocaleString('es-AR',{dateStyle:'medium',timeStyle:'short'});
+  purchaseReceiptSupplier.textContent=p.supplierName||'Proveedor';
+  purchaseReceiptPayment.textContent=p.payment||'Otro';
+  purchaseReceiptUser.textContent=p.userName||'Usuario';
+  purchaseReceiptTotal.textContent=money(p.amount);
+  purchaseReceiptDescription.textContent=p.description||'Compra';
+  purchaseReceiptNotes.textContent=p.notes||'Sin notas';
+  purchaseReceiptNotesCell.classList.toggle('hidden',!p.notes);
+  purchaseReceiptModal.classList.remove('hidden');
+};
+window.closePurchaseReceipt=()=>{
+  purchaseReceiptId=null;
+  purchaseReceiptModal.classList.add('hidden');
+};
+purchaseReceiptEdit.onclick=()=>{
+  const id=purchaseReceiptId;
+  closePurchaseReceipt();
+  if(id)openPurchase(id);
+};
+purchaseReceiptDelete.onclick=async()=>{
+  const id=purchaseReceiptId;
+  closePurchaseReceipt();
+  if(id)await deletePurchase(id);
+};
+
+window.openCommercialMovement=(kind,id)=>{
+  if(kind==='sale')return openSaleReceipt(id);
+  if(kind==='purchase')return openPurchaseReceipt(id);
+};
+
+function commercialPeriodSales(){
+  return S.sales.filter(x=>currentPeriodFilter(x.date));
+}
+function commercialPeriodPurchases(){
+  return S.purchases.filter(x=>currentPeriodFilter(x.date));
+}
+function commercialMovementRows(){
+  return [
+    ...commercialPeriodSales().map(x=>({
+      id:x.id,kind:'sale',date:x.date,title:x.concept||'Venta',
+      subtitle:`${x.client||'Cliente ocasional'} · ${x.payment||'Otro'}`,
+      amount:Number(x.amount||0)
+    })),
+    ...commercialPeriodPurchases().map(x=>({
+      id:x.id,kind:'purchase',date:x.date,title:x.description||'Compra',
+      subtitle:`${x.supplierName||'Proveedor'} · ${x.payment||'Otro'}`,
+      amount:Number(x.amount||0)
+    }))
+  ].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+}
+function renderSimpleBarChart(container,rows){
+  const max=Math.max(1,...rows.map(x=>Number(x.value||0)));
+  container.innerHTML=rows.map(x=>{
+    const pct=x.value>0?Math.max(3,(Number(x.value)/max)*100):0;
+    return `<div class="carlos-bar-row">
+      <div class="carlos-bar-label">${x.label}</div>
+      <div class="carlos-bar-track"><div class="carlos-bar-fill" style="width:${pct}%"></div></div>
+      <div class="carlos-bar-value">${x.secondary||''}<strong>${x.primary||money(x.value)}</strong></div>
+    </div>`;
+  }).join('');
+}
+function renderCarlosPaymentBars(sales){
+  if(!isCarlosBusiness())return;
+
+  const methods=['Efectivo','Transferencia','QR','Tarjeta'];
+  const rows=methods.map(method=>{
+    const arr=sales.filter(x=>x.payment===method);
+    return {
+      label:method,
+      value:arr.length,
+      primary:`${arr.length} venta${arr.length===1?'':'s'}`,
+      secondary:money(arr.reduce((a,x)=>a+Number(x.amount||0),0))
+    };
+  });
+
+  const most=[...rows].sort((a,b)=>b.value-a.value)[0];
+  carlosMostUsedMethod.textContent=most?.value?`${most.label} · ${most.value}`:'Sin datos';
+  renderSimpleBarChart(carlosPaymentBars,rows);
+}
+function renderCarlosStatsMovements(){
+  if(!isCarlosBusiness())return;
+  const rows=commercialMovementRows().slice(0,12);
+
+  carlosStatsMovementList.innerHTML=rows.length?rows.map(x=>`
+    <div class="row carlos-flow-row" onclick="openCommercialMovement('${x.kind}','${x.id}')">
+      <div>
+        <strong>${x.kind==='sale'?'Venta':'Compra'} · ${x.title}</strong>
+        <small>${x.subtitle} · ${new Date(x.date).toLocaleString('es-AR',{dateStyle:'short',timeStyle:'short'})}</small>
+        <span class="carlos-flow-hint">Ver comprobante</span>
+      </div>
+      <span class="${x.kind==='sale'?'money':'outflow'}">${x.kind==='sale'?'+':'−'}${money(x.amount)}</span>
+    </div>
+  `).join(''):'<div class="empty">No hay ventas o compras en este período.</div>';
+}
+window.setCommercialFlowFilter=value=>{
+  COMMERCIAL_FLOW_FILTER=value||'all';
+  renderCommercialFlow();
+};
+function renderCommercialFlow(){
+  if(!isCarlosBusiness())return;
+
+  const sales=commercialPeriodSales();
+  const purchases=commercialPeriodPurchases();
+  const salesTotal=sales.reduce((a,x)=>a+Number(x.amount||0),0);
+  const purchasesTotal=purchases.reduce((a,x)=>a+Number(x.amount||0),0);
+  const diff=salesTotal-purchasesTotal;
+
+  flowSalesTotal.textContent=money(salesTotal);
+  flowSalesCount.textContent=`${sales.length} venta${sales.length===1?'':'s'}`;
+  flowPurchasesTotal.textContent=money(purchasesTotal);
+  flowPurchasesCount.textContent=`${purchases.length} compra${purchases.length===1?'':'s'}`;
+  flowDifference.textContent=money(diff);
+  flowDifference.className=diff<0?'red':'green';
+
+  renderSimpleBarChart(salesPurchaseBars,[
+    {label:'Ventas',value:salesTotal,primary:money(salesTotal),secondary:`${sales.length} registros`},
+    {label:'Compras',value:purchasesTotal,primary:money(purchasesTotal),secondary:`${purchases.length} registros`}
+  ]);
+
+  $$('#commercialflow [data-flow-filter]').forEach(b=>{
+    b.classList.toggle('active',b.dataset.flowFilter===COMMERCIAL_FLOW_FILTER);
+  });
+
+  let rows=commercialMovementRows();
+  if(COMMERCIAL_FLOW_FILTER!=='all'){
+    rows=rows.filter(x=>x.kind===COMMERCIAL_FLOW_FILTER);
+  }
+
+  commercialFlowList.innerHTML=rows.length?rows.map(x=>`
+    <div class="row carlos-flow-row" onclick="openCommercialMovement('${x.kind}','${x.id}')">
+      <div>
+        <strong>${x.kind==='sale'?'Venta':'Compra'} · ${x.title}</strong>
+        <small>${x.subtitle} · ${new Date(x.date).toLocaleString('es-AR',{dateStyle:'short',timeStyle:'short'})}</small>
+        <span class="carlos-flow-hint">Ver comprobante</span>
+      </div>
+      <span class="${x.kind==='sale'?'money':'outflow'}">${x.kind==='sale'?'+':'−'}${money(x.amount)}</span>
+    </div>
+  `).join(''):'<div class="empty">No hay movimientos para este período.</div>';
 }
 
 /* Render */
@@ -3644,7 +4032,22 @@ function renderStats(){
  stNet.textContent=money(net);
  stNet.className=net<0?'red':'green';
  stOutflows.textContent=money(expensesValue+salariesValue);
- if(isCarlosBusiness()){const by={Efectivo:0,Transferencia:0,QR:0,Tarjeta:0};sales.forEach(x=>{if(by[x.payment]!==undefined)by[x.payment]+=Number(x.amount||0)});const out=expensesValue+salariesValue;carlosStatIncome.textContent=money(total);carlosStatOutflow.textContent=money(out);carlosStatNet.textContent=money(total-out);carlosStatNet.className=(total-out)<0?'red':'green';carlosCash.textContent=money(by.Efectivo);carlosTransfer.textContent=money(by.Transferencia);carlosQR.textContent=money(by.QR);carlosCard.textContent=money(by.Tarjeta)}
+ if(isCarlosBusiness()){
+   const by={Efectivo:0,Transferencia:0,QR:0,Tarjeta:0};
+   sales.forEach(x=>{if(by[x.payment]!==undefined)by[x.payment]+=Number(x.amount||0)});
+   const out=expensesValue+salariesValue;
+   carlosStatIncome.textContent=money(total);
+   carlosStatOutflow.textContent=money(out);
+   carlosStatNet.textContent=money(total-out);
+   carlosStatNet.className=(total-out)<0?'red':'green';
+   carlosCash.textContent=money(by.Efectivo);
+   carlosTransfer.textContent=money(by.Transferencia);
+   carlosQR.textContent=money(by.QR);
+   carlosCard.textContent=money(by.Tarjeta);
+   renderCarlosPaymentBars(sales);
+   renderCarlosStatsMovements();
+   renderCommercialFlow();
+ }
 
  let names={daily:'diaria',weekly:'semanal',monthly:'mensual',yearly:'anual'};
  chartTitle.textContent=COMMERCE_REVIEW_MONTH==='all'
