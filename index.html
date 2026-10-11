@@ -1244,7 +1244,69 @@
   .commerce-clear-menu{max-height:75vh}
 }
 
+
+/* ============================================================
+   V36 · INSTALACIÓN PWA
+   ============================================================ */
+.install-banner{
+  width:min(760px,92vw);
+  margin:18px auto 0;
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border:1px solid rgba(242,140,40,.28);
+  border-radius:16px;
+  background:linear-gradient(135deg,rgba(242,140,40,.11),rgba(255,255,255,.025));
+  box-shadow:0 12px 32px rgba(0,0,0,.18);
+}
+.install-banner.hidden{display:none!important}
+.install-banner-copy{
+  min-width:0;
+}
+.install-banner-copy strong{
+  display:block;
+  font-size:11px;
+}
+.install-banner-copy span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:8px;
+}
+.install-banner .btn{
+  flex:0 0 auto;
+  min-height:38px;
+}
+.install-modal-note{
+  margin-top:8px;
+  padding:9px 10px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--panel2);
+  color:var(--muted);
+  font-size:8px;
+  line-height:1.55;
+}
+@media(max-width:560px){
+  .install-banner{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .install-banner .btn{width:100%}
+}
+
 </style>
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0A0E13">
+<meta name="application-name" content="GestOK Web Control">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GestOK Web Control">
+<link rel="apple-touch-icon" href="gestok-icon-192.png">
+
 </head>
 <body>
 
@@ -1252,7 +1314,14 @@
 
 <section id="portal" class="portal hidden"><div class="portal-shell">
   <div class="portal-top"><div class="wordmark">Gest<span class="ok">OK</span> <span style="color:var(--muted);font-weight:700">Web Control</span></div><span class="badge">Acceso general</span></div>
-  <div id="typeStep"><div class="hero"><h1>Ingresá a tu empresa.</h1><p>Elegí el tipo de sistema y entrá con el nombre de la empresa y la contraseña entregada por GestOK.</p></div><div class="types">
+  <div id="typeStep"><div class="hero"><h1>Ingresá a tu empresa.</h1><p>Elegí el tipo de sistema y entrá con el nombre de la empresa y la contraseña entregada por GestOK.</p>
+<div id="installBanner" class="install-banner">
+      <div class="install-banner-copy">
+        <strong>Ya podés instalar nuestra app</strong>
+        <span>Usá GestOK Web Control como una aplicación en tu PC o celular.</span>
+      </div>
+      <button id="installAppBtn" class="btn primary" type="button">Tocá aquí</button>
+    </div></div><div class="types">
     <button class="type" onclick="chooseType('commerce')"><div class="typeicon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16"/><path d="M5 9 6.5 4h11L19 9v11H5z"/><path d="M8 20v-6h8v6"/><path d="M8 9v2M12 9v2M16 9v2"/></svg></div><h3>Comercio</h3><p>Ventas libres, productos, stock, pedidos, actividad, balance y estadísticas.</p></button>
     <button class="type" onclick="chooseType('barbershop')"><div class="typeicon"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1 12 12"/><path d="M20 4 8.1 15.9"/><path d="M14.8 14.8 20 20"/></svg></div><h3>Barbería</h3><p>Ventas, turnos, clientes, equipo, caja y estadísticas.</p></button>
   </div></div>
@@ -1644,6 +1713,17 @@
 
 <div id="purchaseModal" class="modalbg hidden"><div class="modal"><h3 id="purchaseModalTitle">Registrar compra</h3><p>La compra se registrará automáticamente como egreso.</p><div class="form"><div><label>Proveedor</label><select id="purchaseSupplier" class="select"></select></div><div><label>Mercadería / detalle</label><input id="purchaseDescription" class="input" placeholder="Ej. 10 cajas de gaseosa"></div><div><label>Monto</label><input id="purchaseAmount" class="input" type="number" min="0" placeholder="$"></div><div><label>Fecha</label><input id="purchaseDate" class="input" type="date"></div><div><label>Método de pago</label><select id="purchasePay" class="select"><option>Efectivo</option><option>Transferencia</option><option>QR</option><option>Tarjeta</option><option>Otro</option></select></div><div><label>Registrado por</label><select id="purchaseUser" class="select"></select></div><div><label>Notas</label><textarea id="purchaseNotes" class="textarea" placeholder="Opcional"></textarea></div></div><div class="mactions"><button class="btn secondary" onclick="closePurchase()">Cancelar</button><button id="savePurchase" class="btn primary">Registrar compra</button></div></div></div>
 <div id="supplierModal" class="modalbg hidden"><div class="modal"><h3 id="supplierModalTitle">Agregar proveedor</h3><p>El rubro y los datos de contacto son opcionales.</p><div class="form"><div><label>Nombre del proveedor</label><input id="supplierName" class="input"></div><div><label>Rubro</label><input id="supplierCategory" class="input" placeholder="Bebidas, alimentos, limpieza..."></div><div><label>Teléfono</label><input id="supplierPhone" class="input" placeholder="Opcional"></div><div><label>Notas</label><textarea id="supplierNotes" class="textarea" placeholder="Opcional"></textarea></div></div><div class="mactions"><button class="btn secondary" onclick="closeSupplier()">Cancelar</button><button id="saveSupplier" class="btn primary">Guardar proveedor</button></div></div></div>
+<div id="installHelpModal" class="modalbg hidden">
+  <div class="modal">
+    <h3>Instalar GestOK Web Control</h3>
+    <p id="installHelpText">Instalá la aplicación para abrirla directamente desde tu dispositivo.</p>
+    <div id="installHelpSteps" class="install-modal-note"></div>
+    <div class="mactions">
+      <button class="btn primary" type="button" onclick="closeInstallHelp()">Entendido</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast" class="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -3610,6 +3690,88 @@ function markNoticesRead(){DB.notifications.filter(n=>n.orgId===ORG.id).forEach(
 window.addEventListener('storage',e=>{if(e.key===DB_KEY&&ORG){let oldId=ORG.id;DB=loadDB();ORG=DB.organizations.find(x=>x.id===oldId)||ORG;S=DB.records[oldId]||S;render()}});
 
 const blockedLogoutBtn=document.getElementById('blockedLogout');if(blockedLogoutBtn)blockedLogoutBtn.onclick=exitBlockedSession;
+
+
+/* ============================================================
+   PWA INSTALL · GestOK Web Control
+   ============================================================ */
+let deferredGestokInstallPrompt=null;
+
+function isIOSDevice(){
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+    (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+}
+function isStandaloneGestok(){
+  return window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone===true;
+}
+function updateGestokInstallBanner(){
+  const banner=document.getElementById('installBanner');
+  if(!banner)return;
+  banner.classList.toggle('hidden',isStandaloneGestok());
+}
+window.closeInstallHelp=()=>{
+  document.getElementById('installHelpModal')?.classList.add('hidden');
+};
+function showGestokInstallHelp(){
+  const modal=document.getElementById('installHelpModal');
+  const steps=document.getElementById('installHelpSteps');
+  if(!modal||!steps)return;
+
+  if(isIOSDevice()){
+    steps.innerHTML='<strong>iPhone / iPad</strong><br>1. Abrí esta web en Safari.<br>2. Tocá el botón Compartir.<br>3. Elegí <b>Agregar a pantalla de inicio</b>.<br>4. Confirmá <b>Agregar</b>.';
+  }else{
+    steps.innerHTML='<strong>Instalación</strong><br>Si no aparece el instalador automático, abrí el menú del navegador y elegí <b>Instalar aplicación</b> o <b>Agregar a pantalla de inicio</b>.';
+  }
+  modal.classList.remove('hidden');
+}
+
+window.addEventListener('beforeinstallprompt',event=>{
+  event.preventDefault();
+  deferredGestokInstallPrompt=event;
+  updateGestokInstallBanner();
+});
+
+window.addEventListener('appinstalled',()=>{
+  deferredGestokInstallPrompt=null;
+  updateGestokInstallBanner();
+  if(typeof toast==='function')toast('GestOK Web Control instalado');
+});
+
+document.getElementById('installAppBtn')?.addEventListener('click',async()=>{
+  if(isStandaloneGestok()){
+    if(typeof toast==='function')toast('La app ya está instalada');
+    return;
+  }
+
+  if(isIOSDevice()){
+    showGestokInstallHelp();
+    return;
+  }
+
+  if(deferredGestokInstallPrompt){
+    deferredGestokInstallPrompt.prompt();
+    try{
+      await deferredGestokInstallPrompt.userChoice;
+    }catch(e){}
+    deferredGestokInstallPrompt=null;
+    updateGestokInstallBanner();
+    return;
+  }
+
+  showGestokInstallHelp();
+});
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./service-worker.js').catch(err=>{
+      console.warn('GestOK SW:',err);
+    });
+  });
+}
+
+updateGestokInstallBanner();
+
 </script>
 
 <div id="subscriptionBlocker" class="subscription-blocker hidden">
