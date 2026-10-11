@@ -1380,7 +1380,7 @@
 
 <div id="stockModal" class="modalbg hidden"><div class="modal"><h3>Agregar producto</h3><p>Los productos cargados pueden seleccionarse al vender para descontar stock automáticamente.</p><div class="form"><div><label>Producto</label><input id="stockName" class="input"></div><div><label>Precio de venta</label><input id="stockPrice" class="input" type="number" min="0"></div><div><label>Cantidad actual</label><input id="stockQty" class="input" type="number" min="0"></div><div><label>Alerta de mínimo</label><input id="stockMin" class="input" type="number" min="0" value="5"></div><div><label>Unidad</label><select id="stockUnit" class="select"><option>unidades</option><option>hojas</option><option>paquetes</option><option>cajas</option><option>metros</option><option>rollos</option></select></div></div><div class="mactions"><button class="btn secondary" onclick="closeStock()">Cancelar</button><button id="saveStock" class="btn primary">Guardar</button></div></div></div>
 
-<div id="expenseModal" class="modalbg hidden"><div class="modal"><h3>Registrar gasto</h3><p>Ingresá cualquier gasto del comercio de forma libre.</p><div class="form"><div><label>Concepto</label><input id="expenseConcept" class="input" placeholder="Ej. Limpieza, luz, mercadería..."></div><div><label>Monto</label><input id="expenseAmount" class="input" type="number" min="0" placeholder="$"></div><div><label>Fecha</label><input id="expenseDate" class="input" type="date"></div><div><label>Medio de pago</label><select id="expensePay" class="select"><option>Efectivo</option><option>Transferencia</option><option>QR</option><option>Tarjeta</option><option>Otro</option></select></div><div><label>Nota</label><textarea id="expenseNotes" class="textarea" placeholder="Opcional"></textarea></div></div><div class="mactions"><button class="btn secondary" onclick="closeExpense()">Cancelar</button><button id="saveExpense" class="btn primary">Registrar gasto</button></div></div></div>
+<div id="expenseModal" class="modalbg hidden"><div class="modal"><h3 id="expenseModalTitle">Registrar gasto</h3><p id="expenseModalText">Ingresá cualquier gasto del comercio de forma libre.</p><div class="form"><div><label>Concepto</label><input id="expenseConcept" class="input" placeholder="Ej. Limpieza, luz, mercadería..."></div><div><label>Monto</label><input id="expenseAmount" class="input" type="number" min="0" placeholder="$"></div><div><label>Fecha</label><input id="expenseDate" class="input" type="date"></div><div><label>Medio de pago</label><select id="expensePay" class="select"><option>Efectivo</option><option>Transferencia</option><option>QR</option><option>Tarjeta</option><option>Otro</option></select></div><div><label>Nota</label><textarea id="expenseNotes" class="textarea" placeholder="Opcional"></textarea></div></div><div class="mactions"><button class="btn secondary" onclick="closeExpense()">Cancelar</button><button id="saveExpense" class="btn primary">Registrar gasto</button></div></div></div>
 
 <div id="salaryModal" class="modalbg hidden"><div class="modal"><h3 id="salaryModalTitle">Registrar sueldo pagado</h3><p id="salaryModalText">El pago se descuenta del resultado neto y queda en el historial.</p><div class="form"><div><label>Empleado</label><select id="salaryUser" class="select"></select></div><div><label>Monto</label><input id="salaryAmount" class="input" type="number" min="0" placeholder="$"></div><div><label>Fecha</label><input id="salaryDate" class="input" type="date"></div><div><label>Medio de pago</label><select id="salaryPay" class="select"><option>Transferencia</option><option>Efectivo</option><option>Otro</option></select></div><div><label>Nota</label><textarea id="salaryNotes" class="textarea" placeholder="Ej. Sueldo septiembre"></textarea></div></div><div class="mactions"><button class="btn secondary" onclick="closeSalary()">Cancelar</button><button id="saveSalary" class="btn primary">Registrar pago</button></div></div></div>
 
@@ -1429,7 +1429,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const DB_KEY='gestok_unified_platform_v4',WA='5493751232618';
 const COMMERCE_ST=['Prioritario','Pendiente','En proceso','Enviado a impresion','Finalizado'];
 const BARBER_ST=['Pendiente','Confirmado','En proceso','Finalizado','Cancelado'];
-let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null,orderEditingId=null,SCR_HOME_PERIOD='month',SCR_HOME_MONTH='',BALANCE_PERIOD='monthly',BALANCE_DAY='',BALANCE_WEEK='',BALANCE_MONTH='',BALANCE_SEARCH='',BALANCE_FILTERS={payments:[],employee:'all',client:'all'},HISTORY_FLOW='all',HISTORY_PERIOD='monthly',HISTORY_DAY='',HISTORY_WEEK='',HISTORY_MONTH='',HISTORY_YEAR='',HISTORY_SEARCH='',purchaseEditingId=null,supplierEditingId=null;
+let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null,orderEditingId=null,SCR_HOME_PERIOD='month',SCR_HOME_MONTH='',BALANCE_PERIOD='monthly',BALANCE_DAY='',BALANCE_WEEK='',BALANCE_MONTH='',BALANCE_SEARCH='',BALANCE_FILTERS={payments:[],employee:'all',client:'all'},HISTORY_FLOW='all',HISTORY_PERIOD='monthly',HISTORY_DAY='',HISTORY_WEEK='',HISTORY_MONTH='',HISTORY_YEAR='',HISTORY_SEARCH='',purchaseEditingId=null,supplierEditingId=null,expenseEditingId=null;
 
 function baseDB(){return{organizations:[],records:{},notifications:[],payments:[]}}
 function loadDB(){try{let d=JSON.parse(localStorage.getItem(DB_KEY))||baseDB();d.organizations=d.organizations||[];d.records=d.records||{};d.notifications=d.notifications||[];d.payments=d.payments||[];return d}catch{return baseDB()}}
@@ -1441,7 +1441,12 @@ function norm(s){return String(s||'').trim().toLowerCase().replace(/\s+/g,' ')}
 function isSCRBusiness(){
   return ORG?.type==='commerce' && norm(ORG?.name)==='scr';
 }
-function isCarlosBusiness(){return ORG?.type==='commerce'&&norm(ORG?.name)==='carlos'}
+function isCarlosBusiness(){
+ return ORG?.type==='commerce' && (
+   norm(ORG?.name)==='carlos' ||
+   String(ORG?.loginSlug||'').toLowerCase()==='carlos'
+ );
+}
 
 function scrStartWeek(d){const x=new Date(d),day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);x.setHours(0,0,0,0);return x}
 function scrMonthKey(date){return date?String(date).slice(0,7):''}
@@ -1639,7 +1644,7 @@ async function login(){
  DB=loadDB();
  let mirror=DB.organizations.find(x=>x.id===org.id);
  const mirrorData={
-   id:org.id,name:org.name,type:org.type,phone:org.phone||'',monthlyFee:Number(org.monthly_fee||0),active:org.active!==false,
+   id:org.id,name:org.name,type:org.type,loginSlug:slugifyCompany(company),phone:org.phone||'',monthlyFee:Number(org.monthly_fee||0),active:org.active!==false,
    subscription:{status:sub?.status||'Activo',startDate:sub?.start_date||today(),nextDueDate:sub?.next_due_date||today(),reason:sub?.reason||'',updatedAt:sub?.updated_at||new Date().toISOString()}
  };
  if(mirror)Object.assign(mirror,mirrorData);else{mirror=mirrorData;DB.organizations.push(mirror)}
@@ -2154,9 +2159,118 @@ window.adjustStock=async(id,delta)=>{const {error}=await sb.rpc('commerce_adjust
 window.deleteStock=async id=>{const {error}=await sb.from('stock_items').update({active:false,updated_at:new Date().toISOString()}).eq('id',id).eq('organization_id',ORG.id);if(error)return toast(error.message);await loadCommerceFromSupabase(U?.id);renderStock()};
 
 /* Gastos */
-function openExpense(){if(ORG.type!=='commerce')return;expenseModal.classList.remove('hidden');expenseConcept.value='';expenseAmount.value='';expenseDate.value=today();expenseDate.max=today();expenseNotes.value=''}
-function closeExpense(){expenseModal.classList.add('hidden')}window.openExpense=openExpense;window.closeExpense=closeExpense;
-saveExpense.onclick=async()=>{let concept=expenseConcept.value.trim(),amount=Number(expenseAmount.value),date=expenseDate.value;if(!concept||amount<=0||!date)return toast('Completá concepto, monto y fecha');const {error}=await sb.from('expenses').insert({organization_id:ORG.id,member_id:U.id,concept,amount,payment_method:expensePay.value,notes:expenseNotes.value.trim()||null,expense_at:isoForChosenDate(date)});if(error)return toast(error.message);closeExpense();await loadCommerceFromSupabase(U.id);render();toast('Gasto sincronizado')};
+function openExpense(){
+ if(ORG.type!=='commerce')return;
+ expenseEditingId=null;
+ expenseModalTitle.textContent='Registrar gasto';
+ expenseModalText.textContent='Ingresá cualquier gasto del comercio de forma libre.';
+ saveExpense.textContent='Registrar gasto';
+ expenseConcept.value='';
+ expenseAmount.value='';
+ expenseDate.value=today();
+ expenseDate.max=today();
+ expensePay.value='Efectivo';
+ expenseNotes.value='';
+ expenseModal.classList.remove('hidden');
+}
+window.openEditExpense=id=>{
+ if(!isCarlosBusiness())return toast('Edición disponible para Carlos');
+ const x=S.expenses.find(e=>e.id===id);
+ if(!x)return toast('Gasto no encontrado');
+
+ if(S.purchases.some(p=>p.expenseId===id)){
+   return toast('Este egreso pertenece a una compra. Editalo desde Compras.');
+ }
+
+ expenseEditingId=id;
+ expenseModalTitle.textContent='Editar gasto';
+ expenseModalText.textContent='Modificá cualquier dato del egreso.';
+ saveExpense.textContent='Guardar cambios';
+ expenseConcept.value=x.concept||'';
+ expenseAmount.value=Number(x.amount||0);
+ expenseDate.value=String(x.date).slice(0,10);
+ expenseDate.max=today();
+ expensePay.value=x.payment||'Efectivo';
+ expenseNotes.value=x.notes||'';
+ expenseModal.classList.remove('hidden');
+};
+function closeExpense(){
+ expenseEditingId=null;
+ expenseModal.classList.add('hidden');
+}
+window.openExpense=openExpense;
+window.closeExpense=closeExpense;
+
+saveExpense.onclick=async()=>{
+ const concept=expenseConcept.value.trim(),
+       amount=Number(expenseAmount.value),
+       date=expenseDate.value;
+
+ if(!concept||amount<=0||!date)
+   return toast('Completá concepto, monto y fecha');
+
+ saveExpense.disabled=true;
+
+ if(expenseEditingId){
+   const {error}=await sb.rpc('commerce_update_expense',{
+     p_organization_id:ORG.id,
+     p_expense_id:expenseEditingId,
+     p_member_id:U.id,
+     p_concept:concept,
+     p_amount:amount,
+     p_payment_method:expensePay.value,
+     p_expense_at:isoForChosenDate(date),
+     p_notes:expenseNotes.value.trim()
+   });
+   saveExpense.disabled=false;
+   if(error)return toast('Supabase: '+error.message);
+
+   closeExpense();
+   await loadCommerceFromSupabase(U.id);
+   render();
+   toast('Gasto actualizado');
+   return;
+ }
+
+ const {error}=await sb.from('expenses').insert({
+   organization_id:ORG.id,
+   member_id:U.id,
+   concept,
+   amount,
+   payment_method:expensePay.value,
+   notes:expenseNotes.value.trim()||null,
+   expense_at:isoForChosenDate(date)
+ });
+
+ saveExpense.disabled=false;
+ if(error)return toast('Supabase: '+error.message);
+
+ closeExpense();
+ await loadCommerceFromSupabase(U.id);
+ render();
+ toast('Gasto sincronizado');
+};
+
+window.deleteExpense=async id=>{
+ if(!isCarlosBusiness())return;
+ if(S.purchases.some(p=>p.expenseId===id)){
+   return toast('Este egreso pertenece a una compra. Eliminalo desde Compras.');
+ }
+
+ const x=S.expenses.find(e=>e.id===id);
+ if(!x)return toast('Gasto no encontrado');
+ if(!confirm(`¿Eliminar "${x.concept}" por ${money(x.amount)}?`))return;
+
+ const {error}=await sb.rpc('commerce_delete_expense',{
+   p_organization_id:ORG.id,
+   p_expense_id:id
+ });
+ if(error)return toast('Supabase: '+error.message);
+
+ await loadCommerceFromSupabase(U?.id);
+ render();
+ toast('Gasto eliminado');
+};
 
 /* Sueldos */
 function employeeUsers(){return S.users.filter(u=>u.role!=='admin'&&u.active!==false)}
@@ -2316,14 +2430,62 @@ window.quickSalary=id=>openSalary(id);
 /* Compras + Proveedores · Carlos */
 function purchaseDateIso(date,originalIso=''){const p=String(date).split('-').map(Number),o=originalIso?new Date(originalIso):new Date();return new Date(p[0],p[1]-1,p[2],o.getHours(),o.getMinutes(),o.getSeconds()).toISOString()}
 function purchaseOptions(sid='',uid=''){purchaseSupplier.innerHTML=S.suppliers.length?S.suppliers.map(x=>`<option value="${x.id}">${x.name}${x.category?' · '+x.category:''}</option>`).join(''):'<option value="">Primero agregá un proveedor</option>';purchaseUser.innerHTML=S.users.filter(x=>x.active!==false||x.id===uid).map(x=>`<option value="${x.id}">${x.name}</option>`).join('');purchaseSupplier.value=S.suppliers.some(x=>x.id===sid)?sid:(S.suppliers[0]?.id||'');purchaseUser.value=S.users.some(x=>x.id===uid)?uid:(U?.id||S.users[0]?.id||'')}
-window.openPurchase=(id='')=>{if(!isCarlosBusiness())return toast('Compras está configurado únicamente para Carlos');if(!S.suppliers.length){toast('Primero agregá un proveedor');return openSupplier()}const p=id?S.purchases.find(x=>x.id===id):null;purchaseEditingId=p?.id||null;purchaseModalTitle.textContent=p?'Editar compra':'Registrar compra';purchaseOptions(p?.supplierId||'',p?.userId||U?.id||'');purchaseDescription.value=p?.description||'';purchaseAmount.value=p?.amount||'';purchaseDate.value=p?String(p.date).slice(0,10):today();purchasePay.value=p?.payment||'Efectivo';purchaseNotes.value=p?.notes||'';savePurchase.textContent=p?'Guardar cambios':'Registrar compra';purchaseModal.classList.remove('hidden')};
+window.openPurchase=(id='')=>{if(!isCarlosBusiness())return toast('Compras está configurado únicamente para Carlos');if(!S.suppliers.length){toast('Primero agregá un proveedor');openSupplier();return}const p=id?S.purchases.find(x=>x.id===id):null;purchaseEditingId=p?.id||null;purchaseModalTitle.textContent=p?'Editar compra':'Registrar compra';purchaseOptions(p?.supplierId||'',p?.userId||U?.id||'');purchaseDescription.value=p?.description||'';purchaseAmount.value=p?.amount||'';purchaseDate.value=p?String(p.date).slice(0,10):today();purchasePay.value=p?.payment||'Efectivo';purchaseNotes.value=p?.notes||'';savePurchase.textContent=p?'Guardar cambios':'Registrar compra';purchaseModal.classList.remove('hidden')};
 window.closePurchase=()=>{purchaseEditingId=null;purchaseModal.classList.add('hidden')};
-savePurchase.onclick=async()=>{const supplier=S.suppliers.find(x=>x.id===purchaseSupplier.value),user=S.users.find(x=>x.id===purchaseUser.value),description=purchaseDescription.value.trim(),amount=Number(purchaseAmount.value),date=purchaseDate.value;if(!supplier||!user||!description||amount<=0||!date)return toast('Completá proveedor, detalle, monto, fecha y responsable');const was=!!purchaseEditingId;savePurchase.disabled=true;let r;if(was){const old=S.purchases.find(x=>x.id===purchaseEditingId);r=await sb.rpc('commerce_update_purchase',{p_organization_id:ORG.id,p_purchase_id:purchaseEditingId,p_member_id:user.id,p_supplier_id:supplier.id,p_description:description,p_amount:amount,p_payment_method:purchasePay.value,p_purchased_at:purchaseDateIso(date,old?.date),p_notes:purchaseNotes.value.trim()})}else r=await sb.rpc('commerce_create_purchase',{p_organization_id:ORG.id,p_member_id:user.id,p_supplier_id:supplier.id,p_description:description,p_amount:amount,p_payment_method:purchasePay.value,p_purchased_at:purchaseDateIso(date),p_notes:purchaseNotes.value.trim()});savePurchase.disabled=false;if(r.error)return toast(r.error.message);closePurchase();await loadCommerceFromSupabase(U?.id);render();toast(was?'Compra actualizada':'Compra registrada como egreso')};
+savePurchase.onclick=async()=>{const supplier=S.suppliers.find(x=>x.id===purchaseSupplier.value),user=S.users.find(x=>x.id===purchaseUser.value),description=purchaseDescription.value.trim(),amount=Number(purchaseAmount.value),date=purchaseDate.value;if(!supplier||!user||!description||amount<=0||!date)return toast('Completá proveedor, detalle, monto, fecha y responsable');const was=!!purchaseEditingId;savePurchase.disabled=true;let r;if(was){const old=S.purchases.find(x=>x.id===purchaseEditingId);r=await sb.rpc('commerce_update_purchase',{p_organization_id:ORG.id,p_purchase_id:purchaseEditingId,p_member_id:user.id,p_supplier_id:supplier.id,p_description:description,p_amount:amount,p_payment_method:purchasePay.value,p_purchased_at:purchaseDateIso(date,old?.date),p_notes:purchaseNotes.value.trim()})}else r=await sb.rpc('commerce_create_purchase',{p_organization_id:ORG.id,p_member_id:user.id,p_supplier_id:supplier.id,p_description:description,p_amount:amount,p_payment_method:purchasePay.value,p_purchased_at:purchaseDateIso(date),p_notes:purchaseNotes.value.trim()});savePurchase.disabled=false;if(r.error)return toast('Supabase: '+r.error.message);closePurchase();await loadCommerceFromSupabase(U?.id);render();toast(was?'Compra actualizada':'Compra registrada como egreso')};
 window.deletePurchase=async id=>{const p=S.purchases.find(x=>x.id===id);if(!p)return;if(!confirm(`¿Eliminar esta compra?\n\n${p.description}\n${p.supplierName}\n${money(p.amount)}\n\nTambién se eliminará el egreso relacionado.`))return;const {error}=await sb.rpc('commerce_delete_purchase',{p_organization_id:ORG.id,p_purchase_id:id});if(error)return toast(error.message);await loadCommerceFromSupabase(U?.id);render();toast('Compra y egreso eliminados')};
 window.openSupplier=id=>{if(!isCarlosBusiness())return toast('Proveedores está configurado únicamente para Carlos');const s=id?S.suppliers.find(x=>x.id===id):null;supplierEditingId=s?.id||null;supplierModalTitle.textContent=s?'Editar proveedor':'Agregar proveedor';supplierName.value=s?.name||'';supplierCategory.value=s?.category||'';supplierPhone.value=s?.phone||'';supplierNotes.value=s?.notes||'';saveSupplier.textContent=s?'Guardar cambios':'Guardar proveedor';supplierModal.classList.remove('hidden')};
 window.closeSupplier=()=>{supplierEditingId=null;supplierModal.classList.add('hidden')};
-saveSupplier.onclick=async()=>{const name=supplierName.value.trim();if(!name)return toast('Ingresá el nombre del proveedor');const was=!!supplierEditingId,data={organization_id:ORG.id,name,category:supplierCategory.value.trim()||null,phone:supplierPhone.value.trim()||null,notes:supplierNotes.value.trim()||null,active:true,updated_at:new Date().toISOString()};saveSupplier.disabled=true;let r=was?await sb.from('suppliers').update(data).eq('id',supplierEditingId).eq('organization_id',ORG.id):await sb.from('suppliers').insert(data);saveSupplier.disabled=false;if(r.error)return toast(r.error.message);closeSupplier();await loadCommerceFromSupabase(U?.id);render();toast(was?'Proveedor actualizado':'Proveedor agregado')};
-window.deleteSupplier=async id=>{const s=S.suppliers.find(x=>x.id===id);if(!s)return;const used=S.purchases.some(x=>x.supplierId===id);if(!confirm(used?`"${s.name}" tiene compras registradas. Se desactivará para nuevas compras.`:`¿Eliminar el proveedor "${s.name}"?`))return;let r=used?await sb.from('suppliers').update({active:false,updated_at:new Date().toISOString()}).eq('id',id).eq('organization_id',ORG.id):await sb.from('suppliers').delete().eq('id',id).eq('organization_id',ORG.id);if(r.error)return toast(r.error.message);await loadCommerceFromSupabase(U?.id);render();toast(used?'Proveedor desactivado':'Proveedor eliminado')};
+saveSupplier.onclick=async()=>{
+ const name=supplierName.value.trim();
+ if(!name)return toast('Ingresá el nombre del proveedor');
+ const was=!!supplierEditingId;
+ saveSupplier.disabled=true;
+ let r;
+ if(was){
+   r=await sb.rpc('commerce_update_supplier',{
+     p_organization_id:ORG.id,
+     p_supplier_id:supplierEditingId,
+     p_name:name,
+     p_category:supplierCategory.value.trim(),
+     p_phone:supplierPhone.value.trim(),
+     p_notes:supplierNotes.value.trim()
+   });
+ }else{
+   r=await sb.rpc('commerce_create_supplier',{
+     p_organization_id:ORG.id,
+     p_name:name,
+     p_category:supplierCategory.value.trim(),
+     p_phone:supplierPhone.value.trim(),
+     p_notes:supplierNotes.value.trim()
+   });
+ }
+ saveSupplier.disabled=false;
+ if(r.error)return toast('Supabase: '+r.error.message);
+ closeSupplier();
+ await loadCommerceFromSupabase(U?.id);
+ render();
+ toast(was?'Proveedor actualizado':'Proveedor agregado');
+};
+window.deleteSupplier=async id=>{
+ const s=S.suppliers.find(x=>x.id===id);
+ if(!s)return toast('Proveedor no encontrado');
+ const used=S.purchases.some(x=>x.supplierId===id);
+ if(!confirm(used
+   ?`"${s.name}" tiene compras registradas. Se desactivará para nuevas compras.`
+   :`¿Eliminar el proveedor "${s.name}"?`
+ ))return;
+
+ const {error}=await sb.rpc('commerce_delete_supplier',{
+   p_organization_id:ORG.id,
+   p_supplier_id:id
+ });
+ if(error)return toast('Supabase: '+error.message);
+
+ await loadCommerceFromSupabase(U?.id);
+ render();
+ toast(used?'Proveedor desactivado':'Proveedor eliminado');
+};
 function renderPurchases(){if(!isCarlosBusiness())return;const month=commerceMonthKey(new Date()),cur=S.purchases.filter(x=>commerceMonthKey(x.date)===month);purchaseMonthTotal.textContent=money(cur.reduce((a,x)=>a+Number(x.amount||0),0));purchaseMonthCount.textContent=`${cur.length} compra${cur.length===1?'':'s'}`;purchaseSupplierCount.textContent=S.suppliers.length;purchasesList.innerHTML=S.purchases.length?S.purchases.map(p=>`<article class="purchase-card"><div class="purchase-top"><div><div class="purchase-title">${p.description}</div><div class="purchase-sub">${p.supplierName}${p.notes?' · '+p.notes:''}</div></div><span class="outflow">−${money(p.amount)}</span></div><div class="purchase-meta"><div><span>Fecha</span><strong>${new Date(p.date).toLocaleDateString('es-AR')}</strong></div><div><span>Pago</span><strong>${p.payment}</strong></div><div><span>Registró</span><strong>${p.userName}</strong></div></div><div class="purchase-actions"><button class="btn secondary" onclick="openPurchase('${p.id}')">Editar</button><button class="btn secondary delete-sale" onclick="deletePurchase('${p.id}')">Eliminar</button></div></article>`).join(''):'<div class="empty">Todavía no hay compras registradas.</div>'}
 function renderSuppliers(){if(!isCarlosBusiness())return;suppliersList.innerHTML=S.suppliers.length?S.suppliers.map(s=>{const ps=S.purchases.filter(p=>p.supplierId===s.id),total=ps.reduce((a,p)=>a+Number(p.amount||0),0);return `<article class="supplier-card"><div class="supplier-top"><div><div class="supplier-name">${s.name}</div><div class="supplier-sub">${s.category||'Sin rubro especificado'}${s.phone?' · '+s.phone:''}</div></div><span class="badge">${ps.length} compra${ps.length===1?'':'s'}</span></div><div class="supplier-sub" style="margin-top:8px">Total comprado: <strong style="color:var(--text)">${money(total)}</strong>${s.notes?' · '+s.notes:''}</div><div class="supplier-actions"><button class="btn secondary" onclick="openSupplier('${s.id}')">Editar</button><button class="btn secondary delete-sale" onclick="deleteSupplier('${s.id}')">Eliminar</button></div></article>`}).join(''):'<div class="empty">Todavía no hay proveedores cargados.</div>'}
 
@@ -2333,7 +2495,17 @@ function renderExpenses(){
      tod=review.filter(x=>String(x.date).slice(0,10)===today()).reduce((a,x)=>a+Number(x.amount||0),0);
  eTotal.textContent=money(total);
  eToday.textContent=money(tod);
- expensesList.innerHTML=review.length?review.map(x=>`<div class="row"><div><strong>${x.concept}</strong><small>${x.userName} · ${x.payment} · ${new Date(x.date).toLocaleDateString('es-AR')}${x.notes?' · '+x.notes:''}</small></div><span class="outflow">−${money(x.amount)}</span></div>`).join(''):'<div class="empty">No hay gastos para el mes seleccionado.</div>';
+ expensesList.innerHTML=review.length?review.map(x=>{
+ const linked=S.purchases.some(p=>p.expenseId===x.id);
+ return `<div class="row">
+   <div>
+     <strong>${x.concept}</strong>
+     <small>${x.userName} · ${x.payment} · ${new Date(x.date).toLocaleDateString('es-AR')}${x.notes?' · '+x.notes:''}${linked?' · Vinculado a compra':''}</small>
+     ${isCarlosBusiness()&&!linked?`<div class="purchase-actions"><button class="btn secondary" onclick="openEditExpense('${x.id}')">Editar</button><button class="btn secondary delete-sale" onclick="deleteExpense('${x.id}')">Eliminar</button></div>`:''}
+   </div>
+   <span class="outflow">−${money(x.amount)}</span>
+ </div>`;
+}).join(''):'<div class="empty">No hay gastos para el mes seleccionado.</div>';
 }
 function renderPayroll(){
  let emps=employeeUsers(),
