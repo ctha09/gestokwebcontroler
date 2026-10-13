@@ -9,7 +9,7 @@
   --bg:#090c10;--panel:#151b22;--panel2:#1c232c;--panel3:#252e38;--border:#2c3642;
   --text:#f6f7f9;--muted:#96a2af;--orange:#f28c28;--green:#39c77d;--red:#ff6b6b;
   --yellow:#f0c85a;--blue:#5799ff;--purple:#aa7cff;--shadow:0 18px 48px rgba(0,0,0,.32)
-}a
+}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}body{overflow:hidden}button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 .btn{border:0;border-radius:14px;min-height:44px;padding:10px 13px;font-weight:850;transition:.16s}.btn:active{transform:scale(.98)}.primary{background:var(--orange);color:#17100a}.secondary{background:var(--panel3);color:#fff;border:1px solid var(--border)}.danger{background:rgba(255,107,107,.12);color:var(--red);border:1px solid rgba(255,107,107,.24)}
 .input,.select,.textarea{width:100%;min-height:46px;border:1px solid var(--border);border-radius:14px;background:var(--panel2);color:#fff;padding:11px 12px;outline:none}.textarea{min-height:88px;resize:vertical}.input:focus,.select:focus,.textarea:focus{border-color:rgba(242,140,40,.7)}label{display:block;color:var(--muted);font-size:9px;margin:0 0 5px}.card{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:12px;box-shadow:var(--shadow)}.badge{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:8px;font-weight:900;background:rgba(242,140,40,.13);color:var(--orange)}.green{color:var(--green)!important}.red{color:var(--red)!important}.yellow{color:var(--yellow)!important}.blue{color:var(--blue)!important}.purple{color:var(--purple)!important}.money{color:var(--orange);font-weight:950}.row{display:flex;justify-content:space-between;align-items:center;gap:9px;padding:10px;background:var(--panel2);border:1px solid var(--border);border-radius:14px}.row strong{font-size:11px}.row small{display:block;color:var(--muted);font-size:8px;margin-top:3px;line-height:1.35}.empty{padding:22px;text-align:center;border:1px dashed var(--border);border-radius:14px;color:var(--muted);font-size:10px}.wordmark{font-weight:1000}.wordmark .ok{color:var(--orange)}.toast{position:fixed;left:12px;right:12px;bottom:calc(82px + env(safe-area-inset-bottom));z-index:1300;padding:11px 12px;border:1px solid var(--border);border-radius:14px;background:#14191f;font-size:9px;display:none}.toast.show{display:block}
@@ -1415,6 +1415,113 @@
   .receipt-cell.full{grid-column:auto}
 }
 
+
+/* ============================================================
+   V38 · PRUEBA GRATIS + CHAT CON GESTOK
+   ============================================================ */
+.trial-strip{
+  display:none;
+  margin:0 18px 10px;
+  padding:10px 12px;
+  border:1px solid rgba(110,168,255,.25);
+  border-radius:14px;
+  background:rgba(110,168,255,.08);
+  color:#dceaff;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px
+}
+.trial-strip.show{display:flex}
+.trial-strip strong{font-size:9px}
+.trial-strip span{display:block;margin-top:3px;color:#a9c7f5;font-size:8px}
+.trial-strip .btn{min-height:34px;padding:6px 9px;font-size:8px}
+
+.support-launch{
+  width:100%;
+  min-height:46px;
+  margin-top:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:1px solid rgba(242,140,40,.28);
+  border-radius:14px;
+  background:rgba(242,140,40,.1);
+  color:var(--text);
+  font-weight:950
+}
+#supportChatModal{z-index:7400}
+.support-chat-list{
+  min-height:260px;
+  max-height:430px;
+  overflow:auto;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  padding:8px 0
+}
+.support-bubble{
+  max-width:84%;
+  padding:9px 10px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  font-size:9px;
+  line-height:1.5
+}
+.support-bubble.client{
+  align-self:flex-end;
+  background:rgba(242,140,40,.1);
+  border-color:rgba(242,140,40,.22)
+}
+.support-bubble.gestok{
+  align-self:flex-start;
+  background:var(--panel2)
+}
+.support-bubble small{
+  display:block;
+  margin-top:5px;
+  color:var(--muted);
+  font-size:7px
+}
+.support-send-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:7px;
+  margin-top:8px
+}
+.support-unread-dot{
+  display:inline-grid;
+  min-width:18px;
+  height:18px;
+  padding:0 4px;
+  margin-left:5px;
+  place-items:center;
+  border-radius:999px;
+  background:var(--orange);
+  color:#17110a;
+  font-size:7px;
+  font-weight:1000
+}
+.subscription-contact{
+  margin-top:16px;
+  width:100%;
+  min-height:49px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  border:0;
+  border-radius:15px;
+  background:linear-gradient(145deg,#f59a36,#ef7f14);
+  color:#17110a;
+  font-size:11px;
+  font-weight:1000
+}
+@media(max-width:600px){
+  .trial-strip{margin:0 10px 9px;align-items:flex-start;flex-direction:column}
+  .trial-strip .btn{width:100%}
+}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -1432,7 +1539,7 @@
 
 <section id="portal" class="portal hidden"><div class="portal-shell">
   <div class="portal-top"><div class="wordmark">Gest<span class="ok">OK</span> <span style="color:var(--muted);font-weight:700">Web Control</span></div><span class="badge">Acceso general</span></div>
-  <div id="typeStep"><div class="hero"><h1>Ingresá a tu empresa.</h1><p>Elegí el tipo de sistema y entrá con el nombre de la empresa y la contraseña entregada por GestOK.</p>
+  <div id="typeStep"><div class="hero"><h1>Ingresá a tu empresa.</h1><p>Elegí el tipo de sistema y entrá con tu usuario o nombre de empresa y la contraseña entregada por GestOK.</p>
 <div id="installBanner" class="install-banner">
       <div class="install-banner-copy">
         <strong>Ya podés instalar nuestra app</strong>
@@ -1443,12 +1550,18 @@
     <button class="type" onclick="chooseType('commerce')"><div class="typeicon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16"/><path d="M5 9 6.5 4h11L19 9v11H5z"/><path d="M8 20v-6h8v6"/><path d="M8 9v2M12 9v2M16 9v2"/></svg></div><h3>Comercio</h3><p>Ventas libres, productos, stock, pedidos, actividad, balance y estadísticas.</p></button>
     <button class="type" onclick="chooseType('barbershop')"><div class="typeicon"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1 12 12"/><path d="M20 4 8.1 15.9"/><path d="M14.8 14.8 20 20"/></svg></div><h3>Barbería</h3><p>Ventas, turnos, clientes, equipo, caja y estadísticas.</p></button>
   </div></div>
-  <div id="loginStep" class="loginbox hidden"><button class="back" onclick="backType()">← Volver</button><div class="card"><span id="typeBadge" class="badge"></span><h2>Ingresá a tu panel.</h2><p>El acceso está vinculado al tipo de empresa registrado por GestOK.</p><div class="form"><div><label>Nombre de la empresa</label><input id="companyName" class="input"></div><div><label>Contraseña</label><input id="companyPassword" class="input" type="password"></div><button id="loginBtn" class="btn primary">Ingresar</button></div></div></div>
+  <div id="loginStep" class="loginbox hidden"><button class="back" onclick="backType()">← Volver</button><div class="card"><span id="typeBadge" class="badge"></span><h2>Ingresá a tu panel.</h2><p>El acceso está vinculado al tipo de empresa registrado por GestOK.</p><div class="form"><div><label>Usuario o empresa</label><input id="companyName" class="input" autocomplete="username"></div><div><label>Contraseña</label><input id="companyPassword" class="input" type="password"></div><button id="loginBtn" class="btn primary">Ingresar</button></div></div></div>
 </div></section>
 
 <section id="app" class="app hidden">
 <header class="top"><div class="commerce-brand"><div class="commerce-logo-row"><div class="commerce-wordmark">Gest<span class="ok">OK</span></div><span class="commerce-module">COMERCIO</span></div><div class="commerce-control-line"><span class="commerce-live-dot"></span>WEB CONTROL · SUPABASE ACTIVO</div><h1 id="title">Resumen</h1></div><div id="role" class="role">Administrador</div></header>
-<div id="licenseNotice" class="license-notice"><span id="licenseText"></span><button class="btn secondary" style="min-height:34px;padding:6px 8px;font-size:8px" onclick="go('gestok')">Ver</button></div>
+<div id="licenseNotice" class="license-notice"><span id="licenseText"></span><button class="btn secondary" style="min-height:34px;padding:6px 8px;font-size:8px" onclick="go('gestok')">Ver</button></div><div id="trialStrip" class="trial-strip">
+  <div>
+    <strong id="trialStripTitle">Prueba gratuita</strong>
+    <span id="trialStripText">Te quedan 7 días para probar GestOK.</span>
+  </div>
+  <button class="btn secondary" onclick="openSupportChat()">Hablar con GestOK</button>
+</div>
 <main class="main">
   <section id="home" class="view active">
     <div class="quick"><button onclick="openSale()"><span>＋</span><b>Nueva venta</b></button><button id="quickOrderBtn" onclick="openOrder()"><span>＋</span><b id="quickOrder">Nuevo pedido</b></button><button onclick="openActivity()"><span>＋</span><b id="quickActivity">Registrar avance</b></button></div>
@@ -1700,7 +1813,34 @@
 
   <section id="users" class="view"><div class="section"><div><h2>Usuarios</h2><p>El administrador crea los perfiles que trabajan en la empresa.</p></div><button id="addUserBtn" class="btn primary" onclick="openUser()">+ Usuario</button></div><div class="card" style="margin-bottom:8px"><label>Usuario activo en este dispositivo</label><select id="activeUserSelect" class="select"></select></div><div id="usersList" class="profilegrid"></div></section>
 
-  <section id="gestok" class="view"><div class="section"><div><h2>GestOK y mensualidad</h2><p>Estado del servicio y contacto.</p></div></div><div class="card"><span id="gBadge" class="badge"></span><div id="gStatus" class="gstatus"></div><p id="gMessage" style="color:var(--muted);font-size:9px;line-height:1.55"></p><div class="ginfo"><div><small>Empresa</small><strong id="gCompany"></strong></div><div><small>Contacto GestOK</small><strong>3751232618</strong></div><div><small>Inicio</small><strong id="gStart"></strong></div><div><small>Vencimiento</small><strong id="gDue"></strong></div></div><div id="gReasonWrap" class="ginfo hidden" style="grid-template-columns:1fr"><div><small>Motivo</small><strong id="gReason"></strong></div></div><a id="waLink" class="wa" target="_blank" rel="noopener">Contactar por WhatsApp</a></div><div class="card" style="margin-top:8px"><div class="head"><div><h3>Avisos de GestOK</h3></div></div><div id="gNotices"></div></div></section>
+  <section id="gestok" class="view">
+  <div class="section">
+    <div><h2>GestOK y servicio</h2><p>Estado del servicio y contacto directo con GestOK.</p></div>
+  </div>
+  <div class="card">
+    <span id="gBadge" class="badge"></span>
+    <div id="gStatus" class="gstatus"></div>
+    <p id="gMessage" style="color:var(--muted);font-size:9px;line-height:1.55"></p>
+    <div class="ginfo">
+      <div><small>Empresa</small><strong id="gCompany"></strong></div>
+      <div><small>Usuario</small><strong id="gLoginUser"></strong></div>
+      <div><small>Inicio</small><strong id="gStart"></strong></div>
+      <div><small id="gDueLabel">Vencimiento</small><strong id="gDue"></strong></div>
+    </div>
+    <div id="gReasonWrap" class="ginfo hidden" style="grid-template-columns:1fr">
+      <div><small>Motivo</small><strong id="gReason"></strong></div>
+    </div>
+    <button id="supportOpenBtn" class="support-launch" onclick="openSupportChat()">
+      Hablar con GestOK
+      <span id="supportUnreadBadge" class="support-unread-dot hidden">0</span>
+    </button>
+  </div>
+
+  <div class="card" style="margin-top:8px">
+    <div class="head"><div><h3>Avisos de GestOK</h3></div></div>
+    <div id="gNotices"></div>
+  </div>
+</section>
 </main>
 
 <nav class="nav">
@@ -1957,6 +2097,26 @@
   </div>
 </div>
 
+<div id="supportChatModal" class="modalbg hidden">
+  <div class="modal">
+    <h3>Hablar con GestOK</h3>
+    <p>Escribinos desde acá. La conversación queda vinculada a tu empresa.</p>
+
+    <div id="supportClientMessages" class="support-chat-list">
+      <div class="empty">Cargando conversación...</div>
+    </div>
+
+    <div class="support-send-row">
+      <textarea id="supportClientInput" class="textarea" maxlength="2000" placeholder="Escribí tu mensaje..."></textarea>
+      <button id="supportClientSend" class="btn primary">Enviar</button>
+    </div>
+
+    <div class="mactions">
+      <button class="btn secondary" onclick="closeSupportChat()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast" class="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1972,7 +2132,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const DB_KEY='gestok_unified_platform_v4',WA='5493751232618';
 const COMMERCE_ST=['Prioritario','Pendiente','En proceso','Enviado a impresion','Finalizado'];
 const BARBER_ST=['Pendiente','Confirmado','En proceso','Finalizado','Cancelado'];
-let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null,orderEditingId=null,SCR_HOME_PERIOD='month',SCR_HOME_MONTH='',BALANCE_PERIOD='monthly',BALANCE_DAY='',BALANCE_WEEK='',BALANCE_MONTH='',BALANCE_SEARCH='',BALANCE_FILTERS={payments:[],employee:'all',client:'all'},HISTORY_FLOW='all',HISTORY_PERIOD='monthly',HISTORY_DAY='',HISTORY_WEEK='',HISTORY_MONTH='',HISTORY_YEAR='',HISTORY_SEARCH='',purchaseEditingId=null,supplierEditingId=null,expenseEditingId=null,purchaseReceiptId=null,COMMERCIAL_FLOW_FILTER='all';
+let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null,orderEditingId=null,SCR_HOME_PERIOD='month',SCR_HOME_MONTH='',BALANCE_PERIOD='monthly',BALANCE_DAY='',BALANCE_WEEK='',BALANCE_MONTH='',BALANCE_SEARCH='',BALANCE_FILTERS={payments:[],employee:'all',client:'all'},HISTORY_FLOW='all',HISTORY_PERIOD='monthly',HISTORY_DAY='',HISTORY_WEEK='',HISTORY_MONTH='',HISTORY_YEAR='',HISTORY_SEARCH='',purchaseEditingId=null,supplierEditingId=null,expenseEditingId=null,purchaseReceiptId=null,COMMERCIAL_FLOW_FILTER='all',supportClientRows=[],supportClientChannel=null;
 
 function baseDB(){return{organizations:[],records:{},notifications:[],payments:[]}}
 function loadDB(){try{let d=JSON.parse(localStorage.getItem(DB_KEY))||baseDB();d.organizations=d.organizations||[];d.records=d.records||{};d.notifications=d.notifications||[];d.payments=d.payments||[];return d}catch{return baseDB()}}
@@ -2134,15 +2294,26 @@ function hideSubscriptionBlocker(){
  if(app)app.classList.remove('subscription-locked');
  const f=document.getElementById('gestokBarberFrame');if(f){f.style.filter='';f.style.pointerEvents=''}
 }
-function showSubscriptionBlocker(name){
+function showSubscriptionBlocker(name,mode='subscription'){
  const b=document.getElementById('subscriptionBlocker');if(!b)return;
  const c=document.getElementById('blockedCompany');if(c)c.textContent=name||'GestOK Web Control';
+ const title=document.getElementById('blockedTitle');
+ const text=document.getElementById('blockedText');
+
+ if(mode==='trial'){
+   if(title)title.textContent='Tu prueba gratuita finalizó';
+   if(text)text.textContent='Los 7 días de prueba terminaron. Hablá con GestOK desde acá para contratar el servicio y continuar usando tu panel.';
+ }else{
+   if(title)title.textContent='Tu suscripción finalizó';
+   if(text)text.textContent='El acceso a Web Control se encuentra temporalmente bloqueado. Hablá con GestOK para consultar tu servicio y reactivarlo.';
+ }
+
  b.classList.remove('hidden');
  if(!app.classList.contains('hidden'))app.classList.add('subscription-locked');
  const f=document.getElementById('gestokBarberFrame');if(f){f.style.filter='blur(7px) brightness(.52)';f.style.pointerEvents='none'}
 }
 async function exitBlockedSession(){
- await stopCommerceRealtime();await sb.auth.signOut();
+ await stopCommerceRealtime();await stopSupportClientRealtime();await sb.auth.signOut();
  const f=document.getElementById('gestokBarberFrame');if(f)f.remove();
  hideSubscriptionBlocker();app.classList.add('hidden');portal.classList.remove('hidden');
  ORG=null;S=null;U=null;AUTH_MEMBER_ID=null;backType();
@@ -2150,6 +2321,102 @@ async function exitBlockedSession(){
 function slugifyCompany(value){
  return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')
 }
+
+function trialDaysRemaining(sub){
+ const end=sub?.trialEndsAt||sub?.trial_ends_at||sub?.nextDueDate||sub?.next_due_date;
+ if(!end)return 0;
+ return Math.max(0,Math.ceil((parseDateOnly(end)-parseDateOnly(today()))/86400000));
+}
+function trialExpired(sub){
+ const end=sub?.trialEndsAt||sub?.trial_ends_at||sub?.nextDueDate||sub?.next_due_date;
+ return !!end && parseDateOnly(end)<=parseDateOnly(today());
+}
+function applyTrialAccess(){
+ const s=ORG?.subscription;
+ const trial=s?.status==='Prueba gratuita';
+ if(!trial){
+   trialStrip?.classList.remove('show');
+   return;
+ }
+
+ const left=trialDaysRemaining(s);
+ trialStrip?.classList.add('show');
+ trialStripTitle.textContent='Prueba gratuita de GestOK';
+ trialStripText.textContent=left===0
+   ?'Tu prueba finaliza hoy.'
+   :`Te quedan ${left} día${left===1?'':'s'} de prueba gratuita.`;
+
+ if(trialExpired(s)){
+   setTimeout(()=>showSubscriptionBlocker(ORG.name,'trial'),60);
+ }
+}
+async function loadSupportClientMessages(){
+ if(!ORG)return;
+ const {data,error}=await sb.from('support_messages')
+   .select('*')
+   .eq('organization_id',ORG.id)
+   .order('created_at',{ascending:true});
+ if(error)return toast('No se pudo cargar la conversación');
+ supportClientRows=data||[];
+
+ const unread=supportClientRows.filter(m=>m.sender_type==='gestok'&&!m.read_by_client).length;
+ supportUnreadBadge.textContent=unread;
+ supportUnreadBadge.classList.toggle('hidden',unread===0);
+
+ renderSupportClientMessages();
+}
+function renderSupportClientMessages(){
+ if(!document.getElementById('supportClientMessages'))return;
+ supportClientMessages.innerHTML=supportClientRows.length?supportClientRows.map(m=>`
+   <div class="support-bubble ${m.sender_type==='client'?'client':'gestok'}">
+     ${m.message}
+     <small>${m.sender_type==='client'?(U?.name||'Vos'):'GestOK'} · ${new Date(m.created_at).toLocaleString('es-AR',{dateStyle:'short',timeStyle:'short'})}</small>
+   </div>
+ `).join(''):'<div class="empty">Todavía no hay mensajes. Escribinos cuando quieras.</div>';
+ supportClientMessages.scrollTop=supportClientMessages.scrollHeight;
+}
+async function startSupportClientRealtime(){
+ if(supportClientChannel||!ORG)return;
+ supportClientChannel=sb.channel(`gestok-support-client-${ORG.id}`);
+ supportClientChannel.on('postgres_changes',{
+   event:'*',schema:'public',table:'support_messages',filter:`organization_id=eq.${ORG.id}`
+ },()=>loadSupportClientMessages());
+ supportClientChannel.subscribe();
+}
+async function stopSupportClientRealtime(){
+ if(supportClientChannel){await sb.removeChannel(supportClientChannel);supportClientChannel=null}
+}
+window.openSupportChat=async()=>{
+ if(!ORG)return;
+ supportChatModal.classList.remove('hidden');
+ await loadSupportClientMessages();
+ await sb.rpc('support_mark_client_read',{p_organization_id:ORG.id});
+ supportClientRows=supportClientRows.map(m=>m.sender_type==='gestok'?{...m,read_by_client:true}:m);
+ supportUnreadBadge.classList.add('hidden');
+ renderSupportClientMessages();
+ startSupportClientRealtime();
+};
+window.closeSupportChat=()=>supportChatModal.classList.add('hidden');
+
+supportClientSend.onclick=async()=>{
+ if(!ORG)return;
+ const message=supportClientInput.value.trim();
+ if(!message)return;
+ supportClientSend.disabled=true;
+ const {error}=await sb.from('support_messages').insert({
+   organization_id:ORG.id,
+   sender_type:'client',
+   sender_name:U?.name||ORG.name,
+   message,
+   read_by_admin:false,
+   read_by_client:true
+ });
+ supportClientSend.disabled=false;
+ if(error)return toast(error.message);
+ supportClientInput.value='';
+ await loadSupportClientMessages();
+};
+
 async function login(){
  const company=companyName.value.trim(),password=companyPassword.value;
  if(!company||!password)return toast('Completá empresa y contraseña');
@@ -2175,7 +2442,7 @@ async function login(){
 
  const [{data:org,error:orgError},{data:sub,error:subError}]=await Promise.all([
    sb.from('organizations').select('id,name,type,phone,monthly_fee,active,created_at').eq('id',member.organization_id).single(),
-   sb.from('subscriptions').select('status,start_date,next_due_date,reason,updated_at').eq('organization_id',member.organization_id).maybeSingle()
+   sb.from('subscriptions').select('status,start_date,next_due_date,trial_started_at,trial_ends_at,reason,updated_at').eq('organization_id',member.organization_id).maybeSingle()
  ]);
 
  loginBtn.disabled=false;loginBtn.textContent='Ingresar';
@@ -2188,7 +2455,7 @@ async function login(){
  let mirror=DB.organizations.find(x=>x.id===org.id);
  const mirrorData={
    id:org.id,name:org.name,type:org.type,loginSlug:slugifyCompany(company),phone:org.phone||'',monthlyFee:Number(org.monthly_fee||0),active:org.active!==false,
-   subscription:{status:sub?.status||'Activo',startDate:sub?.start_date||today(),nextDueDate:sub?.next_due_date||today(),reason:sub?.reason||'',updatedAt:sub?.updated_at||new Date().toISOString()}
+   subscription:{status:sub?.status||'Activo',startDate:sub?.start_date||today(),nextDueDate:sub?.next_due_date||today(),trialStartedAt:sub?.trial_started_at||'',trialEndsAt:sub?.trial_ends_at||'',reason:sub?.reason||'',updatedAt:sub?.updated_at||new Date().toISOString()}
  };
  if(mirror)Object.assign(mirror,mirrorData);else{mirror=mirrorData;DB.organizations.push(mirror)}
  if(!DB.records[org.id])DB.records[org.id]={users:[],sales:[],orders:[],ledger:[],activity:[],stock:[],services:[],clients:[],expenses:[],salaryPayments:[]};
@@ -2204,10 +2471,17 @@ async function login(){
    if(U)U.name=member.display_name||'Administrador';
    launchBarber(ORG.id);
    if(org.active===false)setTimeout(()=>showSubscriptionBlocker(org.name),80);
+   if(ORG.subscription?.status==='Prueba gratuita'&&trialExpired(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name,'trial'),100);
+   applyTrialAccess();
+   loadSupportClientMessages();
+   startSupportClientRealtime();
    return;
  }
  await loadCommerceFromSupabase(member.id);
  enterApp();
+ applyTrialAccess();
+ loadSupportClientMessages();
+ startSupportClientRealtime();
  await startCommerceRealtime();
  if(org.active===false)showSubscriptionBlocker(org.name);
 }
@@ -2229,7 +2503,7 @@ async function loadCommerceFromSupabase(preferredMemberId=AUTH_MEMBER_ID){
   sb.from('expenses').select('*').eq('organization_id',orgId).order('expense_at',{ascending:false}),
   sb.from('salary_payments').select('*').eq('organization_id',orgId).order('paid_at',{ascending:false}),
   sb.from('notifications').select('*').eq('organization_id',orgId).order('created_at',{ascending:false}),
-  sb.from('subscriptions').select('status,start_date,next_due_date,reason,updated_at').eq('organization_id',orgId).maybeSingle(),
+  sb.from('subscriptions').select('status,start_date,next_due_date,trial_started_at,trial_ends_at,reason,updated_at').eq('organization_id',orgId).maybeSingle(),
   sb.from('suppliers').select('*').eq('organization_id',orgId).eq('active',true).order('name'),
   sb.from('purchases').select('*').eq('organization_id',orgId).order('purchased_at',{ascending:false})
  ]);
@@ -2284,7 +2558,7 @@ async function loadCommerceFromSupabase(preferredMemberId=AUTH_MEMBER_ID){
 
  S=next;U=S.users.find(x=>x.id===preferredMemberId)||S.users.find(x=>x.role==='admin'||x.role==='Administrador')||S.users[0];
  DB=loadDB();DB.notifications=(DB.notifications||[]).filter(n=>n.orgId!==orgId).concat((noticesR.data||[]).map(n=>({id:n.id,orgId:n.organization_id,date:n.created_at,title:n.title,message:n.message,reason:n.reason||'',read:n.read===true})));
- const localOrg=DB.organizations.find(x=>x.id===orgId);if(localOrg&&subR.data){localOrg.subscription={status:subR.data.status,startDate:subR.data.start_date,nextDueDate:subR.data.next_due_date,reason:subR.data.reason||'',updatedAt:subR.data.updated_at};ORG=localOrg}saveDB();
+ const localOrg=DB.organizations.find(x=>x.id===orgId);if(localOrg&&subR.data){localOrg.subscription={status:subR.data.status,startDate:subR.data.start_date,nextDueDate:subR.data.next_due_date,trialStartedAt:subR.data.trial_started_at||'',trialEndsAt:subR.data.trial_ends_at||'',reason:subR.data.reason||'',updatedAt:subR.data.updated_at};ORG=localOrg}saveDB();
 }
 function scheduleCommerceReload(){clearTimeout(commerceReloadTimer);commerceReloadTimer=setTimeout(async()=>{if(!ORG||ORG.type!=='commerce')return;const selected=U?.id||AUTH_MEMBER_ID;await loadCommerceFromSupabase(selected);render();if($('#stats')?.classList.contains('active'))requestAnimationFrame(drawStatsChart)},180)}
 async function stopCommerceRealtime(){if(commerceChannel){await sb.removeChannel(commerceChannel);commerceChannel=null}}
@@ -2356,7 +2630,7 @@ function go(v){if(isCarlosBusiness()&&v==='orders')v='purchases';if(!isCarlosBus
  $$('#commerceClearMenu [data-clear-v]').forEach(x=>x.classList.toggle('active',x.dataset.clearV===v));
 }
 closeMore();render();if(v==='stats'&&isActiveAdmin())requestAnimationFrame(drawStatsChart);if(v==='gestok')markNoticesRead()}
-window.go=go;$$('.nav button[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-action="whatsapp"]').forEach(x=>x.onclick=()=>{closeMore();openGestokWhatsApp()});back.onclick=closeMore;plus.onclick=()=>choice.classList.remove('hidden');logoutCompany.onclick=async()=>{closeMore();await stopCommerceRealtime();await sb.auth.signOut();hideSubscriptionBlocker();app.classList.add('hidden');portal.classList.remove('hidden');ORG=null;S=null;U=null;AUTH_MEMBER_ID=null;backType()};function closeChoice(){choice.classList.add('hidden')}window.closeChoice=closeChoice;
+window.go=go;$$('.nav button[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-action="whatsapp"]').forEach(x=>x.onclick=()=>{closeMore();openGestokWhatsApp()});back.onclick=closeMore;plus.onclick=()=>choice.classList.remove('hidden');logoutCompany.onclick=async()=>{closeMore();await stopCommerceRealtime();await stopSupportClientRealtime();await sb.auth.signOut();hideSubscriptionBlocker();app.classList.add('hidden');portal.classList.remove('hidden');ORG=null;S=null;U=null;AUTH_MEMBER_ID=null;backType()};function closeChoice(){choice.classList.add('hidden')}window.closeChoice=closeChoice;
 
 /* Dock táctil Comercio */
 const commerceDock=$('.nav'),commerceDockButtons=$$('.nav button');let commerceDockPointer=null,commerceDockHot=null,commerceDockStartX=0,commerceDockStartY=0,commerceDockMoved=false,commerceSuppress=false;
@@ -4085,14 +4359,98 @@ function drawStatsChart(){
 window.addEventListener('resize',()=>{if(stats.classList.contains('active'))drawStatsChart()});
 
 /* Mensualidad */
-function syncLicense(){DB=loadDB();ORG=DB.organizations.find(x=>x.id===ORG.id)||ORG;let s=ORG.subscription;if(!s)return;let d=daysUntil(s.nextDueDate);if((s.status==='Activo'||s.status==='Por vencer')&&d<0){s.status='Vencido';s.reason='La fecha de vencimiento mensual fue superada.'}else if(s.status==='Activo'&&d>=0&&d<=10){s.status='Por vencer';s.reason=`Tu mensualidad se acabará en ${d} día${d===1?'':'s'}.`}saveDB()}
-function renderGestOK(){syncLicense();let s=ORG.subscription||{},d=daysUntil(s.nextDueDate),notes=DB.notifications.filter(n=>n.orgId===ORG.id),warn=s.status==='Por vencer'?`Tu mensualidad se acabará en ${Math.max(0,d)} día${d===1?'':'s'}.`:s.status==='Pendiente de pago'?'Tu mensualidad está pendiente de pago.':s.status==='Vencido'?'Tu mensualidad está vencida.':'';licenseNotice.classList.toggle('show',!!warn);licenseText.textContent=warn;gBadge.textContent=s.status||'-';gStatus.textContent=s.status||'-';gCompany.textContent=ORG.name;gStart.textContent=s.startDate||'-';gDue.textContent=s.nextDueDate||'-';gReasonWrap.classList.toggle('hidden',!s.reason);gReason.textContent=s.reason||'';gMessage.textContent=s.status==='Activo'?'Tu servicio está activo.':warn||'Consultá tu estado con GestOK.';gNotices.innerHTML=notes.length?notes.slice(0,12).map(n=>`<div class="notice"><strong>${n.title}</strong><p>${new Date(n.date).toLocaleDateString('es-AR')} · ${n.message}${n.reason?' · '+n.reason:''}</p></div>`).join(''):'<div class="empty">No hay avisos.</div>';waLink.href='https://wa.me/'+WA+'?text='+encodeURIComponent(`Hola GestOK. Soy de ${ORG.name}. Quiero consultar por mi mensualidad. Estado: ${s.status||'-'}. Vencimiento: ${s.nextDueDate||'-'}.`)}
-function markNoticesRead(){DB.notifications.filter(n=>n.orgId===ORG.id).forEach(n=>n.read=true);saveDB();renderGestOK()}
+function syncLicense(){
+ DB=loadDB();
+ ORG=DB.organizations.find(x=>x.id===ORG.id)||ORG;
+ let s=ORG.subscription;
+ if(!s)return;
+
+ if(s.status==='Prueba gratuita'){
+   return;
+ }
+
+ let d=daysUntil(s.nextDueDate);
+ if((s.status==='Activo'||s.status==='Por vencer')&&d<0){
+   s.status='Vencido';
+   s.reason='La fecha de vencimiento mensual fue superada.';
+ }else if(s.status==='Activo'&&d>=0&&d<=10){
+   s.status='Por vencer';
+   s.reason=`Tu mensualidad se acabará en ${d} día${d===1?'':'s'}.`;
+ }
+ saveDB();
+}
+function renderGestOK(){
+ syncLicense();
+ const s=ORG.subscription||{};
+ const trial=s.status==='Prueba gratuita';
+ const trialEnd=s.trialEndsAt||s.nextDueDate;
+ const left=trial?trialDaysRemaining(s):null;
+ const d=daysUntil(s.nextDueDate);
+ const notes=DB.notifications.filter(n=>n.orgId===ORG.id);
+
+ let warn='';
+ if(trial){
+   if(trialExpired(s))warn='Tu prueba gratuita finalizó.';
+   else if(left<=2)warn=`Tu prueba gratuita termina en ${left} día${left===1?'':'s'}. Podés hablar con GestOK desde acá para contratar el servicio.`;
+ }else{
+   warn=s.status==='Por vencer'
+     ?`Tu mensualidad se acabará en ${Math.max(0,d)} día${d===1?'':'s'}.`
+     :s.status==='Pendiente de pago'
+       ?'Tu mensualidad está pendiente de pago.'
+       :s.status==='Vencido'
+         ?'Tu mensualidad está vencida.'
+         :'';
+ }
+
+ licenseNotice.classList.toggle('show',!!warn);
+ licenseText.textContent=warn;
+
+ if(trial){
+   trialStrip.classList.add('show');
+   trialStripTitle.textContent='Prueba gratuita de 7 días';
+   trialStripText.textContent=trialExpired(s)
+     ?'Tu prueba gratuita finalizó.'
+     :`Te quedan ${left} día${left===1?'':'s'} para probar GestOK.`;
+ }else{
+   trialStrip.classList.remove('show');
+ }
+
+ gBadge.textContent=trial?`Prueba · ${left}d`:(s.status||'-');
+ gBadge.className='badge'+(trial?' yellow':'');
+ gStatus.textContent=trial?'Prueba gratuita':(s.status||'-');
+ gCompany.textContent=ORG.name;
+ gLoginUser.textContent=ORG.loginSlug||'-';
+ gStart.textContent=trial?(s.trialStartedAt||s.startDate||'-'):(s.startDate||'-');
+ gDueLabel.textContent=trial?'Fin de prueba':'Vencimiento';
+ gDue.textContent=trial?(trialEnd||'-'):(s.nextDueDate||'-');
+
+ gReasonWrap.classList.toggle('hidden',!s.reason);
+ gReason.textContent=s.reason||'';
+
+ gMessage.textContent=trial
+   ?(trialExpired(s)
+      ?'La prueba terminó. Hablá con GestOK para activar el servicio.'
+      :`Tu prueba gratuita está activa. Tenés acceso durante ${left} día${left===1?'':'s'} más.`)
+   :s.status==='Activo'
+      ?'Tu servicio está activo.'
+      :warn||'Consultá tu estado con GestOK.';
+
+ gNotices.innerHTML=notes.length
+   ?notes.slice(0,12).map(n=>`<div class="notice"><strong>${n.title}</strong><p>${new Date(n.date).toLocaleDateString('es-AR')} · ${n.message}${n.reason?' · '+n.reason:''}</p></div>`).join('')
+   :'<div class="empty">No hay avisos.</div>';
+
+ loadSupportClientMessages();
+}
+function markNoticesRead(){
+ DB.notifications.filter(n=>n.orgId===ORG.id).forEach(n=>n.read=true);
+ saveDB();
+ renderGestOK();
+}
 
 /* Persistencia compartida */
 window.addEventListener('storage',e=>{if(e.key===DB_KEY&&ORG){let oldId=ORG.id;DB=loadDB();ORG=DB.organizations.find(x=>x.id===oldId)||ORG;S=DB.records[oldId]||S;render()}});
 
-const blockedLogoutBtn=document.getElementById('blockedLogout');if(blockedLogoutBtn)blockedLogoutBtn.onclick=exitBlockedSession;
+const blockedLogoutBtn=document.getElementById('blockedLogout');if(blockedLogoutBtn)blockedLogoutBtn.onclick=exitBlockedSession;const blockedSupportBtn=document.getElementById('blockedSupportBtn');if(blockedSupportBtn)blockedSupportBtn.onclick=openSupportChat;
 
 
 /* ============================================================
@@ -4180,11 +4538,10 @@ updateGestokInstallBanner();
 <div id="subscriptionBlocker" class="subscription-blocker hidden">
   <div class="subscription-block-card">
     <div class="subscription-lock-icon"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
-    <h2>Tu suscripción finalizó</h2>
-    <p>El acceso a Web Control se encuentra temporalmente bloqueado. Comunicate con GestOK para consultar tu mensualidad y reactivar el servicio.</p>
+    <h2 id="blockedTitle">Tu suscripción finalizó</h2>
+    <p id="blockedText">El acceso a Web Control se encuentra temporalmente bloqueado. Hablá con GestOK para reactivar el servicio.</p>
     <div id="blockedCompany" class="subscription-company">GestOK Web Control</div>
-    <a class="subscription-wa" href="https://wa.me/5493751232618?text=Hola%20GestOK%2C%20quiero%20consultar%20por%20mi%20suscripci%C3%B3n%20de%20Web%20Control." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"/><path d="M9 8.8c.5 2.3 2 3.9 4.3 4.7"/><path d="M9 8.8 10.3 8l1.1 2-1 .7M13.3 13.5l.7-1 2 1.1-.8 1.3"/></svg><span>Contactar a GestOK</span></a>
-    <div class="subscription-number">WhatsApp · 3751232618</div>
+    <button id="blockedSupportBtn" class="subscription-contact" type="button">Hablar con GestOK</button>
     <button id="blockedLogout" class="subscription-exit">Salir de la cuenta</button>
   </div>
 </div>
