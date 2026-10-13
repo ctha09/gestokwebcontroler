@@ -1718,6 +1718,273 @@
   .push-enable-notice .btn{width:100%}
 }
 
+
+/* ============================================================
+   V41 · LEGIBILIDAD GLOBAL
+   ============================================================ */
+:root{
+  --gestok-font: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont,
+                 "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+html{
+  font-size:16px;
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+body,button,input,select,textarea{
+  font-family:var(--gestok-font)!important;
+  letter-spacing:-0.01em;
+}
+body{font-size:15px!important;line-height:1.48!important}
+h1{font-size:26px!important;line-height:1.18!important;letter-spacing:-0.035em!important}
+h2{font-size:22px!important;line-height:1.22!important;letter-spacing:-0.025em!important}
+h3{font-size:17px!important;line-height:1.28!important}
+.section p,.head p,.card p,.modal p,.cmeta,.purchase-sub,.clear-menu-copy small,.notice p,.alert p,.gstatus+p,.trial-main-copy span,.push-enable-copy span{
+  font-size:13px!important;line-height:1.5!important
+}
+small,.metric small,.info small,.ginfo small,.receipt-cell span,.purchase-meta span{font-size:12px!important}
+label{font-size:13px!important;font-weight:750!important;margin-bottom:6px!important}
+.input,.select,.textarea,input,select,textarea{font-size:15px!important;line-height:1.35!important}
+.input,.select{min-height:44px!important}
+.textarea{min-height:92px}
+input::placeholder,textarea::placeholder{font-size:14px!important}
+.btn,button,.tab,.clear-menu-item,.carlos-movement-tabs button{font-size:13px!important;line-height:1.25!important}
+.btn{min-height:42px!important;padding:9px 13px!important}
+.metric span,.carlos-method-card span{font-size:13px!important}
+.metric strong{font-size:24px!important;line-height:1.15!important}
+.carlos-method-card strong{font-size:18px!important}
+.badge{font-size:12px!important;line-height:1.2!important;padding:6px 9px!important}
+.row strong,.purchase-title,.cname{font-size:15px!important;line-height:1.35!important}
+.row small,.purchase-sub,.cmeta{font-size:12.5px!important}
+.row .money,.row .outflow,.purchase-top .outflow{font-size:14px!important;font-weight:900!important}
+.clear-menu-copy strong{font-size:14px!important}
+.clear-menu-copy small{font-size:12px!important}
+.clear-menu-icon{font-size:20px!important}
+.carlos-bar-label{font-size:12px!important}
+.carlos-bar-value{font-size:11px!important}
+.carlos-bar-value strong{font-size:13px!important}
+.carlos-flow-hint{font-size:11px!important}
+.receipt-cell strong{font-size:14px!important}
+.receipt-cell span{font-size:11.5px!important}
+.support-bubble,.chat-message{font-size:14px!important}
+.support-bubble small,.chat-message small{font-size:11px!important}
+.support-send-row textarea{font-size:14px!important}
+.trial-strip strong,.trial-main-copy strong,.push-enable-copy strong{font-size:14px!important}
+.trial-strip span,.trial-main-copy span,.push-enable-copy span{font-size:12.5px!important}
+.push-state{font-size:12.5px!important}
+.message-toast-head strong{font-size:14px!important}
+.message-toast-head span{font-size:11px!important}
+.message-toast-body{font-size:13px!important}
+.message-toast-action{font-size:12px!important}
+.gstatus{font-size:22px!important}
+.ginfo strong{font-size:14px!important}
+.modal h3{font-size:20px!important}
+.modal p{font-size:13px!important}
+@media(max-width:640px){
+  body{font-size:14px!important}
+  h1{font-size:23px!important}
+  h2{font-size:20px!important}
+  h3{font-size:16px!important}
+  .metric strong{font-size:21px!important}
+  .btn,button,.tab{font-size:12.5px!important}
+  .input,.select,.textarea,input,select,textarea{font-size:16px!important}
+}
+
+
+/* ============================================================
+   V42 · REFUERZO DE TEXTOS INFORMATIVOS
+   ============================================================ */
+
+/* Accesos rápidos: Nueva venta / Nueva compra / Registrar avance */
+.quick b{
+  font-size:14px !important;
+  line-height:1.3 !important;
+  font-weight:850 !important;
+  margin-top:10px !important;
+}
+
+/* Encabezados pequeños de métricas */
+.metric span{
+  font-size:14px !important;
+  line-height:1.35 !important;
+  font-weight:700 !important;
+}
+
+/* Textos verdes debajo de métricas */
+.metric small{
+  font-size:13px !important;
+  line-height:1.35 !important;
+  font-weight:800 !important;
+  margin-top:7px !important;
+}
+
+/* Datos de compras */
+.purchase-sub{
+  font-size:13.5px !important;
+  line-height:1.5 !important;
+}
+
+.purchase-meta span{
+  font-size:13px !important;
+  line-height:1.3 !important;
+  font-weight:700 !important;
+}
+
+.purchase-meta strong{
+  font-size:14.5px !important;
+  line-height:1.35 !important;
+  margin-top:5px !important;
+}
+
+/* Ver comprobante */
+.carlos-flow-hint,
+.sale-open-hint{
+  font-size:12.5px !important;
+  line-height:1.35 !important;
+  font-weight:850 !important;
+  margin-top:6px !important;
+}
+
+/* Títulos y valores en compras */
+.purchase-title{
+  font-size:16px !important;
+}
+
+.purchase-top .outflow{
+  font-size:15px !important;
+}
+
+/* Más aire dentro de las tarjetas para acompañar el texto mayor */
+.purchase-meta div{
+  padding:10px !important;
+}
+
+.metric{
+  min-height:112px !important;
+}
+
+/* Escritorio ancho: un punto extra de claridad */
+@media(min-width:1000px){
+  .quick b{font-size:15px !important}
+  .metric span{font-size:15px !important}
+  .metric small{font-size:13.5px !important}
+  .purchase-meta span{font-size:13.5px !important}
+  .purchase-meta strong{font-size:15px !important}
+}
+
+/* En móvil mantenemos tamaño alto sin romper las tarjetas */
+@media(max-width:640px){
+  .quick b{font-size:13.5px !important}
+  .metric span{font-size:13.5px !important}
+  .metric small{font-size:12.5px !important}
+  .purchase-meta span{font-size:12.5px !important}
+  .purchase-meta strong{font-size:14px !important}
+}
+
+
+
+/* ============================================================
+   V43 · CLARIDAD EXTRA EN RESUMEN DIARIO / BALANCE
+   ============================================================ */
+.balance-day-row .date{
+  font-size:15px !important;
+  font-weight:900 !important;
+  line-height:1.35 !important;
+}
+.balance-day-row span{
+  font-size:13px !important;
+  font-weight:750 !important;
+  line-height:1.35 !important;
+}
+.balance-day-row strong{
+  font-size:16px !important;
+  font-weight:900 !important;
+  line-height:1.35 !important;
+  margin-top:6px !important;
+}
+.balance-day-row{
+  min-height:66px !important;
+  align-items:center !important;
+}
+.balance-day-list{gap:8px !important;}
+
+@media(min-width:1000px){
+  .balance-day-row .date{font-size:15.5px !important;}
+  .balance-day-row span{font-size:13.5px !important;}
+  .balance-day-row strong{font-size:16.5px !important;}
+}
+
+@media(max-width:640px){
+  .balance-day-row .date{font-size:14px !important;}
+  .balance-day-row span{font-size:12.5px !important;}
+  .balance-day-row strong{font-size:15px !important;}
+}
+
+
+/* ============================================================
+   V44 · ESTADÍSTICAS ESPECÍFICAS PARA CARLOS
+   ============================================================ */
+
+/* Estos cambios solo se activan para la organización Carlos. */
+body.carlos-business #stAverageCard,
+body.carlos-business #stNetCard,
+body.carlos-business #carlosResultCard{
+  display:none !important;
+}
+
+/* Primera línea: Ingresos + Ventas */
+body.carlos-business #stats .stats-primary-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+}
+
+/* Pedidos ya se oculta para Carlos desde la lógica existente. */
+body.carlos-business #stats .stats-primary-grid .metric{
+  min-height:118px !important;
+}
+
+/* Segunda línea: Gastos + Sueldos + Salidas totales */
+body.carlos-business #stats .stats-outflow-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+}
+
+body.carlos-business #stats .stats-outflow-grid .metric{
+  min-height:118px !important;
+}
+
+/* Comparación Carlos: únicamente Ingresos / Egresos */
+body.carlos-business #stats .carlos-compare{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+}
+
+body.carlos-business #stats .carlos-compare .metric{
+  min-height:118px !important;
+}
+
+/* Métodos de pago en una línea limpia en escritorio. */
+body.carlos-business #stats .carlos-method-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+}
+
+@media(max-width:800px){
+  body.carlos-business #stats .stats-primary-grid,
+  body.carlos-business #stats .stats-outflow-grid,
+  body.carlos-business #stats .carlos-compare,
+  body.carlos-business #stats .carlos-method-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:520px){
+  body.carlos-business #stats .stats-primary-grid,
+  body.carlos-business #stats .stats-outflow-grid,
+  body.carlos-business #stats .carlos-compare{
+    grid-template-columns:1fr !important;
+  }
+  body.carlos-business #stats .carlos-method-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -1911,12 +2178,12 @@
 <section id="stats" class="view">
     <div class="section"><div><h2>Estadísticas</h2><p>Elegí la temporalidad para analizar el negocio.</p></div></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div>
     <div class="periods" id="periodButtons"></div>
-    <div class="summarygrid"><div class="card metric"><span>Ingresos del período</span><strong id="stRevenue">$0</strong></div><div class="card metric"><span>Ventas</span><strong id="stSalesCount">0</strong></div><div id="stFinishedCard" class="card metric"><span id="stFinishedLabel">Pedidos finalizados</span><strong id="stFinished">0</strong></div><div class="card metric"><span>Promedio por ingreso</span><strong id="stAverage">$0</strong></div></div><div class="summarygrid" style="margin-top:8px"><div class="card metric"><span>Gastos del período</span><strong id="stExpenses" class="red">$0</strong></div><div class="card metric"><span>Sueldos pagados</span><strong id="stSalaries" class="red">$0</strong></div><div class="card metric"><span>Resultado neto</span><strong id="stNet">$0</strong></div><div class="card metric"><span>Salidas totales</span><strong id="stOutflows" class="red">$0</strong></div></div>
+    <div class="summarygrid stats-primary-grid"><div class="card metric"><span>Ingresos del período</span><strong id="stRevenue">$0</strong></div><div class="card metric"><span>Ventas</span><strong id="stSalesCount">0</strong></div><div id="stFinishedCard" class="card metric"><span id="stFinishedLabel">Pedidos finalizados</span><strong id="stFinished">0</strong></div><div id="stAverageCard" class="card metric"><span>Promedio por ingreso</span><strong id="stAverage">$0</strong></div></div><div class="summarygrid stats-outflow-grid" style="margin-top:8px"><div class="card metric"><span>Gastos del período</span><strong id="stExpenses" class="red">$0</strong></div><div class="card metric"><span>Sueldos pagados</span><strong id="stSalaries" class="red">$0</strong></div><div id="stNetCard" class="card metric"><span>Resultado neto</span><strong id="stNet">$0</strong></div><div class="card metric"><span>Salidas totales</span><strong id="stOutflows" class="red">$0</strong></div></div>
     <div id="carlosStatsPanel" class="carlos-only">
   <div class="carlos-compare">
     <div class="card metric"><span>Ingresos</span><strong id="carlosStatIncome">$0</strong><small>Ventas registradas</small></div>
     <div class="card metric"><span>Egresos</span><strong id="carlosStatOutflow">$0</strong><small>Compras + gastos + sueldos</small></div>
-    <div class="card metric"><span>Resultado</span><strong id="carlosStatNet">$0</strong><small>Ingresos − egresos</small></div>
+    <div id="carlosResultCard" class="card metric"><span>Resultado</span><strong id="carlosStatNet">$0</strong><small>Ingresos − egresos</small></div>
   </div>
 
   <div class="carlos-method-grid">
