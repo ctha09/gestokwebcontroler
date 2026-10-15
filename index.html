@@ -53,7 +53,7 @@
   left:10px!important;right:10px!important;bottom:calc(10px + env(safe-area-inset-bottom))!important;
   height:76px!important;display:flex!important;align-items:flex-end!important;justify-content:space-around!important;
   gap:5px!important;padding:0 3px!important;border:0!important;background:transparent!important;
-  backdrop-filter:none!important;box-shadow:none!important;touch-action:none
+  backdrop-filter:none!important;box-shadow:none!important;touch-action:manipulation
 }
 .nav button{
   --c-scale:1;--c-lift:0px;
@@ -1985,6 +1985,67 @@ body.carlos-business #stats .carlos-method-grid{
   }
 }
 
+
+/* ============================================================
+   V46 · INTERACCIÓN GLOBAL DEL DOCK
+   Click/toque normal en PC, Android, iPhone y PWA
+   ============================================================ */
+.nav{
+  touch-action:manipulation !important;
+  -webkit-user-select:none;
+  user-select:none;
+}
+.nav button,
+#plus,
+#more{
+  touch-action:manipulation !important;
+  -ms-touch-action:manipulation !important;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-touch-callout:none;
+  user-select:none;
+  cursor:pointer;
+  pointer-events:auto !important;
+}
+.nav button:active{
+  transform:translateY(-2px) scale(.96) !important;
+  transition:transform .06s ease !important;
+}
+
+
+/* ============================================================
+   V47 · SCR · VENTAS REALIZADAS EN INICIO
+   ============================================================ */
+.scr-home-sales{
+  display:none;
+  margin-top:8px;
+}
+.scr-home-sales.show{
+  display:block;
+}
+.scr-home-sales .row{
+  cursor:pointer;
+}
+.scr-home-sales .row:hover{
+  border-color:rgba(242,140,40,.28);
+}
+.scr-home-sales .sale-open-hint{
+  font-size:12px !important;
+  font-weight:850 !important;
+  color:var(--orange);
+  margin-top:5px;
+  display:block;
+}
+.scr-home-sales .row strong{
+  font-size:15px !important;
+}
+.scr-home-sales .row small{
+  font-size:12.5px !important;
+}
+@media(max-width:640px){
+  .scr-home-sales .row strong{font-size:14px !important}
+  .scr-home-sales .row small{font-size:12px !important}
+}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -2061,6 +2122,18 @@ body.carlos-business #stats .carlos-method-grid{
 
 
 <div id="homeStats" class="stats"><div class="card metric admin-only-finance"><span>Balance total</span><strong id="kBal">$0</strong><small>Ingresos confirmados</small></div><div class="card metric admin-only-finance"><span>Ingresos de hoy</span><strong id="kToday">$0</strong><small id="kTodayN">0 movimientos</small></div><div id="scrHomeEgress" class="card metric scr-only scr-home-egress admin-only-finance"><span>Egresos del mes</span><strong id="kEgress">$0</strong><small id="kEgressN">Gastos + sueldos</small></div><div id="kActiveCard" class="card metric"><span id="kActiveLabel">Pedidos activos</span><strong id="kActive">0</strong><small id="kActiveSub">En curso</small></div><div class="card metric"><span>Actividad del equipo</span><strong id="kActivity">0</strong><small>Registros</small></div></div>
+
+    <div id="scrHomeSalesCard" class="card scr-home-sales">
+      <div class="head">
+        <div>
+          <h3>Ventas realizadas</h3>
+          <p id="scrHomeSalesSubtitle">Ventas correspondientes al período seleccionado.</p>
+        </div>
+        <span id="scrHomeSalesBadge" class="badge">0 ventas</span>
+      </div>
+      <div id="scrHomeSalesList" class="list"></div>
+    </div>
+
     <div class="twocol"><div id="attentionCard" class="card"><div class="head"><div><h3 id="attentionTitle">Pedidos que requieren atención</h3><p id="attentionSubtitle">Prioritarios y trabajos activos</p></div><span id="attentionBadge" class="badge red">Activo</span></div><div id="attention" class="list"></div></div><div class="card"><div class="head"><div><h3>Última actividad</h3><p>Lo que registró el equipo</p></div><span class="badge">Equipo</span></div><div id="recentActivity" class="list"></div></div></div>
   </section>
 
@@ -2334,9 +2407,9 @@ body.carlos-business #stats .carlos-method-grid{
 <nav class="nav">
   <button class="active" data-v="home"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/></svg></span><span>Inicio</span></button>
   <button data-v="orders" id="navOrders"><span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></span><span>Pedidos</span></button>
-  <button id="plus" class="plus"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span>Nuevo</span></button>
+  <button id="plus" class="plus" type="button" onclick="openDockPlus(event)"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span>Nuevo</span></button>
   <button data-v="activity"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17h4l2-6 3 9 2-6h5"/></svg></span><span>Actividad</span></button>
-  <button id="more"><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></span><span>Más</span></button>
+  <button id="more" type="button" onclick="openDockMore(event)"><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></span><span>Más</span></button>
 </nav>
 </section>
 
@@ -2640,7 +2713,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const DB_KEY='gestok_unified_platform_v4',WA='5493751232618';
 const COMMERCE_ST=['Prioritario','Pendiente','En proceso','Enviado a impresion','Finalizado'];
 const BARBER_ST=['Pendiente','Confirmado','En proceso','Finalizado','Cancelado'];
-let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null,orderEditingId=null,SCR_HOME_PERIOD='month',SCR_HOME_MONTH='',BALANCE_PERIOD='monthly',BALANCE_DAY='',BALANCE_WEEK='',BALANCE_MONTH='',BALANCE_SEARCH='',BALANCE_FILTERS={payments:[],employee:'all',client:'all'},HISTORY_FLOW='all',HISTORY_PERIOD='monthly',HISTORY_DAY='',HISTORY_WEEK='',HISTORY_MONTH='',HISTORY_YEAR='',HISTORY_SEARCH='',purchaseEditingId=null,supplierEditingId=null,expenseEditingId=null,purchaseReceiptId=null,COMMERCIAL_FLOW_FILTER='all',supportClientRows=[],supportClientChannel=null,lastSupportClientMessageId=null,supportSideTimer=null;
+let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null,orderEditingId=null,SCR_HOME_PERIOD='month',SCR_HOME_MONTH='',BALANCE_PERIOD='monthly',BALANCE_DAY='',BALANCE_WEEK='',BALANCE_MONTH='',BALANCE_SEARCH='',BALANCE_FILTERS={payments:[],employee:'all',client:'all'},HISTORY_FLOW='all',HISTORY_PERIOD='monthly',HISTORY_DAY='',HISTORY_WEEK='',HISTORY_MONTH='',HISTORY_YEAR='',HISTORY_SEARCH='',purchaseEditingId=null,supplierEditingId=null,expenseEditingId=null,purchaseReceiptId=null,COMMERCIAL_FLOW_FILTER='all',supportClientRows=[],supportClientChannel=null,lastSupportClientMessageId=null,supportSideTimer=null,SESSION_RESTORE_DONE=false;
 
 function baseDB(){return{organizations:[],records:{},notifications:[],payments:[]}}
 function loadDB(){try{let d=JSON.parse(localStorage.getItem(DB_KEY))||baseDB();d.organizations=d.organizations||[];d.records=d.records||{};d.notifications=d.notifications||[];d.payments=d.payments||[];return d}catch{return baseDB()}}
@@ -2740,7 +2813,10 @@ function toast(t){let e=$('#toast');e.textContent=t;e.classList.add('show');setT
 function parseDate(s){let [y,m,d]=String(s||'').slice(0,10).split('-').map(Number);return new Date(y,m-1,d,12)}
 function daysUntil(s){if(!s)return 9999;return Math.ceil((parseDate(s)-parseDate(today()))/86400000)}
 
-setTimeout(()=>{splash.classList.add('out');setTimeout(()=>{splash.classList.add('hidden');portal.classList.remove('hidden')},300)},2700);
+setTimeout(()=>{
+  splash.classList.add('out');
+  setTimeout(()=>splash.classList.add('hidden'),300);
+},2700);
 
 window.chooseType=t=>{selectedType=t;typeStep.classList.add('hidden');loginStep.classList.remove('hidden');typeBadge.textContent=t==='commerce'?'Comercio':'Barbería';companyName.value='';companyPassword.value='';companyName.focus()};
 window.backType=()=>{selectedType=null;loginStep.classList.add('hidden');typeStep.classList.remove('hidden')};
@@ -3117,6 +3193,164 @@ supportClientSend.onclick=async()=>{
 pushEnableMainBtn.onclick=enablePushNotifications;
 pushEnableSettingsBtn.onclick=enablePushNotifications;
 
+
+/* ============================================================
+   V48 · SESIÓN PERSISTENTE
+   Restaura automáticamente la sesión Supabase al abrir GestOK.
+   ============================================================ */
+function showPortalAfterSessionCheck(){
+  SESSION_RESTORE_DONE=true;
+  if(!ORG){
+    app.classList.add('hidden');
+    portal.classList.remove('hidden');
+  }
+}
+
+async function restoreSavedSession(){
+  try{
+    const {data:{session},error:sessionError}=await sb.auth.getSession();
+
+    if(sessionError||!session?.user){
+      showPortalAfterSessionCheck();
+      return false;
+    }
+
+    const user=session.user;
+
+    const {data:member,error:memberError}=await sb.from('organization_members')
+      .select('id,organization_id,display_name,role,active')
+      .eq('auth_user_id',user.id)
+      .eq('active',true)
+      .maybeSingle();
+
+    if(memberError||!member){
+      await sb.auth.signOut();
+      showPortalAfterSessionCheck();
+      return false;
+    }
+
+    const [{data:org,error:orgError},{data:sub,error:subError}]=await Promise.all([
+      sb.from('organizations')
+        .select('id,name,login_slug,type,phone,monthly_fee,active,created_at')
+        .eq('id',member.organization_id)
+        .single(),
+      sb.from('subscriptions')
+        .select('status,start_date,next_due_date,trial_started_at,trial_ends_at,reason,updated_at')
+        .eq('organization_id',member.organization_id)
+        .maybeSingle()
+    ]);
+
+    if(orgError||!org||subError){
+      await sb.auth.signOut();
+      showPortalAfterSessionCheck();
+      return false;
+    }
+
+    selectedType=org.type;
+
+    DB=loadDB();
+    let mirror=DB.organizations.find(x=>x.id===org.id);
+
+    const mirrorData={
+      id:org.id,
+      name:org.name,
+      type:org.type,
+      loginSlug:org.login_slug||'',
+      phone:org.phone||'',
+      monthlyFee:Number(org.monthly_fee||0),
+      active:org.active!==false,
+      subscription:{
+        status:sub?.status||'Activo',
+        startDate:sub?.start_date||today(),
+        nextDueDate:sub?.next_due_date||today(),
+        trialStartedAt:sub?.trial_started_at||'',
+        trialEndsAt:sub?.trial_ends_at||'',
+        reason:sub?.reason||'',
+        updatedAt:sub?.updated_at||new Date().toISOString()
+      }
+    };
+
+    if(mirror)Object.assign(mirror,mirrorData);
+    else{
+      mirror=mirrorData;
+      DB.organizations.push(mirror);
+    }
+
+    if(!DB.records[org.id]){
+      DB.records[org.id]={
+        users:[],sales:[],orders:[],ledger:[],activity:[],stock:[],
+        services:[],clients:[],expenses:[],salaryPayments:[],
+        suppliers:[],purchases:[]
+      };
+    }
+
+    saveDB();
+
+    ORG=mirror;
+    AUTH_MEMBER_ID=member.id;
+    hideSubscriptionBlocker();
+
+    if(ORG.type==='barbershop'){
+      initOrgState();
+      U=S.users.find(x=>x.role==='admin')||S.users[0];
+
+      if(U)U.name=member.display_name||'Administrador';
+
+      launchBarber(ORG.id);
+
+      if(org.active===false){
+        setTimeout(()=>showSubscriptionBlocker(org.name),80);
+      }
+
+      if(
+        ORG.subscription?.status==='Prueba gratuita' &&
+        trialExpired(ORG.subscription)
+      ){
+        setTimeout(()=>showSubscriptionBlocker(org.name,'trial'),100);
+      }
+
+      applyTrialAccess();
+      loadSupportClientMessages();
+      startSupportClientRealtime();
+      renderPushState();
+      handlePendingPushAction();
+
+      SESSION_RESTORE_DONE=true;
+      return true;
+    }
+
+    await loadCommerceFromSupabase(member.id);
+
+    enterApp();
+    applyTrialAccess();
+    loadSupportClientMessages();
+    startSupportClientRealtime();
+    renderPushState();
+    handlePendingPushAction();
+    await startCommerceRealtime();
+
+    if(org.active===false){
+      showSubscriptionBlocker(org.name);
+    }
+
+    SESSION_RESTORE_DONE=true;
+    return true;
+
+  }catch(error){
+    console.error('GestOK restore session:',error);
+
+    try{ await sb.auth.signOut(); }catch(_){}
+
+    ORG=null;
+    S=null;
+    U=null;
+    AUTH_MEMBER_ID=null;
+
+    showPortalAfterSessionCheck();
+    return false;
+  }
+}
+
 async function login(){
  const company=companyName.value.trim(),password=companyPassword.value;
  if(!company||!password)return toast('Completá empresa y contraseña');
@@ -3141,7 +3375,7 @@ async function login(){
  }
 
  const [{data:org,error:orgError},{data:sub,error:subError}]=await Promise.all([
-   sb.from('organizations').select('id,name,type,phone,monthly_fee,active,created_at').eq('id',member.organization_id).single(),
+   sb.from('organizations').select('id,name,login_slug,type,phone,monthly_fee,active,created_at').eq('id',member.organization_id).single(),
    sb.from('subscriptions').select('status,start_date,next_due_date,trial_started_at,trial_ends_at,reason,updated_at').eq('organization_id',member.organization_id).maybeSingle()
  ]);
 
@@ -3154,7 +3388,7 @@ async function login(){
  DB=loadDB();
  let mirror=DB.organizations.find(x=>x.id===org.id);
  const mirrorData={
-   id:org.id,name:org.name,type:org.type,loginSlug:slugifyCompany(company),phone:org.phone||'',monthlyFee:Number(org.monthly_fee||0),active:org.active!==false,
+   id:org.id,name:org.name,type:org.type,loginSlug:org.login_slug||slugifyCompany(company),phone:org.phone||'',monthlyFee:Number(org.monthly_fee||0),active:org.active!==false,
    subscription:{status:sub?.status||'Activo',startDate:sub?.start_date||today(),nextDueDate:sub?.next_due_date||today(),trialStartedAt:sub?.trial_started_at||'',trialEndsAt:sub?.trial_ends_at||'',reason:sub?.reason||'',updatedAt:sub?.updated_at||new Date().toISOString()}
  };
  if(mirror)Object.assign(mirror,mirrorData);else{mirror=mirrorData;DB.organizations.push(mirror)}
@@ -3177,6 +3411,7 @@ async function login(){
    startSupportClientRealtime();
    renderPushState();
    handlePendingPushAction();
+   SESSION_RESTORE_DONE=true;
    return;
  }
  await loadCommerceFromSupabase(member.id);
@@ -3188,6 +3423,7 @@ async function login(){
  handlePendingPushAction();
  await startCommerceRealtime();
  if(org.active===false)showSubscriptionBlocker(org.name);
+ SESSION_RESTORE_DONE=true;
 }
 loginBtn.onclick=login;companyPassword.onkeydown=e=>{if(e.key==='Enter')login()};
 
@@ -3334,25 +3570,36 @@ function go(v){if(isCarlosBusiness()&&v==='orders')v='purchases';if(!isCarlosBus
  $$('#commerceClearMenu [data-clear-v]').forEach(x=>x.classList.toggle('active',x.dataset.clearV===v));
 }
 closeMore();render();if(v==='stats'&&isActiveAdmin())requestAnimationFrame(drawStatsChart);if(v==='gestok')markNoticesRead()}
-window.go=go;$$('.nav button[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-action="whatsapp"]').forEach(x=>x.onclick=()=>{closeMore();openGestokWhatsApp()});back.onclick=closeMore;plus.onclick=()=>choice.classList.remove('hidden');logoutCompany.onclick=async()=>{closeMore();await stopCommerceRealtime();await stopSupportClientRealtime();await sb.auth.signOut();hideSubscriptionBlocker();app.classList.add('hidden');portal.classList.remove('hidden');ORG=null;S=null;U=null;AUTH_MEMBER_ID=null;backType()};function closeChoice(){choice.classList.add('hidden')}window.closeChoice=closeChoice;
+window.go=go;$$('.nav button[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-action="whatsapp"]').forEach(x=>x.onclick=()=>{closeMore();openGestokWhatsApp()});back.onclick=closeMore;logoutCompany.onclick=async()=>{closeMore();await stopCommerceRealtime();await stopSupportClientRealtime();await sb.auth.signOut();hideSubscriptionBlocker();app.classList.add('hidden');portal.classList.remove('hidden');ORG=null;S=null;U=null;AUTH_MEMBER_ID=null;backType()};function closeChoice(){choice.classList.add('hidden')}window.closeChoice=closeChoice;
 
-/* Dock táctil Comercio */
-const commerceDock=$('.nav'),commerceDockButtons=$$('.nav button');let commerceDockPointer=null,commerceDockHot=null,commerceDockStartX=0,commerceDockStartY=0,commerceDockMoved=false,commerceSuppress=false;
-function resetCommerceDock(){commerceDockButtons.forEach(b=>{b.style.setProperty('--c-scale','1');b.style.setProperty('--c-lift','0px');b.classList.remove('commerce-hot')});commerceDockHot=null}
-function updateCommerceDock(x,y){let best=null,dist=Infinity;commerceDockButtons.forEach(b=>{const r=b.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=Math.abs(x-cx),influence=Math.max(0,1-dx/102);b.style.setProperty('--c-scale',(1+influence*.27).toFixed(3));b.style.setProperty('--c-lift',(-(influence*12)).toFixed(1)+'px');let d=Math.hypot(x-cx,y-cy);if(d<dist){dist=d;best=b}});commerceDockButtons.forEach(b=>b.classList.remove('commerce-hot'));if(best&&dist<62){best.classList.add('commerce-hot');commerceDockHot=best}else commerceDockHot=null}
-function activateCommerceDock(b){if(!b)return;if(b.id==='more'){openCommerceMore();return}if(b.id==='plus'){choice.classList.remove('hidden');return}if(b.dataset.v)go(b.dataset.v)}
-commerceDock.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;commerceDockPointer=e.pointerId;commerceDockStartX=e.clientX;commerceDockStartY=e.clientY;commerceDockMoved=false;try{commerceDock.setPointerCapture(e.pointerId)}catch{}updateCommerceDock(e.clientX,e.clientY)});
-commerceDock.addEventListener('pointermove',e=>{if(e.pointerId!==commerceDockPointer)return;if(Math.hypot(e.clientX-commerceDockStartX,e.clientY-commerceDockStartY)>6)commerceDockMoved=true;updateCommerceDock(e.clientX,e.clientY);if(commerceDockMoved)e.preventDefault()});
-commerceDock.addEventListener('pointerup',e=>{if(e.pointerId!==commerceDockPointer)return;let b=commerceDockHot;commerceSuppress=true;activateCommerceDock(b);commerceDockPointer=null;resetCommerceDock();setTimeout(()=>commerceSuppress=false,80)});commerceDock.addEventListener('pointercancel',()=>{commerceDockPointer=null;resetCommerceDock()});commerceDockButtons.forEach(b=>b.addEventListener('click',e=>{if(commerceSuppress){e.preventDefault();e.stopPropagation()}}));
+/* Dock Comercio · V46: interacción nativa y universal.
+   No hay long-press, temporizadores, touchend especial ni captura de puntero. */
+function openDockPlus(event){
+  if(event){event.preventDefault();event.stopPropagation()}
+  closeMore();
+  choice.classList.remove('hidden');
+}
+function openDockMore(event){
+  if(event){event.preventDefault();event.stopPropagation()}
+  toggleCommerceMore();
+}
+window.openDockPlus=openDockPlus;
+window.openDockMore=openDockMore;
 
-/* ••• Comercio: tocar o mantener + arrastrar hacia una sección */
-let commerceRadialPointer=null,commerceRadialHot=null,commerceRadialStartX=0,commerceRadialStartY=0,commerceRadialMoved=false,commerceMoreSuppress=false;
-function updateCommerceRadialSelection(x,y){let best=null,dist=Infinity;$$('.commerce-option').filter(o=>!o.classList.contains('hidden')).forEach(o=>{const r=o.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,d=Math.hypot(x-cx,y-cy);if(d<dist){dist=d;best=o}});clearCommerceHot();if(best&&dist<68){best.classList.add('hot');commerceRadialHot=best}else commerceRadialHot=null}
-more.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')return;commerceRadialPointer=e.pointerId;commerceRadialStartX=e.clientX;commerceRadialStartY=e.clientY;commerceRadialMoved=false;commerceMoreSuppress=true;openCommerceMore();try{more.setPointerCapture(e.pointerId)}catch{}});
-more.addEventListener('pointermove',e=>{if(e.pointerId!==commerceRadialPointer)return;if(Math.hypot(e.clientX-commerceRadialStartX,e.clientY-commerceRadialStartY)>8)commerceRadialMoved=true;updateCommerceRadialSelection(e.clientX,e.clientY);e.preventDefault()});
-more.addEventListener('pointerup',e=>{if(e.pointerId!==commerceRadialPointer)return;let chosen=commerceRadialHot;commerceRadialPointer=null;if(chosen&&chosen.dataset.v)go(chosen.dataset.v);else if(chosen&&chosen.dataset.action==='whatsapp'){closeMore();openGestokWhatsApp()}else if(commerceRadialMoved)closeMore();clearCommerceHot();setTimeout(()=>commerceMoreSuppress=false,100)});
-more.addEventListener('pointercancel',()=>{commerceRadialPointer=null;clearCommerceHot()});more.addEventListener('click',e=>{if(commerceMoreSuppress){e.preventDefault();e.stopPropagation();return}toggleCommerceMore()});
-window.addEventListener('resize',()=>{if(commerceRadial.classList.contains('open'))positionCommerceRadial()});
+/* Evitar menús contextuales/selección al mantener presionado, sin cambiar el toque corto. */
+[plus,more].forEach(button=>{
+  button.addEventListener('contextmenu',e=>e.preventDefault());
+  button.addEventListener('dragstart',e=>e.preventDefault());
+});
+
+/* El resto de los botones usa click nativo. */
+$$('.commerce-option').forEach(option=>{
+  option.style.touchAction='manipulation';
+});
+
+window.addEventListener('resize',()=>{
+  if(commerceRadial.classList.contains('open'))positionCommerceRadial();
+});
 
 /* Venta */
 function saleUserOptions(selected=''){
@@ -4844,6 +5091,51 @@ function renderUsers(){
   applyActiveRolePermissions();
 }
 
+
+function renderSCRHomeSales(){
+  const card=document.getElementById('scrHomeSalesCard');
+  const list=document.getElementById('scrHomeSalesList');
+  const badge=document.getElementById('scrHomeSalesBadge');
+  const subtitle=document.getElementById('scrHomeSalesSubtitle');
+
+  if(!card||!list||!badge||!subtitle)return;
+
+  if(!isSCRBusiness()){
+    card.classList.remove('show');
+    return;
+  }
+
+  card.classList.add('show');
+
+  const rows=S.sales
+    .filter(x=>scrHomePeriodMatch(x.date))
+    .sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+
+  badge.textContent=`${rows.length} venta${rows.length===1?'':'s'}`;
+
+  const labels={
+    today:'Hoy',
+    week:'Esta semana',
+    month:scrMonthLabel(SCR_HOME_MONTH),
+    year:`Año ${String(SCR_HOME_MONTH||new Date().getFullYear()).slice(0,4)}`,
+    all:'Todas las ventas'
+  };
+  subtitle.textContent=`${labels[SCR_HOME_PERIOD]||'Período seleccionado'} · tocá una venta para ver el comprobante.`;
+
+  list.innerHTML=rows.length
+    ?rows.slice(0,12).map(x=>`
+      <div class="row sale-click" onclick="openSaleReceipt('${x.id}')">
+        <div>
+          <strong>${x.concept||'Venta'}</strong>
+          <small>${x.client||'Cliente ocasional'} · ${x.userName||'Usuario'} · ${x.payment||'Otro'} · ${new Date(x.date).toLocaleString('es-AR',{dateStyle:'short',timeStyle:'short'})}</small>
+          <span class="sale-open-hint">Ver comprobante</span>
+        </div>
+        <span class="money">+${money(x.amount)}</span>
+      </div>
+    `).join('')
+    :'<div class="empty">No hay ventas registradas en este período.</div>';
+}
+
 function render(){
  renderCommerceMonthSelectors();
 
@@ -4870,6 +5162,7 @@ function render(){
  kActivity.textContent=isSCRBusiness()?S.activity.filter(x=>scrHomePeriodMatch(x.date)).length:S.activity.length;
 
  setSCRVisibility();
+ renderSCRHomeSales();
  if(isSCRBusiness()){
    const periodExpenses=homeExpenses,periodSalaries=homeSalaries,
          periodOut=periodExpenses.reduce((a,x)=>a+Number(x.amount||0),0)+periodSalaries.reduce((a,x)=>a+Number(x.amount||0),0);
@@ -5159,11 +5452,39 @@ function markNoticesRead(){
  renderGestOK();
 }
 
+
+/* Si Supabase invalida o cierra la sesión desde otro contexto,
+   volver al portal sin conservar un panel abierto inválido. */
+sb.auth.onAuthStateChange((event,session)=>{
+  if(event==='SIGNED_OUT' && SESSION_RESTORE_DONE && ORG){
+    stopCommerceRealtime();
+    stopSupportClientRealtime();
+
+    const frame=document.getElementById('gestokBarberFrame');
+    if(frame)frame.remove();
+
+    ORG=null;
+    S=null;
+    U=null;
+    AUTH_MEMBER_ID=null;
+
+    hideSubscriptionBlocker();
+    app.classList.add('hidden');
+    portal.classList.remove('hidden');
+    backType();
+  }
+});
+
 /* Persistencia compartida */
 window.addEventListener('storage',e=>{if(e.key===DB_KEY&&ORG){let oldId=ORG.id;DB=loadDB();ORG=DB.organizations.find(x=>x.id===oldId)||ORG;S=DB.records[oldId]||S;render()}});
 
 const blockedLogoutBtn=document.getElementById('blockedLogout');if(blockedLogoutBtn)blockedLogoutBtn.onclick=exitBlockedSession;const blockedSupportBtn=document.getElementById('blockedSupportBtn');if(blockedSupportBtn)blockedSupportBtn.onclick=openSupportChat;
 
+
+
+/* Arranque de GestOK:
+   primero intenta restaurar la sesión; el login solo aparece si no existe. */
+restoreSavedSession();
 
 /* ============================================================
    PWA INSTALL · GestOK Web Control
