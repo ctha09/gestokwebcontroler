@@ -1,4 +1,4 @@
-const CACHE_NAME='gestok-web-control-v50';
+const CACHE_NAME='gestok-web-control-v50-1';
 
 const APP_SHELL=[
   './',
@@ -49,7 +49,11 @@ self.addEventListener('fetch',event=>{
       })
       .catch(()=>
         caches.match(event.request)
-          .then(cached=>cached||caches.match('./index.html'))
+          .then(
+            cached=>
+              cached||
+              caches.match('./index.html')
+          )
       )
   );
 });
