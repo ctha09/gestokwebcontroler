@@ -1,9 +1,10 @@
-const CACHE_NAME='gestok-web-control-v49';
+const CACHE_NAME='gestok-web-control-v50';
 
 const APP_SHELL=[
   './',
   './index.html',
   './manifest.webmanifest',
+  './parking-ticket.html',
   './gestok-icon-192.png',
   './gestok-icon-512.png'
 ];
@@ -20,11 +21,13 @@ self.addEventListener('install',event=>{
 
 self.addEventListener('activate',event=>{
   event.waitUntil(
-    caches.keys().then(keys=>Promise.all(
-      keys
-        .filter(key=>key!==CACHE_NAME)
-        .map(key=>caches.delete(key))
-    ))
+    caches.keys().then(keys=>
+      Promise.all(
+        keys
+          .filter(key=>key!==CACHE_NAME)
+          .map(key=>caches.delete(key))
+      )
+    )
   );
 
   self.clients.claim();
