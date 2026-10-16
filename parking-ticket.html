@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GestOK Estacionamiento · Ticket</title>
+<meta name="theme-color" content="#0b0e11">
+<style>
+:root{--bg:#0b0e11;--panel:#171b21;--panel2:#1d222a;--border:#2e3641;--text:#f6f7f9;--muted:#9aa5b2;--orange:#f28c28;--green:#38c77d}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 85% 0,rgba(242,140,40,.13),transparent 30%),var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{width:min(720px,100%);margin:auto;padding:20px 12px 42px}.brand{display:flex;align-items:center;gap:10px}.logo{width:45px;height:45px;border-radius:14px;background:var(--orange);color:#17100a;display:grid;place-items:center;font-weight:1000;font-size:20px}.brand strong{font-size:19px}.ok{color:var(--orange)}.brand small{display:block;color:var(--muted);margin-top:2px}
+.card{margin-top:20px;background:rgba(23,27,33,.97);border:1px solid var(--border);border-radius:24px;padding:18px;box-shadow:0 24px 70px rgba(0,0,0,.3)}
+.badge{display:inline-flex;padding:6px 10px;border-radius:999px;border:1px solid rgba(56,199,125,.28);background:rgba(56,199,125,.09);color:#8be7b3;font-size:12px;font-weight:900}.badge.closed{border-color:var(--border);background:var(--panel2);color:var(--muted)}
+.plate{display:inline-block;margin-top:16px;padding:10px 16px;background:#f1f1f1;color:#111;border:2px solid #d5d5d5;border-radius:9px;font-size:30px;letter-spacing:.09em;font-weight:1000}
+.cost{font-size:clamp(46px,12vw,76px);font-weight:1000;letter-spacing:-.05em;margin-top:17px;color:var(--orange)}.caption{color:var(--muted);margin:3px 0 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px}.item{padding:12px;border:1px solid var(--border);border-radius:15px;background:var(--panel2)}.item small{display:block;color:var(--muted);font-size:11px}.item strong{display:block;margin-top:5px;font-size:16px}
+.exit{margin-top:18px;padding-top:18px;border-top:1px solid var(--border);display:grid;grid-template-columns:170px 1fr;gap:16px;align-items:center}.qr{width:170px;height:170px;padding:10px;background:#fff;border-radius:17px;display:grid;place-items:center}.qr canvas,.qr img{width:100%!important;height:100%!important}.exit p{color:var(--muted);line-height:1.55}.code{color:var(--orange);font-size:12px;font-weight:900;word-break:break-all}
+.error{text-align:center;padding:30px 10px;color:var(--muted)}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.exit{grid-template-columns:1fr;text-align:center}.qr{margin:auto}.wrap{padding-top:14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><div class="logo">G</div><div><strong>Gest<span class="ok">OK</span> Estacionamiento</strong><small id="business">Consulta de estadía</small></div></div>
+  <div id="ticketCard" class="card">
+    <span id="status" class="badge">Estacionamiento activo</span>
+    <div><span id="plate" class="plate">—</span></div>
+    <div id="cost" class="cost">$0</div>
+    <p id="caption" class="caption">Costo acumulado</p>
+    <div class="grid">
+      <div class="item"><small>Hora de ingreso</small><strong id="entry">—</strong></div>
+      <div class="item"><small>Tarifa</small><strong id="rate">—</strong></div>
+      <div class="item"><small>Tiempo transcurrido</small><strong id="elapsed">—</strong></div>
+      <div class="item"><small>Hora de salida</small><strong id="exitTime">—</strong></div>
+    </div>
+    <div class="exit">
+      <div id="exitQR" class="qr"></div>
+      <div><h3>QR de salida</h3><p>Mostrá este QR al operador del estacionamiento para que pueda encontrar tu vehículo y registrar la salida.</p><div id="code" class="code"></div></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+const SUPABASE_URL='https://zvmcjmjbedwaftejdduu.supabase.co';
+const SUPABASE_KEY='sb_publishable__kUv47MYA0ym6Fw7WF4c8A_jLozY3mQ';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false}});
+const token=new URLSearchParams(location.search).get('t')||'';
+const $=s=>document.querySelector(s);
+const money=n=>new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(Number(n)||0);
+const fmtTime=d=>d?new Date(d).toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}):'—';
+let row=null,qrDone=false;
+
+function currentCost(r){
+  if(r.exit_at)return Number(r.final_cost||0);
+  if(r.tariff_type==='flat')return Number(r.flat_rate||0);
+  const mins=Math.max(1,Math.ceil((Date.now()-new Date(r.entry_at).getTime())/60000));
+  return mins*Number(r.minute_rate||0);
+}
+function elapsed(r){
+  const end=r.exit_at?new Date(r.exit_at).getTime():Date.now();
+  const mins=Math.max(0,Math.floor((end-new Date(r.entry_at).getTime())/60000));
+  const h=Math.floor(mins/60),m=mins%60;
+  return h?`${h} h ${m} min`:`${m} min`;
+}
+function draw(){
+  if(!row)return;
+  $('#business').textContent=row.business_name||'Estacionamiento';
+  $('#plate').textContent=row.plate;
+  $('#entry').textContent=fmtTime(row.entry_at);
+  $('#rate').textContent=row.tariff_type==='minute'
+    ? `${money(row.minute_rate)} / minuto`
+    : `Tarifa plena ${money(row.flat_rate)}`;
+  $('#elapsed').textContent=elapsed(row);
+  $('#exitTime').textContent=fmtTime(row.exit_at);
+  $('#cost').textContent=money(currentCost(row));
+  $('#caption').textContent=row.exit_at?'Total final':'Costo acumulado';
+  $('#status').textContent=row.exit_at?'Estacionamiento finalizado':'Estacionamiento activo';
+  $('#status').classList.toggle('closed',!!row.exit_at);
+  $('#code').textContent=`Código de salida: ${row.public_token}`;
+  if(!qrDone){
+    new QRCode($('#exitQR'),{text:row.public_token,width:150,height:150,correctLevel:QRCode.CorrectLevel.M});
+    qrDone=true;
+  }
+}
+async function refresh(){
+  if(!token){
+    $('#ticketCard').innerHTML='<div class="error">El ticket no es válido.</div>';
+    return;
+  }
+  const {data,error}=await sb.rpc('parking_public_ticket',{p_token:token});
+  if(error||!data?.ok){
+    $('#ticketCard').innerHTML='<div class="error">No encontramos este ticket.</div>';
+    return;
+  }
+  row=data;
+  draw();
+}
+refresh();
+setInterval(()=>{if(row)draw()},1000);
+setInterval(refresh,5000);
+</script>
+</body>
+</html>
