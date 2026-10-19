@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GestOK Carta Digital</title>
+<meta name="theme-color" content="#0b0e11">
+<style>
+:root{--bg:#090c10;--panel:#151a20;--panel2:#1c222a;--border:#2c3540;--text:#f7f8fa;--muted:#98a4b2;--orange:#f28c28;--green:#39c77b;--red:#ff6464}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 100% 0,rgba(242,140,40,.13),transparent 30%),var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+button,input,select,textarea{font:inherit}.hidden{display:none!important}
+.top{position:sticky;top:0;z-index:50;padding:12px 14px;background:rgba(9,12,16,.92);backdrop-filter:blur(15px);border-bottom:1px solid rgba(255,255,255,.06)}
+.brand{display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;display:grid;place-items:center;border-radius:14px;background:var(--orange);color:#17100a;font-weight:1000}.brand strong{font-size:17px}.brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.wrap{width:min(760px,100%);margin:auto;padding:14px 12px 120px}.hero{padding:8px 2px 14px}.hero h1{margin:0;font-size:29px;letter-spacing:-.04em}.hero p{color:var(--muted);line-height:1.5;margin:6px 0 0}
+.table-box{padding:12px;border:1px solid rgba(242,140,40,.25);background:rgba(242,140,40,.07);border-radius:17px;margin-bottom:14px}.table-box label{font-size:11px;font-weight:900}.input,.select,.textarea{width:100%;border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:13px;padding:11px 12px;min-height:45px;outline:0}.input:focus,.select:focus,.textarea:focus{border-color:rgba(242,140,40,.65)}
+.categories{display:flex;gap:7px;overflow:auto;padding:2px 0 10px;scrollbar-width:none}.categories::-webkit-scrollbar{display:none}.cat{white-space:nowrap;border:1px solid var(--border);background:var(--panel);color:var(--text);padding:9px 12px;border-radius:999px;font-weight:850}.cat.active{background:var(--orange);border-color:var(--orange);color:#17100a}
+.products{display:flex;flex-direction:column;gap:10px}.product{display:grid;grid-template-columns:100px 1fr;gap:11px;padding:10px;border:1px solid var(--border);background:var(--panel);border-radius:18px}.product-img{width:100px;height:100px;border-radius:14px;background:linear-gradient(135deg,#252d37,#12171c);overflow:hidden;display:grid;place-items:center;color:var(--muted);font-size:11px}.product-img img{width:100%;height:100%;object-fit:cover}.product h3{margin:0;font-size:16px}.product p{margin:5px 0;color:var(--muted);font-size:11px;line-height:1.4}.variant-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.variant{border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:10px;padding:7px 9px;font-size:10px;font-weight:850}.variant.active{border-color:var(--orange);color:#ffc083;background:rgba(242,140,40,.09)}.product-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:9px}.price{font-size:17px;font-weight:1000;color:var(--orange)}.qty{display:flex;align-items:center;gap:6px}.qty button{width:32px;height:32px;border-radius:10px;border:1px solid var(--border);background:var(--panel2);color:#fff;font-weight:1000}.qty span{min-width:20px;text-align:center;font-weight:900}.add{border:0;border-radius:11px;background:var(--orange);color:#17100a;padding:9px 11px;font-weight:950}
+.cart-bar{position:fixed;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));z-index:60;margin:auto;width:min(740px,calc(100% - 20px));padding:10px 12px;border:1px solid rgba(242,140,40,.32);background:rgba(20,24,30,.96);backdrop-filter:blur(15px);border-radius:18px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 20px 60px rgba(0,0,0,.4)}.cart-bar strong{display:block}.cart-bar small{display:block;color:var(--muted);margin-top:2px}.btn{border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:12px;padding:10px 13px;font-weight:900}.primary{background:var(--orange);border-color:var(--orange);color:#17100a}.green{background:rgba(57,199,123,.12);border-color:rgba(57,199,123,.3);color:#91e7b8}
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.72);backdrop-filter:blur(7px);display:grid;align-items:end;padding:10px}.sheet{width:min(760px,100%);margin:auto;max-height:92vh;overflow:auto;background:#14191f;border:1px solid var(--border);border-radius:23px 23px 18px 18px;padding:14px}.sheet h2{margin:0}.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.close{width:38px;height:38px;border-radius:12px;border:1px solid var(--border);background:var(--panel2);color:#fff;font-size:19px}.cart-list{display:flex;flex-direction:column;gap:7px;margin-top:12px}.cart-row{display:flex;justify-content:space-between;gap:10px;padding:10px;border:1px solid var(--border);border-radius:13px;background:var(--panel2)}.cart-row strong{display:block;font-size:12px}.cart-row small{display:block;color:var(--muted);margin-top:3px}.total{display:flex;justify-content:space-between;padding:13px 2px;font-size:18px;font-weight:1000}.invoice{padding:12px;border:1px solid var(--border);border-radius:15px;background:var(--panel2);margin-top:10px}.invoice-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}.invoice-row:last-child{border:0}.status-card{padding:14px;border:1px solid rgba(57,199,123,.26);background:rgba(57,199,123,.06);border-radius:18px;margin-bottom:14px}.status-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:10px}.status-step{text-align:center;font-size:8px;color:var(--muted)}.status-step i{display:block;width:10px;height:10px;border-radius:99px;background:#333b45;margin:0 auto 5px}.status-step.done{color:#9ae8bc}.status-step.done i{background:var(--green)}
+.empty{padding:20px;border:1px dashed var(--border);border-radius:14px;text-align:center;color:var(--muted)}
+@media(max-width:520px){.product{grid-template-columns:82px 1fr}.product-img{width:82px;height:82px}.product-bottom{align-items:flex-end}.status-steps{grid-template-columns:repeat(5,1fr)}}
+</style>
+</head>
+<body>
+<header class="top"><div class="brand"><div class="logo">G</div><div><strong>Gest<span style="color:var(--orange)">OK</span></strong><small id="restaurantName">Carta digital</small></div></div></header>
+<main class="wrap">
+  <div class="hero"><h1>¿Qué vas a pedir?</h1><p>Elegí tus productos, personalizá cada opción y enviá tu orden directamente a cocina.</p></div>
+
+  <div class="table-box">
+    <label>Número de mesa</label>
+    <input id="tableNumber" class="input" type="number" inputmode="numeric" min="1" placeholder="Ingresá tu mesa">
+  </div>
+
+  <div id="currentOrderBox" class="status-card hidden"></div>
+
+  <div id="categoryTabs" class="categories"></div>
+  <div id="productList" class="products"></div>
+</main>
+
+<div id="cartBar" class="cart-bar hidden">
+  <div><strong id="cartCount">0 productos</strong><small id="cartTotal">$0</small></div>
+  <button id="openCart" class="btn primary">Ver pedido</button>
+</div>
+
+<div id="cartOverlay" class="overlay hidden">
+  <div class="sheet">
+    <div class="sheet-head"><div><h2>Tu pedido</h2><small style="color:var(--muted)">Revisá todo antes de enviarlo.</small></div><button id="closeCart" class="close">×</button></div>
+    <div id="cartList" class="cart-list"></div>
+    <div class="total"><span>Total</span><span id="sheetTotal">$0</span></div>
+    <button id="prepareOrder" class="btn primary" style="width:100%">Enviar orden</button>
+  </div>
+</div>
+
+<div id="invoiceOverlay" class="overlay hidden">
+  <div class="sheet">
+    <div class="sheet-head"><div><h2>Confirmar orden</h2><small style="color:var(--muted)">Factura digital previa al envío.</small></div><button id="closeInvoice" class="close">×</button></div>
+    <div id="invoiceContent" class="invoice"></div>
+    <button id="confirmOrder" class="btn green" style="width:100%;margin-top:10px">Confirmar orden</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://zvmcjmjbedwaftejdduu.supabase.co';
+const SUPABASE_KEY='sb_publishable__kUv47MYA0ym6Fw7WF4c8A_jLozY3mQ';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false}});
+const token=new URLSearchParams(location.search).get('t')||'';
+const $=s=>document.querySelector(s);
+const money=n=>new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(Number(n)||0);
+let menu=null,activeCategory='all',cart=[],draft={},statusTimer=null;
+
+function statusLabel(s){return ({recibido:'Recibido',en_proceso:'En proceso',listo:'Listo',enviando_orden:'Enviando orden',entregado:'Entregado'})[s]||s}
+function statusIndex(s){return ['recibido','en_proceso','listo','enviando_orden','entregado'].indexOf(s)}
+function saveLocalOrder(orderToken,table){localStorage.setItem('gestok_restaurant_order_'+token,JSON.stringify({orderToken,table}))}
+function loadLocalOrder(){try{return JSON.parse(localStorage.getItem('gestok_restaurant_order_'+token)||'null')}catch{return null}}
+
+async function loadMenu(){
+  const {data,error}=await sb.rpc('restaurant_public_menu',{p_table_token:token});
+  if(error||!data?.ok){productList.innerHTML='<div class="empty">Este QR no es válido o la mesa está desactivada.</div>';return}
+  menu=data;
+  restaurantName.textContent=data.restaurant_name;
+  tableNumber.value=data.table_number;
+  renderCategories();renderProducts();
+  const saved=loadLocalOrder();
+  if(saved?.table) tableNumber.value=saved.table;
+  await refreshStatus();
+}
+function renderCategories(){
+  categoryTabs.innerHTML=`<button class="cat active" data-c="all">Todo</button>`+(menu.categories||[]).map(c=>`<button class="cat" data-c="${c.id}">${c.name}</button>`).join('');
+  categoryTabs.querySelectorAll('.cat').forEach(b=>b.onclick=()=>{activeCategory=b.dataset.c;categoryTabs.querySelectorAll('.cat').forEach(x=>x.classList.toggle('active',x===b));renderProducts()});
+}
+function selectedVariant(product){
+  const vars=product.variants||[];
+  const id=draft[product.id]?.variantId||vars[0]?.id;
+  return vars.find(v=>v.id===id)||vars[0];
+}
+function renderProducts(){
+  const rows=(menu.products||[]).filter(p=>activeCategory==='all'||p.category_id===activeCategory);
+  productList.innerHTML=rows.length?rows.map(p=>{
+    const vars=p.variants||[],sel=selectedVariant(p),qty=draft[p.id]?.qty||1;
+    return `<article class="product">
+      <div class="product-img">${p.image_url?`<img src="${p.image_url}" alt="">`:'Sin imagen'}</div>
+      <div><h3>${p.name}</h3><p>${p.description||''}</p>
+      <div class="variant-row">${vars.map(v=>`<button class="variant ${sel?.id===v.id?'active':''}" onclick="setVariant('${p.id}','${v.id}')">${v.name}</button>`).join('')}</div>
+      <div class="product-bottom">
+        <div><div class="price">${sel?money(sel.price):'Sin precio'}</div><div class="qty"><button onclick="setQty('${p.id}',-1)">−</button><span>${qty}</span><button onclick="setQty('${p.id}',1)">+</button></div></div>
+        <button class="add" onclick="addToCart('${p.id}')" ${!sel?'disabled':''}>Agregar</button>
+      </div></div>
+    </article>`;
+  }).join(''):'<div class="empty">No hay productos en esta categoría.</div>';
+}
+window.setVariant=(pid,vid)=>{draft[pid]={...(draft[pid]||{}),variantId:vid,qty:draft[pid]?.qty||1};renderProducts()};
+window.setQty=(pid,d)=>{const q=Math.max(1,(draft[pid]?.qty||1)+d);draft[pid]={...(draft[pid]||{}),qty:q};renderProducts()};
+window.addToCart=pid=>{
+  const p=menu.products.find(x=>x.id===pid),v=selectedVariant(p),qty=draft[pid]?.qty||1;
+  if(!p||!v)return;
+  const existing=cart.find(x=>x.product_id===p.id&&x.variant_id===v.id);
+  if(existing)existing.quantity+=qty;else cart.push({product_id:p.id,variant_id:v.id,product_name:p.name,variant_name:v.name,unit_price:Number(v.price),quantity:qty,notes:''});
+  renderCart();
+};
+function total(){return cart.reduce((a,x)=>a+x.unit_price*x.quantity,0)}
+function renderCart(){
+  const count=cart.reduce((a,x)=>a+x.quantity,0);
+  cartBar.classList.toggle('hidden',count===0);
+  cartCount.textContent=`${count} producto${count===1?'':'s'}`;
+  cartTotal.textContent=money(total());sheetTotal.textContent=money(total());
+  cartList.innerHTML=cart.length?cart.map((x,i)=>`<div class="cart-row"><div><strong>${x.product_name} · ${x.variant_name}</strong><small>${x.quantity} × ${money(x.unit_price)}</small></div><div><strong>${money(x.quantity*x.unit_price)}</strong><button class="btn" style="margin-top:5px;padding:5px 8px" onclick="removeCart(${i})">Quitar</button></div></div>`).join(''):'<div class="empty">El carrito está vacío.</div>';
+}
+window.removeCart=i=>{cart.splice(i,1);renderCart()};
+openCart.onclick=()=>cartOverlay.classList.remove('hidden');closeCart.onclick=()=>cartOverlay.classList.add('hidden');
+prepareOrder.onclick=()=>{
+  const table=Number(tableNumber.value);
+  if(!table)return alert('Ingresá tu número de mesa para continuar');
+  if(menu&&table!==Number(menu.table_number))return alert('El número de mesa no coincide con el QR de esta mesa');
+  if(!cart.length)return alert('Agregá productos al pedido');
+  invoiceContent.innerHTML=`<div class="invoice-row"><strong>Mesa</strong><strong>${table}</strong></div>`+cart.map(x=>`<div class="invoice-row"><span>${x.quantity} × ${x.product_name} · ${x.variant_name}</span><strong>${money(x.quantity*x.unit_price)}</strong></div>`).join('')+`<div class="invoice-row"><strong>Total</strong><strong>${money(total())}</strong></div>`;
+  cartOverlay.classList.add('hidden');invoiceOverlay.classList.remove('hidden');
+};
+closeInvoice.onclick=()=>invoiceOverlay.classList.add('hidden');
+confirmOrder.onclick=async()=>{
+  const table=Number(tableNumber.value);
+  confirmOrder.disabled=true;confirmOrder.textContent='Enviando...';
+  const items=cart.map(x=>({product_id:x.product_id,variant_id:x.variant_id,quantity:x.quantity,notes:x.notes||''}));
+  const {data,error}=await sb.rpc('restaurant_create_public_order',{p_table_token:token,p_table_number:table,p_items:items});
+  confirmOrder.disabled=false;confirmOrder.textContent='Confirmar orden';
+  if(error||!data?.ok){alert(data?.message||'No se pudo enviar la orden');return}
+  saveLocalOrder(data.customer_token,table);
+  cart=[];renderCart();invoiceOverlay.classList.add('hidden');
+  await refreshStatus();
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+async function refreshStatus(){
+  if(!menu)return;
+  const saved=loadLocalOrder();
+  const table=Number(tableNumber.value||saved?.table||menu.table_number);
+  if(!table)return;
+  const {data}=await sb.rpc('restaurant_public_order_status',{p_table_token:token,p_table_number:table,p_customer_token:saved?.orderToken||null});
+  if(!data?.ok||!data.has_order){currentOrderBox.classList.add('hidden');return}
+  const idx=statusIndex(data.status),labels=['Recibido','En proceso','Listo','Enviando','Entregado'];
+  currentOrderBox.innerHTML=`<strong>Pedido de Mesa ${data.table_number}</strong><div style="margin-top:5px;color:var(--muted);font-size:11px">Estado actual: <b style="color:var(--green)">${statusLabel(data.status)}</b> · Total ${money(data.total_amount)}</div><div class="status-steps">${labels.map((x,i)=>`<div class="status-step ${i<=idx?'done':''}"><i></i>${x}</div>`).join('')}</div>`;
+  currentOrderBox.classList.remove('hidden');
+}
+tableNumber.addEventListener('change',refreshStatus);
+loadMenu();statusTimer=setInterval(refreshStatus,5000);
+</script>
+</body>
+</html>
