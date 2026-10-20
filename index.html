@@ -2949,6 +2949,15 @@ function decodeParkingHtml(){
   return new TextDecoder('utf-8').decode(bytes);
 }
 async function launchParking(orgId){
+  const {data:accessData,error:accessError}=await sb.rpc('gestok_org_access_status',{p_organization_id:orgId});
+  if(accessError){
+    console.error('gestok_org_access_status:',accessError);
+  }else if(accessData && accessData.allowed===false){
+    const orgName=accessData.organization_name||ORG?.name||'GestOK Web Control';
+    setTimeout(()=>showSubscriptionBlocker(orgName,accessData.reason==='trial_expired'?'trial':'subscription'),20);
+    return;
+  }
+
   sessionStorage.setItem('gestok_current_org',orgId);
 
   const {data:{session},error:sessionError}=await sb.auth.getSession();
@@ -3041,7 +3050,9 @@ function openGestokWhatsApp(){window.open('https://wa.me/5493751232618?text=Hola
 function hideSubscriptionBlocker(){
  const b=document.getElementById('subscriptionBlocker');if(b)b.classList.add('hidden');
  if(app)app.classList.remove('subscription-locked');
- const f=document.getElementById('gestokBarberFrame');if(f){f.style.filter='';f.style.pointerEvents=''} const pf=document.getElementById('gestokParkingFrame');if(pf){pf.style.filter='';pf.style.pointerEvents=''}
+ const f=document.getElementById('gestokBarberFrame');if(f){f.style.filter='';f.style.pointerEvents=''}
+ const pf=document.getElementById('gestokParkingFrame');if(pf){pf.style.filter='';pf.style.pointerEvents=''}
+ const rf=document.getElementById('gestokRestaurantFrame');if(rf){rf.style.filter='';rf.style.pointerEvents=''}
 }
 function showSubscriptionBlocker(name,mode='subscription'){
  const b=document.getElementById('subscriptionBlocker');if(!b)return;
@@ -3060,6 +3071,8 @@ function showSubscriptionBlocker(name,mode='subscription'){
  b.classList.remove('hidden');
  if(!app.classList.contains('hidden'))app.classList.add('subscription-locked');
  const f=document.getElementById('gestokBarberFrame');if(f){f.style.filter='blur(7px) brightness(.52)';f.style.pointerEvents='none'}
+ const pf=document.getElementById('gestokParkingFrame');if(pf){pf.style.filter='blur(7px) brightness(.52)';pf.style.pointerEvents='none'}
+ const rf=document.getElementById('gestokRestaurantFrame');if(rf){rf.style.filter='blur(7px) brightness(.52)';rf.style.pointerEvents='none'}
 }
 async function exitBlockedSession(){
  await stopCommerceRealtime();await stopSupportClientRealtime();await sb.auth.signOut();
@@ -3191,6 +3204,13 @@ function trialDaysRemaining(sub){
 function trialExpired(sub){
  const end=sub?.trialEndsAt||sub?.trial_ends_at||sub?.nextDueDate||sub?.next_due_date;
  return !!end && parseDateOnly(end)<=parseDateOnly(today());
+}
+function subscriptionBlocked(sub){
+ const status=String(sub?.status||'').trim().toLowerCase();
+ return status==='vencido';
+}
+function organizationAccessBlocked(org,sub){
+ return org?.active===false || subscriptionBlocked(sub) || (sub?.status==='Prueba gratuita'&&trialExpired(sub));
 }
 function applyTrialAccess(){
  const s=ORG?.subscription;
@@ -3457,7 +3477,7 @@ async function restoreSavedSession(){
 
     if(ORG.type==='restaurant'){
       await launchRestaurant(ORG.id);
-      if(org.active===false)setTimeout(()=>showSubscriptionBlocker(org.name),80);
+      if(org.active===false||subscriptionBlocked(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name),80);
       if(ORG.subscription?.status==='Prueba gratuita'&&trialExpired(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name,'trial'),100);
       applyTrialAccess();loadSupportClientMessages();startSupportClientRealtime();renderPushState();handlePendingPushAction();
       SESSION_RESTORE_DONE=true;return true;
@@ -3465,7 +3485,7 @@ async function restoreSavedSession(){
 
     if(ORG.type==='parking'){
       await launchParking(ORG.id);
-      if(org.active===false)setTimeout(()=>showSubscriptionBlocker(org.name),80);
+      if(org.active===false||subscriptionBlocked(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name),80);
       if(ORG.subscription?.status==='Prueba gratuita'&&trialExpired(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name,'trial'),100);
       applyTrialAccess();
       loadSupportClientMessages();
@@ -3587,14 +3607,14 @@ async function login(){
 
  if(ORG.type==='restaurant'){
    await launchRestaurant(ORG.id);
-   if(org.active===false)setTimeout(()=>showSubscriptionBlocker(org.name),80);
+   if(org.active===false||subscriptionBlocked(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name),80);
    if(ORG.subscription?.status==='Prueba gratuita'&&trialExpired(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name,'trial'),100);
    applyTrialAccess();loadSupportClientMessages();startSupportClientRealtime();renderPushState();handlePendingPushAction();
    SESSION_RESTORE_DONE=true;return;
  }
  if(ORG.type==='parking'){
    await launchParking(ORG.id);
-   if(org.active===false)setTimeout(()=>showSubscriptionBlocker(org.name),80);
+   if(org.active===false||subscriptionBlocked(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name),80);
    if(ORG.subscription?.status==='Prueba gratuita'&&trialExpired(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name,'trial'),100);
    applyTrialAccess();
    loadSupportClientMessages();
@@ -3609,7 +3629,7 @@ async function login(){
    U=S.users.find(x=>x.role==='admin')||S.users[0];
    if(U)U.name=member.display_name||'Administrador';
    launchBarber(ORG.id);
-   if(org.active===false)setTimeout(()=>showSubscriptionBlocker(org.name),80);
+   if(org.active===false||subscriptionBlocked(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name),80);
    if(ORG.subscription?.status==='Prueba gratuita'&&trialExpired(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name,'trial'),100);
    applyTrialAccess();
    loadSupportClientMessages();
@@ -3627,7 +3647,7 @@ async function login(){
  renderPushState();
  handlePendingPushAction();
  await startCommerceRealtime();
- if(org.active===false)showSubscriptionBlocker(org.name);
+ if(org.active===false||subscriptionBlocked(ORG.subscription))showSubscriptionBlocker(org.name);
  SESSION_RESTORE_DONE=true;
 }
 loginBtn.onclick=login;companyPassword.onkeydown=e=>{if(e.key==='Enter')login()};
