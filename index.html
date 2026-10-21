@@ -3047,6 +3047,13 @@ window.closeRestaurantApp=async function(){
 };
 
 function openGestokWhatsApp(){window.open('https://wa.me/5493751232618?text=Hola%20GestOK%2C%20quiero%20consultar%20por%20mi%20suscripci%C3%B3n%20de%20Web%20Control.','_blank','noopener')}
+window.openBlockedGestokWhatsApp=function(){
+ const company=ORG?.name||document.getElementById('blockedCompany')?.textContent||'mi cuenta';
+ const message=`Hola GestOK, quiero consultar por la suscripción de ${company}. Mi acceso a Web Control aparece como vencido.`;
+ const url=`https://wa.me/5493751232618?text=${encodeURIComponent(message)}`;
+ const opened=window.open(url,'_blank','noopener,noreferrer');
+ if(!opened){ window.location.href=url; }
+};
 function hideSubscriptionBlocker(){
  const b=document.getElementById('subscriptionBlocker');if(b)b.classList.add('hidden');
  if(app)app.classList.remove('subscription-locked');
@@ -3074,46 +3081,48 @@ function showSubscriptionBlocker(name,mode='subscription'){
  const pf=document.getElementById('gestokParkingFrame');if(pf){pf.style.filter='blur(7px) brightness(.52)';pf.style.pointerEvents='none'}
  const rf=document.getElementById('gestokRestaurantFrame');if(rf){rf.style.filter='blur(7px) brightness(.52)';rf.style.pointerEvents='none'}
 }
-async function exitBlockedSession(){
+window.exitBlockedSession=async function(){
   try{ await stopCommerceRealtime(); }catch(e){}
   try{ await stopSupportClientRealtime(); }catch(e){}
-  try{ await sb.auth.signOut(); }catch(e){}
 
-  const frameIds=[
-    'gestokBarberFrame',
-    'gestokParkingFrame',
-    'gestokRestaurantFrame'
-  ];
-  frameIds.forEach(id=>{
+  // Primero limpiar la interfaz para que la navegación responda de inmediato.
+  const blocker=document.getElementById('subscriptionBlocker');
+  if(blocker)blocker.classList.add('hidden');
+
+  ['gestokBarberFrame','gestokParkingFrame','gestokRestaurantFrame'].forEach(id=>{
     const frame=document.getElementById(id);
     if(frame)frame.remove();
   });
 
   try{ sessionStorage.removeItem('gestok_current_org'); }catch(e){}
 
-  hideSubscriptionBlocker();
-
   ORG=null;
   S=null;
   U=null;
   AUTH_MEMBER_ID=null;
   selectedType=null;
-  SESSION_RESTORE_DONE=true;
 
   if(app)app.classList.add('hidden');
   if(portal)portal.classList.remove('hidden');
 
   const login=document.getElementById('loginStep');
   const types=document.getElementById('typeStep');
-
   if(login)login.classList.add('hidden');
   if(types)types.classList.remove('hidden');
 
-  const blocker=document.getElementById('subscriptionBlocker');
-  if(blocker)blocker.classList.add('hidden');
-
   window.scrollTo({top:0,left:0,behavior:'auto'});
-}
+
+  // Cerrar Supabase al final evita que el callback de SIGNED_OUT interfiera
+  // con la transición visual.
+  try{
+    SESSION_RESTORE_DONE=false;
+    await sb.auth.signOut();
+  }catch(e){
+    console.error('Error al cerrar sesión:',e);
+  }finally{
+    SESSION_RESTORE_DONE=true;
+  }
+};
 function slugifyCompany(value){
  return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')
 }
@@ -5846,22 +5855,6 @@ sb.auth.onAuthStateChange((event,session)=>{
 /* Persistencia compartida */
 window.addEventListener('storage',e=>{if(e.key===DB_KEY&&ORG){let oldId=ORG.id;DB=loadDB();ORG=DB.organizations.find(x=>x.id===oldId)||ORG;S=DB.records[oldId]||S;render()}});
 
-const blockedLogoutBtn=document.getElementById('blockedLogout');
-if(blockedLogoutBtn){
-  blockedLogoutBtn.onclick=exitBlockedSession;
-}
-
-const blockedSupportBtn=document.getElementById('blockedSupportBtn');
-if(blockedSupportBtn){
-  blockedSupportBtn.onclick=()=>{
-    const company=ORG?.name||document.getElementById('blockedCompany')?.textContent||'mi cuenta';
-    const message=`Hola GestOK, quiero consultar por la suscripción de ${company}. Mi acceso a Web Control aparece como vencido.`;
-    const url=`https://wa.me/5493751232618?text=${encodeURIComponent(message)}`;
-    window.location.href=url;
-  };
-}
-
-
 
 /* Arranque de GestOK:
    primero intenta restaurar la sesión; el login solo aparece si no existe. */
@@ -5955,8 +5948,8 @@ updateGestokInstallBanner();
     <h2 id="blockedTitle">Tu suscripción finalizó</h2>
     <p id="blockedText">El acceso a Web Control se encuentra temporalmente bloqueado. Hablá con GestOK para reactivar el servicio.</p>
     <div id="blockedCompany" class="subscription-company">GestOK Web Control</div>
-    <button id="blockedSupportBtn" class="subscription-contact" type="button">Hablar con GestOK</button>
-    <button id="blockedLogout" class="subscription-exit">Salir de la cuenta</button>
+    <button id="blockedSupportBtn" class="subscription-contact" type="button" onclick="window.openBlockedGestokWhatsApp()">Hablar con GestOK</button>
+    <button id="blockedLogout" class="subscription-exit" type="button" onclick="window.exitBlockedSession()">Salir de la cuenta</button>
   </div>
 </div>
 <a class="wa-float" href="https://wa.me/5493751232618?text=Hola%20GestOK%2C%20tengo%20una%20consulta%20sobre%20Web%20Control." target="_blank" rel="noopener" aria-label="Abrir WhatsApp de GestOK"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"/><path d="M9 8.8c.5 2.3 2 3.9 4.3 4.7"/><path d="M9 8.8 10.3 8l1.1 2-1 .7M13.3 13.5l.7-1 2 1.1-.8 1.3"/></svg></a>
