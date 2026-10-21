@@ -1,4 +1,4 @@
-const CACHE_NAME='gestok-web-control-v51-1';
+const CACHE_NAME='gestok-web-control-v51-2';
 
 const APP_SHELL=[
   './',
