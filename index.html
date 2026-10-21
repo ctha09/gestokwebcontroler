@@ -2779,7 +2779,7 @@ const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const DB_KEY='gestok_unified_platform_v4',WA='5493751232618';
-const COMMERCE_ST=['Prioritario','Pendiente','En proceso','Enviado a impresion','Finalizado'];
+const COMMERCE_ST=['Prioritario','Pendiente','En proceso','Enviado a impresion','Finalizado','Cobrado'];
 const BARBER_ST=['Pendiente','Confirmado','En proceso','Finalizado','Cancelado'];
 let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null,orderEditingId=null,SCR_HOME_PERIOD='month',SCR_HOME_MONTH='',BALANCE_PERIOD='monthly',BALANCE_DAY='',BALANCE_WEEK='',BALANCE_MONTH='',BALANCE_SEARCH='',BALANCE_FILTERS={payments:[],employee:'all',client:'all'},HISTORY_FLOW='all',HISTORY_PERIOD='monthly',HISTORY_DAY='',HISTORY_WEEK='',HISTORY_MONTH='',HISTORY_YEAR='',HISTORY_SEARCH='',purchaseEditingId=null,supplierEditingId=null,expenseEditingId=null,purchaseReceiptId=null,COMMERCIAL_FLOW_FILTER='all',supportClientRows=[],supportClientChannel=null,lastSupportClientMessageId=null,supportSideTimer=null,SESSION_RESTORE_DONE=false,SCR_HOME_SALES_SEARCH='',PENDING_ADMIN_PROFILE_ID=null;
 
@@ -3722,20 +3722,20 @@ async function loadCommerceFromSupabase(preferredMemberId=AUTH_MEMBER_ID){
  next.users=members.map(m=>({id:m.id,authUserId:m.auth_user_id,name:m.display_name,role:m.role,active:m.active!==false,fixedSalary:Number(m.fixed_salary||0),commission:Number(m.commission_percent||0)}));
  next.stock=(stockR.data||[]).map(p=>({id:p.id,name:p.name,price:Number(p.sale_price||0),qty:Number(p.quantity||0),min:Number(p.min_quantity||0),unit:p.unit,updatedAt:p.updated_at}));
  next.sales=(salesR.data||[]).map(x=>({id:x.id,date:x.sale_at,client:x.customer_name,concept:x.concept,amount:Number(x.amount||0),payment:x.payment_method||'Otro',notes:x.notes||'',userId:x.member_id,userName:memberMap.get(x.member_id)?.display_name||'Usuario',mode:x.sale_type,productId:x.stock_item_id||'',qty:Number(x.quantity||1)}));
- next.orders=orders.map(o=>({id:o.id,createdAt:o.created_at,updatedAt:o.updated_at,client:o.client_name,title:o.title,amount:Number(o.amount||0),status:o.status,due:o.due_date||'',ownerId:o.responsible_member_id,ownerName:memberMap.get(o.responsible_member_id)?.display_name||'Sin asignar',description:o.description||'',ledgerPosted:o.ledger_posted===true,finalizedAt:o.finalized_at}));
+ next.orders=orders.map(o=>({id:o.id,createdAt:o.created_at,updatedAt:o.updated_at,client:o.client_name,title:o.title,amount:Number(o.amount||0),status:o.status,due:o.due_date||'',ownerId:o.responsible_member_id,ownerName:memberMap.get(o.responsible_member_id)?.display_name||'Sin asignar',description:o.description||'',ledgerPosted:o.ledger_posted===true,finalizedAt:o.finalized_at,paidAt:o.paid_at}));
  next.activity=(activityR.data||[]).map(a=>({id:a.id,date:a.created_at,title:a.title,comment:a.comment||'',orderId:a.order_id||'',orderTitle:orderMap.get(a.order_id)?.title||'',userId:a.member_id,userName:memberMap.get(a.member_id)?.display_name||'Usuario'}));
  next.expenses=(expensesR.data||[]).map(x=>({id:x.id,date:x.expense_at,concept:x.concept,amount:Number(x.amount||0),payment:x.payment_method||'Otro',notes:x.notes||'',userId:x.member_id,userName:memberMap.get(x.member_id)?.display_name||'Usuario'}));
  next.salaryPayments=(salaryR.data||[]).map(x=>({id:x.id,date:x.paid_at,userId:x.employee_member_id,userName:memberMap.get(x.employee_member_id)?.display_name||'Empleado',amount:Number(x.amount||0),payment:x.payment_method||'Otro',notes:x.notes||'',registeredBy:memberMap.get(x.registered_by_member_id)?.display_name||'Administrador'}));
  next.suppliers=(suppliersR.data||[]).map(x=>({id:x.id,name:x.name,category:x.category||'',phone:x.phone||'',notes:x.notes||'',active:x.active!==false}));
  next.purchases=(purchasesR.data||[]).map(x=>({id:x.id,date:x.purchased_at,supplierId:x.supplier_id||'',supplierName:x.supplier_name||'Proveedor',userId:x.member_id,userName:memberMap.get(x.member_id)?.display_name||'Usuario',description:x.description,amount:Number(x.amount||0),payment:x.payment_method||'Otro',notes:x.notes||'',expenseId:x.expense_id||''}));
- next.ledger=[...next.sales.map(x=>({id:'sale-'+x.id,source:'sale',sourceId:x.id,date:x.date,amount:x.amount,description:x.concept,client:x.client,userName:x.userName})),...next.orders.filter(x=>x.ledgerPosted).map(x=>({id:'order-'+x.id,source:'order',sourceId:x.id,date:x.finalizedAt||x.updatedAt,amount:x.amount,description:x.title,client:x.client,userName:x.ownerName}))].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+ next.ledger=[...next.sales.map(x=>({id:'sale-'+x.id,source:'sale',sourceId:x.id,date:x.date,amount:x.amount,description:x.concept,client:x.client,userName:x.userName})),...next.orders.filter(x=>x.ledgerPosted).map(x=>({id:'order-'+x.id,source:'order',sourceId:x.id,date:x.paidAt||x.updatedAt,amount:x.amount,description:x.title,client:x.client,userName:x.ownerName}))].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
  const localBalanceFallback=[
    ...next.sales.map(x=>({
      id:x.id,kind:'sale',date:x.date,concept:x.concept,client:x.client,
      employee:x.userName,payment:x.payment,amount:x.amount,direction:'income'
    })),
    ...next.orders.filter(x=>x.ledgerPosted).map(x=>({
-     id:x.id,kind:'order',date:x.finalizedAt||x.updatedAt,concept:x.title,client:x.client,
+     id:x.id,kind:'order',date:x.paidAt||x.updatedAt,concept:x.title,client:x.client,
      employee:x.ownerName,payment:'Sin especificar',amount:x.amount,direction:'income'
    })),
    ...next.expenses.map(x=>{const p=next.purchases.find(p=>p.expenseId===x.id);return {id:x.id,kind:p?'purchase':'expense',date:x.date,concept:p?`Compra · ${p.description}`:x.concept,client:p?p.supplierName:'',employee:x.userName,payment:x.payment,amount:x.amount,direction:'expense'}}),
@@ -3888,7 +3888,7 @@ function configureType(){
  attentionTitle.textContent=carlos?'Últimas compras':(barber?'Turnos que requieren atención':'Pedidos que requieren atención');attentionSubtitle.textContent=carlos?'Mercadería registrada recientemente':'Prioritarios y trabajos activos';attentionBadge.textContent=carlos?'Egresos':'Activo';attentionBadge.className=carlos?'badge yellow':'badge red';
  kActiveLabel.textContent=carlos?'Compras del mes':(barber?'Turnos activos':'Pedidos activos');kActiveSub.textContent=carlos?'Registradas':'En curso';
  stFinishedLabel.textContent=barber?'Turnos finalizados':'Pedidos finalizados';stFinishedCard.classList.toggle('hidden',carlos);
- orderModalTitle.textContent=barber?'Nuevo turno':'Nuevo pedido';orderModalDesc.textContent=barber?'El turno finalizado puede impactar en el balance.':'Solo impacta en el balance cuando pasa a Finalizado.';oTitleLabel.textContent=barber?'Servicio':'Trabajo / pedido';
+ orderModalTitle.textContent=barber?'Nuevo turno':'Nuevo pedido';orderModalDesc.textContent=barber?'El turno finalizado puede impactar en el balance.':'Finalizado indica que el pedido terminó. Solo impacta en Balance cuando pasa a Cobrado.';oTitleLabel.textContent=barber?'Servicio':'Trabajo / pedido';
  stockMenuBtn.classList.toggle('hidden',barber);expensesMenuBtn.classList.toggle('hidden',barber);payrollMenuBtn.classList.toggle('hidden',barber);choiceExpense.classList.toggle('hidden',barber);if($('#clearStock'))$('#clearStock').classList.toggle('hidden',barber);if($('#clearExpenses'))$('#clearExpenses').classList.toggle('hidden',barber);if($('#clearPayroll'))$('#clearPayroll').classList.toggle('hidden',barber);
  if(carlos)salePay.innerHTML='<option>Efectivo</option><option>Transferencia</option><option>QR</option><option>Tarjeta</option>';
 }
@@ -4224,11 +4224,11 @@ receiptDelete.onclick=async()=>{
 };
 
 /* Pedidos / turnos */
-function ownerOptions(){oOwner.innerHTML=S.users.filter(x=>x.active!==false).map(x=>`<option value="${x.id}">${x.name}</option>`).join('');oStatus.innerHTML=states().filter(x=>x!=='Finalizado'&&x!=='Cancelado').map(x=>`<option>${x}</option>`).join('');aOrder.innerHTML='<option value="">Sin relación</option>'+S.orders.filter(o=>!['Finalizado','Cancelado'].includes(o.status)).map(o=>`<option value="${o.id}">${o.title} · ${o.client}</option>`).join('')}
+function ownerOptions(){oOwner.innerHTML=S.users.filter(x=>x.active!==false).map(x=>`<option value="${x.id}">${x.name}</option>`).join('');oStatus.innerHTML=states().filter(x=>x!=='Finalizado'&&x!=='Cobrado'&&x!=='Cancelado').map(x=>`<option>${x}</option>`).join('');aOrder.innerHTML='<option value="">Sin relación</option>'+S.orders.filter(o=>!['Finalizado','Cobrado','Cancelado'].includes(o.status)).map(o=>`<option value="${o.id}">${o.title} · ${o.client}</option>`).join('')}
 function openOrder(){
   closeChoice();ownerOptions();orderEditingId=null;
   orderModalTitle.textContent='Nuevo pedido';
-  orderModalDesc.textContent='Solo impacta en el balance cuando pasa a Finalizado.';
+  orderModalDesc.textContent='Finalizado indica que el pedido terminó. Solo impacta en Balance cuando pasa a Cobrado.';
   saveOrder.textContent='Crear';
   orderModal.classList.remove('hidden');
   oClient.value='';oTitle.value='';oAmount.value='';oDue.value=today();oDesc.value='';
@@ -4285,7 +4285,7 @@ window.deleteOrder=async id=>{
   const o=S.orders.find(x=>x.id===id);if(!o)return toast('Pedido no encontrado');
 
   const text=o.ledgerPosted
-    ?`¿Eliminar "${o.title}"?\n\nComo está finalizado, al eliminarlo también dejará de aparecer como ingreso en Balance.`
+    ?`¿Eliminar "${o.title}"?\n\nComo está cobrado, al eliminarlo también dejará de aparecer como ingreso en Balance.`
     :`¿Eliminar "${o.title}"?\n\nEsta acción no se puede deshacer.`;
 
   if(!confirm(text))return;
@@ -4296,7 +4296,19 @@ window.deleteOrder=async id=>{
   await loadCommerceFromSupabase(U?.id);render();toast('Pedido eliminado');
 };
 
-window.changeStatus=async(oid,status)=>{let before=S.orders.find(x=>x.id===oid),first=status==='Finalizado'&&!before?.ledgerPosted;const {error}=await sb.rpc('commerce_set_order_status',{p_organization_id:ORG.id,p_order_id:oid,p_status:status});if(error)return toast(error.message);await loadCommerceFromSupabase(U?.id);render();toast(first?'Finalizado: monto sumado al balance':'Estado sincronizado')};
+window.changeStatus=async(oid,status)=>{
+  const before=S.orders.find(x=>x.id===oid);
+  const firstCharge=status==='Cobrado'&&!before?.ledgerPosted;
+  const {error}=await sb.rpc('commerce_set_order_status',{
+    p_organization_id:ORG.id,
+    p_order_id:oid,
+    p_status:status
+  });
+  if(error)return toast(error.message);
+  await loadCommerceFromSupabase(U?.id);
+  render();
+  toast(firstCharge?'Cobrado: monto sumado al balance':status==='Finalizado'?'Pedido finalizado · pendiente de cobro':'Estado sincronizado');
+};
 window.setFilter=x=>{F=x;renderOrders()};
 
 /* Actividad */
@@ -5414,7 +5426,7 @@ function renderOrders(){
  let st=states(),all=['Todos',...st],monthOrders=S.orders.filter(o=>commerceMonthMatch(commerceOrderReviewDate(o)));
  filters.innerHTML=all.map(x=>`<button class="filter ${F===x?'active':''}" onclick="setFilter('${x}')">${x}${x==='Todos'?'':` · ${monthOrders.filter(o=>o.status===x).length}`}</button>`).join('');
  let arr=F==='Todos'?monthOrders:monthOrders.filter(o=>o.status===F);
- ordersList.innerHTML=arr.length?arr.map(o=>`<article class="order ${o.status==='Prioritario'?'prio':''}"><div class="otop"><div><div class="otitle">${o.title}</div><div class="oclient">${o.client}</div></div><span class="badge ${o.status==='Prioritario'?'red':o.status==='Pendiente'?'yellow':o.status==='En proceso'?'blue':o.status==='Finalizado'?'green':'purple'}">${o.status}</span></div>${o.description?`<div class="odesc">${o.description}</div>`:''}<div class="ometa"><div><span>Monto</span><strong>${money(o.amount)}</strong></div><div><span>Responsable</span><strong>${o.ownerName}</strong></div><div><span>Fecha</span><strong>${o.due||'Sin fecha'}</strong></div><div><span>Balance</span><strong>${o.ledgerPosted?'Sumado ✓':'Pendiente'}</strong></div></div><div class="oaction"><select class="select" onchange="changeStatus('${o.id}',this.value)">${st.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select>${isSCRBusiness()?`<div class="order-admin-actions"><button class="btn secondary" onclick="openEditOrder('${o.id}')">Editar pedido</button><button class="btn secondary danger-order" onclick="deleteOrder('${o.id}')">Eliminar</button></div>`:''}</div></article>`).join(''):'<div class="empty">No hay registros para el mes seleccionado.</div>';
+ ordersList.innerHTML=arr.length?arr.map(o=>`<article class="order ${o.status==='Prioritario'?'prio':''}"><div class="otop"><div><div class="otitle">${o.title}</div><div class="oclient">${o.client}</div></div><span class="badge ${o.status==='Prioritario'?'red':o.status==='Pendiente'?'yellow':o.status==='En proceso'?'blue':o.status==='Finalizado'?'blue':o.status==='Cobrado'?'green':'purple'}">${o.status}</span></div>${o.description?`<div class="odesc">${o.description}</div>`:''}<div class="ometa"><div><span>Monto</span><strong>${money(o.amount)}</strong></div><div><span>Responsable</span><strong>${o.ownerName}</strong></div><div><span>Fecha</span><strong>${o.due||'Sin fecha'}</strong></div><div><span>Cobro</span><strong>${o.ledgerPosted?'Cobrado ✓':o.status==='Finalizado'?'Pendiente de cobro':'No cobrado'}</strong></div></div><div class="oaction"><select class="select" onchange="changeStatus('${o.id}',this.value)">${st.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select>${isSCRBusiness()?`<div class="order-admin-actions"><button class="btn secondary" onclick="openEditOrder('${o.id}')">Editar pedido</button><button class="btn secondary danger-order" onclick="deleteOrder('${o.id}')">Eliminar</button></div>`:''}</div></article>`).join(''):'<div class="empty">No hay registros para el mes seleccionado.</div>';
 }
 function renderActivity(){
  const review=S.activity.filter(a=>commerceMonthMatch(a.date));
@@ -5522,7 +5534,7 @@ function render(){
      salaryTotal=homeSalaries.reduce((a,x)=>a+Number(x.amount||0),0),
      bal=income-expenseTotal-salaryTotal,
      tod=isSCRBusiness()?homeLedger:S.ledger.filter(x=>String(x.date).slice(0,10)===today()),
-     active=homeOrders.filter(x=>!['Finalizado','Cancelado'].includes(x.status));
+     active=homeOrders.filter(x=>!['Finalizado','Cobrado','Cancelado'].includes(x.status));
 
  kBal.textContent=money(bal);
  kToday.textContent=money(tod.reduce((a,x)=>a+Number(x.amount||0),0));
