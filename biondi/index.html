@@ -60,6 +60,8 @@ function prettyDate(iso){
  const d=new Date(iso+'T12:00:00');
  return d.toLocaleDateString('es-AR',{weekday:'long',day:'2-digit',month:'long'});
 }
+let publicCalendar={};
+
 async function loadInfo(){
  if(!token){
    showResult('El link de reserva no es válido.','error');
@@ -67,65 +69,78 @@ async function loadInfo(){
    return;
  }
 
- const {data,error}=await sb.rpc('biondi_public_portal_data',{
+ await refreshPublicData();
+}
+
+async function refreshPublicData(keepDate=''){
+ dateInput.innerHTML='<option value="">Cargando agenda de Biondi…</option>';
+ dateAvailabilityNote.textContent='Sincronizando con Web Control.';
+ slots.innerHTML='<div class="note">Cargando horarios…</div>';
+
+ const {data,error}=await sb.rpc('biondi_public_catalog_calendar',{
    p_token:token,
    p_days:60
  });
 
  if(error||!data?.ok){
-   console.error('Biondi portal:',error,data);
-   showResult('Este link de reserva no está disponible.','error');
-   bookingView.classList.add('hidden');
+   console.error('Biondi catalog/calendar:',error,data);
+   dateInput.innerHTML='<option value="">No se pudo cargar la agenda</option>';
+   dateAvailabilityNote.textContent='La agenda no pudo sincronizarse con Web Control.';
+   slots.innerHTML='<div class="note">No hay datos disponibles.</div>';
+   showResult('No pudimos sincronizar la agenda. Verificá que el SQL V27 esté ejecutado.','error');
    return;
  }
 
+ result.className='alert';
+ result.textContent='';
+
  serviceRows=Array.isArray(data.services)?data.services:[];
  renderServices();
- renderAvailableDates(Array.isArray(data.available_dates)?data.available_dates:[]);
+
+ publicCalendar={};
+ const rows=Array.isArray(data.calendar)?data.calendar:[];
+
+ rows.forEach(r=>{
+   const date=String(r.date||'');
+   const time=String(r.time||'').slice(0,5);
+   if(!date||!time)return;
+   if(!publicCalendar[date])publicCalendar[date]=[];
+   if(!publicCalendar[date].includes(time))publicCalendar[date].push(time);
+ });
+
+ Object.values(publicCalendar).forEach(arr=>arr.sort());
+
+ renderAvailableDatesFromCalendar(keepDate);
 }
 
-function renderAvailableDates(rows){
- selectedSlot='';
- slots.innerHTML='<div class="note">Elegí primero un día disponible.</div>';
+function renderAvailableDatesFromCalendar(keepDate=''){
+ const dates=Object.keys(publicCalendar).filter(d=>publicCalendar[d]?.length).sort();
 
- if(!rows.length){
+ if(!dates.length){
    dateInput.innerHTML='<option value="">Sin turnos disponibles</option>';
    dateAvailabilityNote.textContent='Biondi no tiene días con horarios libres en este momento.';
+   slots.innerHTML='<div class="note">No hay horarios disponibles.</div>';
+   selectedSlot='';
+   updateSummary();
    return;
  }
 
  dateInput.innerHTML=
    '<option value="">Elegí una fecha disponible</option>'+
-   rows.map(r=>{
-     const iso=String(r.date||'');
-     const label=r.label||prettyDate(iso);
-     const count=Number(r.free_slots||0);
-     return `<option value="${iso}">${label} · ${count} horario${count===1?'':'s'} libre${count===1?'':'s'}</option>`;
+   dates.map(d=>{
+     const count=publicCalendar[d].length;
+     return `<option value="${d}">${prettyDate(d)} · ${count} horario${count===1?'':'s'} libre${count===1?'':'s'}</option>`;
    }).join('');
 
- dateAvailabilityNote.textContent='Estas fechas salen directamente de los días y horarios configurados por Biondi en Web Control.';
-}
+ dateAvailabilityNote.textContent='Agenda sincronizada con los días y horarios configurados por Biondi en Web Control.';
 
-async function refreshPortalAvailability(keepDate=''){
- const {data,error}=await sb.rpc('biondi_public_portal_data',{
-   p_token:token,
-   p_days:60
- });
-
- if(error||!data?.ok){
-   console.error('Biondi refresh portal:',error,data);
-   return;
- }
-
- serviceRows=Array.isArray(data.services)?data.services:[];
- renderServices();
-
- const dates=Array.isArray(data.available_dates)?data.available_dates:[];
- renderAvailableDates(dates);
-
- if(keepDate && dates.some(x=>String(x.date)===keepDate)){
+ if(keepDate && publicCalendar[keepDate]?.length){
    dateInput.value=keepDate;
-   await loadSlots();
+   renderSlotsForDate(keepDate);
+ }else{
+   selectedSlot='';
+   slots.innerHTML='<div class="note">Elegí primero un día disponible.</div>';
+   updateSummary();
  }
 }
 
@@ -148,43 +163,23 @@ function renderServices(){
 
  total.textContent=money(selectedService?.price||0);
 }
-async function loadSlots(){
+function renderSlotsForDate(date){
  selectedSlot='';
  updateSummary();
 
- if(!dateInput.value){
-   slots.innerHTML='<div class="note">Elegí primero un día disponible.</div>';
-   return;
- }
-
- slots.innerHTML='<div class="note">Consultando horarios libres…</div>';
-
- const {data,error}=await sb.rpc('biondi_public_availability',{
-   p_token:token,
-   p_date:dateInput.value
- });
-
- if(error){
-   console.error('Biondi slots:',error);
-   slots.innerHTML='<div class="note">No pudimos consultar los horarios.</div>';
-   return;
- }
-
- const rows=data||[];
+ const rows=publicCalendar[date]||[];
 
  if(!rows.length){
-   slots.innerHTML='<div class="note">Ese día acaba de quedarse sin horarios. Actualizando fechas…</div>';
-   await refreshPortalAvailability();
+   slots.innerHTML='<div class="note">No quedan horarios libres para ese día.</div>';
    return;
  }
 
- slots.innerHTML=rows.map(r=>{
-   const t=String(r.slot).slice(0,5);
+ slots.innerHTML=rows.map(t=>{
    const hour=Number(t.slice(0,2));
    const period=hour<13?'Mañana':'Tarde';
    return `<button type="button" class="slot" data-time="${t}">
-     <span style="display:block;font-size:13px">${t}</span>
-     <small style="display:block;font-size:8px;opacity:.7;margin-top:2px">${period}</small>
+     <span style="display:block;font-size:14px">${t}</span>
+     <small style="display:block;font-size:9px;opacity:.72;margin-top:2px">${period}</small>
    </button>`;
  }).join('');
 
@@ -195,10 +190,21 @@ async function loadSlots(){
    updateSummary();
  });
 }
+
+async function loadSlots(){
+ const date=dateInput.value;
+ if(!date){
+   selectedSlot='';
+   slots.innerHTML='<div class="note">Elegí primero un día disponible.</div>';
+   updateSummary();
+   return;
+ }
+ renderSlotsForDate(date);
+}
 function updateSummary(){total.textContent=money(selectedService?.price||0);const loc=mode==='Gabinete'?'Gabinete':homeLocation.value.trim();const complete=identity&&selectedService&&dateInput.value&&selectedSlot&&(mode==='Gabinete'||loc);confirmBtn.disabled=!complete;summary.innerHTML=complete?`<strong>${fullName()}</strong><br>${selectedService.name} · ${money(selectedService.price)}<br>${dateInput.value} · ${selectedSlot}<br>${mode}${mode==='A domicilio'?' · '+loc:''}`:'Todavía faltan datos para completar la reserva.'}
 continueBtn.onclick=()=>{const first=firstName.value.trim(),last=lastName.value.trim();if(!first||!last)return alert('Ingresá nombre y apellido');identity={first,last};localStorage.setItem('biondi_client_identity',JSON.stringify(identity));identityCard.classList.add('hidden');clientPanel.classList.remove('hidden');updateSummary();loadMine()};
 cabinetBtn.onclick=()=>{mode='Gabinete';cabinetBtn.classList.add('active');homeBtn.classList.remove('active');cabinetBox.classList.remove('hidden');homeBox.classList.add('hidden');updateSummary()};homeBtn.onclick=()=>{mode='A domicilio';homeBtn.classList.add('active');cabinetBtn.classList.remove('active');homeBox.classList.remove('hidden');cabinetBox.classList.add('hidden');updateSummary()};mapsBtn.onclick=()=>window.open('https://www.google.com/maps?q=-26.568583,-54.756861','_blank');dateInput.onchange=loadSlots;homeLocation.oninput=updateSummary;
-confirmBtn.onclick=async()=>{if(confirmBtn.disabled)return;confirmBtn.disabled=true;confirmBtn.textContent='Confirmando…';const {data,error}=await sb.rpc('biondi_public_create_appointment',{p_token:token,p_client_name:fullName(),p_service_id:selectedService.id,p_appointment_date:dateInput.value,p_appointment_time:selectedSlot+':00',p_mode:mode,p_customer_location:mode==='A domicilio'?homeLocation.value.trim():null,p_notes:null});confirmBtn.textContent='Confirmar turno';if(error||!data?.ok){showResult(data?.message||'Ya tenemos este horario ocupado.','error');await loadSlots();return}showResult(`Turno registrado para ${dateInput.value} a las ${selectedSlot}. Estado: Pendiente.`,'ok');selectedSlot='';await loadSlots();await loadMine()};
+confirmBtn.onclick=async()=>{if(confirmBtn.disabled)return;confirmBtn.disabled=true;confirmBtn.textContent='Confirmando…';const {data,error}=await sb.rpc('biondi_public_create_appointment',{p_token:token,p_client_name:fullName(),p_service_id:selectedService.id,p_appointment_date:dateInput.value,p_appointment_time:selectedSlot+':00',p_mode:mode,p_customer_location:mode==='A domicilio'?homeLocation.value.trim():null,p_notes:null});confirmBtn.textContent='Confirmar turno';if(error||!data?.ok){showResult(data?.message||'Ya tenemos este horario ocupado.','error');await loadSlots();return}showResult(`Turno registrado para ${dateInput.value} a las ${selectedSlot}. Estado: Pendiente.`,'ok');selectedSlot='';await refreshPublicData();await loadMine()};
 async function loadMine(){if(!identity||!token)return;mineList.innerHTML='<div class="note">Cargando turnos…</div>';const {data,error}=await sb.rpc('biondi_public_client_appointments',{p_token:token,p_client_name:fullName()});if(error){mineList.innerHTML='<div class="note">No pudimos cargar tus turnos.</div>';return}mineList.innerHTML=(data||[]).length?(data||[]).map(a=>`<div class="appointment"><div class="ap-top"><div><strong>${a.appointment_date} · ${String(a.appointment_time).slice(0,5)}</strong><div class="note" style="margin-top:4px">${a.service_name} · ${money(a.price)} · ${a.mode}</div></div><span class="status ${a.status}">${a.status}</span></div></div>`).join(''):'<div class="note">Todavía no tenés turnos registrados.</div>'}
 $$('.tab').forEach(b=>b.onclick=()=>{$$('.tab').forEach(x=>{x.classList.toggle('active',x===b);x.classList.toggle('secondary',x!==b)});bookView.classList.toggle('hidden',b.dataset.view!=='book');mineView.classList.toggle('hidden',b.dataset.view!=='mine');if(b.dataset.view==='mine')loadMine()});
 restoreIdentity();loadInfo();
