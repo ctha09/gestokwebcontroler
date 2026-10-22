@@ -1,4 +1,4 @@
-const CACHE_NAME='gestok-web-control-v51-6';
+const CACHE_NAME='gestok-web-control-v51-7';
 
 const APP_SHELL=[
   './',
@@ -6,6 +6,7 @@ const APP_SHELL=[
   './manifest.webmanifest',
   './parking-ticket.html',
   './restaurant-menu.html',
+  './biondi/',
   './gestok-icon-192.png',
   './gestok-icon-512.png'
 ];
