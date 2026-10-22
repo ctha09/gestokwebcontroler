@@ -1,4 +1,4 @@
-const CACHE_NAME='gestok-web-control-v51-10';
+const CACHE_NAME='gestok-web-control-v51-11';
 
 const APP_SHELL=[
   './',
@@ -123,12 +123,10 @@ self.addEventListener('notificationclick',event=>{
       .then(windowClients=>{
 
         for(const client of windowClients){
-
           if('focus' in client){
             client.navigate(target);
             return client.focus();
           }
-
         }
 
         if(clients.openWindow){
