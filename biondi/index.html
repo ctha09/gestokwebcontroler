@@ -23,12 +23,12 @@
  <section id="clientPanel" class="hidden">
   <div class="tabs"><button class="btn tab active" data-view="book">Registrar un turno</button><button class="btn tab secondary" data-view="mine">Mis turnos</button></div>
   <section id="bookView">
-   <div class="card"><div class="title"><h2>Elegí un servicio</h2><small>Los servicios y precios se actualizan desde GestOK.</small></div><div id="services" class="services"></div><div class="total"><strong>Total</strong><strong id="total">$0</strong></div></div>
+   <div class="card"><div class="title"><h2>Elegí un servicio</h2><small>Estos servicios y precios son los mismos que Biondi administra desde Web Control.</small></div><div id="services" class="services"></div><div class="total"><strong>Total</strong><strong id="total">$0</strong></div></div>
    <div class="card"><div class="title"><h2>Modalidad</h2><small>Elegí gabinete o atención a domicilio.</small></div><div class="choice-row"><button id="cabinetBtn" class="choice active">En gabinete</button><button id="homeBtn" class="choice">A domicilio</button></div><div id="cabinetBox" class="mapbox"><strong>Gabinete Biondi</strong><small>26°34'06.9&quot;S 54°45'24.7&quot;W</small><button id="mapsBtn" class="btn secondary" style="margin-top:8px">Abrir en Google Maps</button></div><div id="homeBox" class="hidden" style="margin-top:8px"><input id="homeLocation" class="input" placeholder="Dirección o link de Google Maps"><div class="note" style="margin-top:5px">Agregá la ubicación donde querés recibir la atención.</div></div></div>
    <div class="card">
       <div class="title">
         <h2>Fecha y horario</h2>
-        <small>Solo aparecen días y horarios que todavía tienen disponibilidad.</small>
+        <small>Solo aparecen los días habilitados por Biondi que todavía conservan horarios libres.</small>
       </div>
       <label style="display:block;font-weight:800;font-size:12px;margin:0 0 6px">Días disponibles</label>
       <select id="dateInput" class="select">
@@ -40,7 +40,7 @@
     </div>
    <div class="card"><div class="title"><h2>Confirmar turno</h2><small>Revisá los datos antes de reservar.</small></div><div id="summary" class="note">Todavía faltan datos para completar la reserva.</div><button id="confirmBtn" class="btn primary" style="width:100%;margin-top:10px" disabled>Confirmar turno</button><div id="result" class="alert"></div></div>
   </section>
-  <section id="mineView" class="hidden"><div class="card"><div class="title"><h2>Mis turnos</h2><small>El estado cambia cuando Biondi confirma o cancela tu reserva.</small></div><div id="mineList"></div></div></section>
+  <section id="mineView" class="hidden"><div class="card"><div class="title"><h2>Mis turnos</h2><small>El estado cambia cuando Biondi confirma o cancela tu reserva.</small></div><button id="refreshMineBtn" class="btn secondary" style="width:100%;margin-bottom:10px">Actualizar estado</button><div id="mineList"></div></div></section>
  </section>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -67,50 +67,68 @@ async function loadInfo(){
    return;
  }
 
- const {data,error}=await sb.rpc('biondi_public_booking_info',{p_token:token});
+ const {data,error}=await sb.rpc('biondi_public_portal_data',{
+   p_token:token,
+   p_days:60
+ });
 
  if(error||!data?.ok){
-   console.error('Biondi public info:',error,data);
+   console.error('Biondi portal:',error,data);
    showResult('Este link de reserva no está disponible.','error');
    bookingView.classList.add('hidden');
    return;
  }
 
- serviceRows=data.services||[];
+ serviceRows=Array.isArray(data.services)?data.services:[];
  renderServices();
- await loadAvailableDates();
+ renderAvailableDates(Array.isArray(data.available_dates)?data.available_dates:[]);
 }
 
-async function loadAvailableDates(){
- dateInput.innerHTML='<option value="">Consultando días disponibles…</option>';
+function renderAvailableDates(rows){
+ selectedSlot='';
  slots.innerHTML='<div class="note">Elegí primero un día disponible.</div>';
 
- const {data,error}=await sb.rpc('biondi_public_available_dates',{
-   p_token:token,
-   p_days:45
- });
-
- if(error){
-   console.error('Biondi dates:',error);
-   dateInput.innerHTML='<option value="">No pudimos consultar fechas</option>';
-   dateAvailabilityNote.textContent='Volvé a intentar en unos segundos.';
-   return;
- }
-
- const rows=data||[];
-
  if(!rows.length){
-   dateInput.innerHTML='<option value="">Sin fechas disponibles</option>';
-   dateAvailabilityNote.textContent='Por el momento no quedan turnos libres en los próximos días.';
+   dateInput.innerHTML='<option value="">Sin turnos disponibles</option>';
+   dateAvailabilityNote.textContent='Biondi no tiene días con horarios libres en este momento.';
    return;
  }
 
  dateInput.innerHTML=
-   '<option value="">Elegí un día disponible</option>'+
-   rows.map(r=>`<option value="${r.available_date}">${prettyDate(r.available_date)} · ${r.free_slots} horario${Number(r.free_slots)===1?'':'s'}</option>`).join('');
+   '<option value="">Elegí una fecha disponible</option>'+
+   rows.map(r=>{
+     const iso=String(r.date||'');
+     const label=r.label||prettyDate(iso);
+     const count=Number(r.free_slots||0);
+     return `<option value="${iso}">${label} · ${count} horario${count===1?'':'s'} libre${count===1?'':'s'}</option>`;
+   }).join('');
 
- dateAvailabilityNote.textContent=`Mostrando únicamente días con horarios libres.`;
+ dateAvailabilityNote.textContent='Estas fechas salen directamente de los días y horarios configurados por Biondi en Web Control.';
 }
+
+async function refreshPortalAvailability(keepDate=''){
+ const {data,error}=await sb.rpc('biondi_public_portal_data',{
+   p_token:token,
+   p_days:60
+ });
+
+ if(error||!data?.ok){
+   console.error('Biondi refresh portal:',error,data);
+   return;
+ }
+
+ serviceRows=Array.isArray(data.services)?data.services:[];
+ renderServices();
+
+ const dates=Array.isArray(data.available_dates)?data.available_dates:[];
+ renderAvailableDates(dates);
+
+ if(keepDate && dates.some(x=>String(x.date)===keepDate)){
+   dateInput.value=keepDate;
+   await loadSlots();
+ }
+}
+
 function renderServices(){
  services.innerHTML=serviceRows.length
    ?serviceRows.map(s=>`<button type="button" class="service ${selectedService?.id===s.id?'active':''}" data-id="${s.id}">
@@ -156,7 +174,7 @@ async function loadSlots(){
 
  if(!rows.length){
    slots.innerHTML='<div class="note">Ese día acaba de quedarse sin horarios. Actualizando fechas…</div>';
-   await loadAvailableDates();
+   await refreshPortalAvailability();
    return;
  }
 
