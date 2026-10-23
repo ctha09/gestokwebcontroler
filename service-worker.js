@@ -1,4 +1,4 @@
-const CACHE_NAME='gestok-web-control-v51-12';
+const CACHE_NAME='gestok-web-control-v51-14';
 
 const APP_SHELL=[
   './',
@@ -6,7 +6,6 @@ const APP_SHELL=[
   './manifest.webmanifest',
   './parking-ticket.html',
   './restaurant-menu.html',
-  './biondi/',
   './gestok-icon-192.png',
   './gestok-icon-512.png'
 ];
@@ -23,13 +22,11 @@ self.addEventListener('install',event=>{
 
 self.addEventListener('activate',event=>{
   event.waitUntil(
-    caches.keys().then(keys=>
-      Promise.all(
-        keys
-          .filter(key=>key!==CACHE_NAME)
-          .map(key=>caches.delete(key))
-      )
-    )
+    caches.keys().then(keys=>Promise.all(
+      keys
+        .filter(key=>key!==CACHE_NAME)
+        .map(key=>caches.delete(key))
+    ))
   );
 
   self.clients.claim();
@@ -64,13 +61,13 @@ self.addEventListener('push',event=>{
 
   try{
     data=event.data
-      ? event.data.json()
-      : {};
+      ?event.data.json()
+      :{};
   }catch{
     data={
       body:event.data
-        ? event.data.text()
-        : 'Tenés una nueva notificación.'
+        ?event.data.text()
+        :'Tenés una nueva notificación.'
     };
   }
 
