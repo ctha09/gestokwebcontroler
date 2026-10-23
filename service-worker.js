@@ -1,5 +1,4 @@
-const CACHE_NAME='gestok-web-control-v51-14';
-
+const CACHE_NAME='gestok-web-control-v51-15';
 const APP_SHELL=[
   './',
   './index.html',
@@ -16,19 +15,15 @@ self.addEventListener('install',event=>{
       .then(cache=>cache.addAll(APP_SHELL))
       .catch(()=>null)
   );
-
   self.skipWaiting();
 });
 
 self.addEventListener('activate',event=>{
   event.waitUntil(
     caches.keys().then(keys=>Promise.all(
-      keys
-        .filter(key=>key!==CACHE_NAME)
-        .map(key=>caches.delete(key))
+      keys.filter(key=>key!==CACHE_NAME).map(key=>caches.delete(key))
     ))
   );
-
   self.clients.claim();
 });
 
@@ -48,10 +43,7 @@ self.addEventListener('fetch',event=>{
       })
       .catch(()=>
         caches.match(event.request)
-          .then(cached=>
-            cached||
-            caches.match('./index.html')
-          )
+          .then(cached=>cached||caches.match('./index.html'))
       )
   );
 });
