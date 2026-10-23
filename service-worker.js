@@ -1,4 +1,4 @@
-const CACHE_NAME='gestok-web-control-v51-17';
+const CACHE_NAME='gestok-web-control-v51-18';
 
 const APP_SHELL=[
   './manifest.webmanifest',
@@ -36,8 +36,8 @@ self.addEventListener('fetch',event=>{
   const req=event.request;
   const url=new URL(req.url);
 
-  // El HTML principal intenta cargarse siempre desde internet.
-  // Así evitamos que GestOK quede usando una versión anterior.
+  // El HTML principal siempre intenta cargarse desde internet
+  // para evitar que GestOK quede usando una versión anterior.
   if(
     req.mode==='navigate' ||
     url.pathname.endsWith('/index.html') ||
