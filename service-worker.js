@@ -1,4 +1,4 @@
-const CACHE_NAME='gestok-web-control-v51-16';
+const CACHE_NAME='gestok-web-control-v51-17';
 
 const APP_SHELL=[
   './manifest.webmanifest',
@@ -36,8 +36,8 @@ self.addEventListener('fetch',event=>{
   const req=event.request;
   const url=new URL(req.url);
 
-  // El HTML principal siempre intenta cargarse desde internet.
-  // Así evitamos que una versión vieja de GestOK quede guardada.
+  // El HTML principal intenta cargarse siempre desde internet.
+  // Así evitamos que GestOK quede usando una versión anterior.
   if(
     req.mode==='navigate' ||
     url.pathname.endsWith('/index.html') ||
@@ -57,8 +57,10 @@ self.addEventListener('fetch',event=>{
 
   event.respondWith(
     caches.match(req).then(cached=>{
+
       const network=fetch(req)
         .then(response=>{
+
           if(response&&response.ok){
             const copy=response.clone();
 
@@ -140,10 +142,12 @@ self.addEventListener('notificationclick',event=>{
       .then(windowClients=>{
 
         for(const client of windowClients){
+
           if('focus' in client){
             client.navigate(target);
             return client.focus();
           }
+
         }
 
         if(clients.openWindow){
