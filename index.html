@@ -2159,6 +2159,275 @@ body.carlos-business #stats .carlos-method-grid{
   font-size:10px!important;
 }
 
+
+/* ============================================================
+   V51.23 · PORTADA WEB CONTROL · GLASS / CURSOR / HOVER
+   ============================================================ */
+
+#portal{
+  --portal-glass:rgba(20,27,35,.56);
+  --portal-glass-soft:rgba(255,255,255,.045);
+  --portal-edge:rgba(255,255,255,.10);
+  --portal-orange:242,140,40;
+  background:
+    radial-gradient(circle at 12% 12%,rgba(var(--portal-orange),.13),transparent 34%),
+    radial-gradient(circle at 88% 22%,rgba(var(--portal-orange),.07),transparent 29%),
+    radial-gradient(circle at 50% 100%,rgba(68,91,119,.10),transparent 40%),
+    linear-gradient(145deg,#070b10 0%,#0b1118 48%,#070a0e 100%) !important;
+  position:fixed;
+  isolation:isolate;
+}
+
+#portal::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  opacity:.46;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.86),transparent 92%);
+}
+
+#portal .portal-shell{
+  position:relative;
+  z-index:1;
+}
+
+#portal .portal-top,
+#portal .hero,
+#portal #loginStep > .card,
+#portal .install-banner{
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025)) !important;
+  border:1px solid var(--portal-edge) !important;
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
+  backdrop-filter:blur(22px) saturate(145%);
+  -webkit-backdrop-filter:blur(22px) saturate(145%);
+}
+
+#portal .portal-top{
+  border-radius:18px;
+}
+
+#portal .hero{
+  position:relative;
+  overflow:hidden;
+}
+
+#portal .hero::after{
+  content:"";
+  position:absolute;
+  width:280px;
+  height:280px;
+  right:-145px;
+  top:-155px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(var(--portal-orange),.22),rgba(var(--portal-orange),0) 68%);
+  pointer-events:none;
+}
+
+#portal .types{
+  perspective:1000px;
+}
+
+#portal .type{
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.082),rgba(255,255,255,.025)) !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  box-shadow:
+    0 18px 44px rgba(0,0,0,.24),
+    inset 0 1px 0 rgba(255,255,255,.055) !important;
+  backdrop-filter:blur(20px) saturate(145%);
+  -webkit-backdrop-filter:blur(20px) saturate(145%);
+  transform:translateZ(0) scale(1);
+  transform-origin:center;
+  transition:
+    transform .34s cubic-bezier(.2,.9,.22,1.18),
+    border-color .3s ease,
+    box-shadow .3s ease,
+    background .3s ease;
+  will-change:transform;
+}
+
+#portal .type::before{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:inherit;
+  opacity:0;
+  pointer-events:none;
+  background:
+    radial-gradient(
+      240px circle at var(--mx,50%) var(--my,50%),
+      rgba(var(--portal-orange),.20),
+      transparent 52%
+    );
+  transition:opacity .25s ease;
+}
+
+#portal .type::after{
+  content:"";
+  position:absolute;
+  left:-45%;
+  top:-100%;
+  width:42%;
+  height:280%;
+  transform:rotate(22deg);
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.12),
+    transparent
+  );
+  transition:left .58s cubic-bezier(.2,.8,.2,1);
+  pointer-events:none;
+}
+
+#portal .type:hover{
+  z-index:5;
+  transform:translateY(-8px) scale(1.045);
+  border-color:rgba(var(--portal-orange),.44) !important;
+  background:
+    linear-gradient(145deg,rgba(var(--portal-orange),.11),rgba(255,255,255,.035)) !important;
+  box-shadow:
+    0 28px 70px rgba(0,0,0,.38),
+    0 0 0 1px rgba(var(--portal-orange),.08),
+    0 0 36px rgba(var(--portal-orange),.13),
+    inset 0 1px 0 rgba(255,255,255,.09) !important;
+}
+
+#portal .type:hover::before{opacity:1}
+#portal .type:hover::after{left:115%}
+
+#portal .type:active{
+  transform:translateY(-3px) scale(1.015);
+  transition-duration:.08s;
+}
+
+#portal .typeicon{
+  transition:
+    transform .34s cubic-bezier(.2,.9,.22,1.25),
+    box-shadow .28s ease,
+    background .28s ease !important;
+}
+
+#portal .type:hover .typeicon{
+  transform:scale(1.12) rotate(-2deg);
+  background:linear-gradient(145deg,rgba(var(--portal-orange),.28),rgba(var(--portal-orange),.08)) !important;
+  box-shadow:0 0 28px rgba(var(--portal-orange),.19);
+}
+
+#portal .type h3,
+#portal .type p{
+  position:relative;
+  z-index:1;
+}
+
+/* Cursor custom: solo mouse/trackpad, jamás táctil */
+.gestok-cursor-dot,
+.gestok-cursor-halo{
+  position:fixed;
+  left:0;
+  top:0;
+  pointer-events:none;
+  z-index:20000;
+  opacity:0;
+  transform:translate3d(-100px,-100px,0);
+  transition:opacity .18s ease;
+}
+
+.gestok-cursor-dot{
+  width:8px;
+  height:8px;
+  margin:-4px 0 0 -4px;
+  border-radius:50%;
+  background:#f28c28;
+  box-shadow:
+    0 0 7px rgba(242,140,40,.95),
+    0 0 18px rgba(242,140,40,.72);
+}
+
+.gestok-cursor-halo{
+  width:32px;
+  height:32px;
+  margin:-16px 0 0 -16px;
+  border-radius:50%;
+  border:1px solid rgba(242,140,40,.62);
+  background:radial-gradient(circle,rgba(242,140,40,.13),rgba(242,140,40,0) 66%);
+  box-shadow:0 0 26px rgba(242,140,40,.18);
+  transition:
+    width .18s ease,
+    height .18s ease,
+    margin .18s ease,
+    border-color .18s ease,
+    background .18s ease,
+    opacity .18s ease;
+}
+
+.gestok-cursor-halo.hot{
+  width:48px;
+  height:48px;
+  margin:-24px 0 0 -24px;
+  border-color:rgba(242,140,40,.9);
+  background:radial-gradient(circle,rgba(242,140,40,.18),rgba(242,140,40,0) 68%);
+}
+
+.gestok-cursor-trail{
+  position:fixed;
+  width:9px;
+  height:9px;
+  margin:-4.5px 0 0 -4.5px;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:19999;
+  background:rgba(242,140,40,.46);
+  box-shadow:0 0 14px rgba(242,140,40,.44);
+  animation:gestokTrailFade .52s cubic-bezier(.1,.7,.2,1) forwards;
+}
+
+@keyframes gestokTrailFade{
+  from{opacity:.72;transform:scale(1)}
+  to{opacity:0;transform:scale(.12)}
+}
+
+@media (pointer:fine){
+  body.gestok-portal-cursor,
+  body.gestok-portal-cursor #portal,
+  body.gestok-portal-cursor #portal button,
+  body.gestok-portal-cursor #portal a{
+    cursor:none !important;
+  }
+}
+
+@media (pointer:coarse), (max-width:760px){
+  .gestok-cursor-dot,
+  .gestok-cursor-halo,
+  .gestok-cursor-trail{
+    display:none !important;
+  }
+  #portal .type:hover{
+    transform:none;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  #portal .type,
+  #portal .typeicon{
+    transition:none !important;
+  }
+  .gestok-cursor-trail{
+    display:none !important;
+  }
+}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -6552,6 +6821,170 @@ if('serviceWorker' in navigator){
 
 updateGestokInstallBanner();
 
+
+/* ============================================================
+   V51.23 · PORTADA INTERACTIVA GESTOK
+   ============================================================ */
+(()=>{
+  const portal=document.getElementById('portal');
+  const dot=document.getElementById('gestokCursorDot');
+  const halo=document.getElementById('gestokCursorHalo');
+
+  if(!portal||!dot||!halo)return;
+
+  const finePointer=window.matchMedia('(pointer:fine)');
+  const reducedMotion=window.matchMedia('(prefers-reduced-motion:reduce)');
+
+  let targetX=-100,targetY=-100;
+  let haloX=-100,haloY=-100;
+  let raf=0;
+  let lastTrail=0;
+  let audioCtx=null;
+
+  const portalVisible=()=>!portal.classList.contains('hidden');
+
+  function syncCursorMode(){
+    document.body.classList.toggle(
+      'gestok-portal-cursor',
+      finePointer.matches&&portalVisible()
+    );
+
+    if(!portalVisible()){
+      dot.style.opacity='0';
+      halo.style.opacity='0';
+    }
+  }
+
+  function animateCursor(){
+    haloX+=(targetX-haloX)*.18;
+    haloY+=(targetY-haloY)*.18;
+
+    halo.style.transform=`translate3d(${haloX}px,${haloY}px,0)`;
+    dot.style.transform=`translate3d(${targetX}px,${targetY}px,0)`;
+
+    raf=requestAnimationFrame(animateCursor);
+  }
+
+  function createTrail(x,y){
+    if(reducedMotion.matches||!portalVisible())return;
+    const now=performance.now();
+    if(now-lastTrail<28)return;
+    lastTrail=now;
+
+    const p=document.createElement('i');
+    p.className='gestok-cursor-trail';
+    p.style.left=x+'px';
+    p.style.top=y+'px';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),560);
+  }
+
+  document.addEventListener('pointermove',e=>{
+    if(!finePointer.matches||!portalVisible())return;
+
+    targetX=e.clientX;
+    targetY=e.clientY;
+
+    dot.style.opacity='1';
+    halo.style.opacity='1';
+
+    createTrail(e.clientX,e.clientY);
+
+    const card=e.target.closest?.('#portal .type');
+    if(card){
+      const r=card.getBoundingClientRect();
+      card.style.setProperty('--mx',`${e.clientX-r.left}px`);
+      card.style.setProperty('--my',`${e.clientY-r.top}px`);
+    }
+  },{passive:true});
+
+  document.addEventListener('pointerleave',()=>{
+    dot.style.opacity='0';
+    halo.style.opacity='0';
+  });
+
+  portal.addEventListener('pointerover',e=>{
+    if(e.target.closest('button,a,.type')){
+      halo.classList.add('hot');
+    }
+  });
+
+  portal.addEventListener('pointerout',e=>{
+    if(e.target.closest('button,a,.type')){
+      halo.classList.remove('hot');
+    }
+  });
+
+  function playDrop(){
+    if(!portalVisible())return;
+
+    try{
+      const AC=window.AudioContext||window.webkitAudioContext;
+      if(!AC)return;
+
+      audioCtx=audioCtx||new AC();
+      if(audioCtx.state==='suspended')audioCtx.resume();
+
+      const now=audioCtx.currentTime;
+
+      const osc=audioCtx.createOscillator();
+      const gain=audioCtx.createGain();
+      const filter=audioCtx.createBiquadFilter();
+
+      osc.type='sine';
+      osc.frequency.setValueAtTime(540,now);
+      osc.frequency.exponentialRampToValueAtTime(240,now+.095);
+
+      filter.type='lowpass';
+      filter.frequency.setValueAtTime(1500,now);
+      filter.Q.setValueAtTime(.8,now);
+
+      gain.gain.setValueAtTime(.0001,now);
+      gain.gain.exponentialRampToValueAtTime(.055,now+.008);
+      gain.gain.exponentialRampToValueAtTime(.0001,now+.13);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(now);
+      osc.stop(now+.145);
+
+      const osc2=audioCtx.createOscillator();
+      const gain2=audioCtx.createGain();
+
+      osc2.type='sine';
+      osc2.frequency.setValueAtTime(920,now+.012);
+      osc2.frequency.exponentialRampToValueAtTime(520,now+.075);
+
+      gain2.gain.setValueAtTime(.0001,now);
+      gain2.gain.exponentialRampToValueAtTime(.018,now+.014);
+      gain2.gain.exponentialRampToValueAtTime(.0001,now+.09);
+
+      osc2.connect(gain2);
+      gain2.connect(audioCtx.destination);
+      osc2.start(now+.01);
+      osc2.stop(now+.1);
+    }catch{}
+  }
+
+  // Sonido para los clics de la portada, sin interferir con las acciones.
+  portal.addEventListener('pointerdown',e=>{
+    if(e.target.closest('button,a,.type')){
+      playDrop();
+    }
+  },true);
+
+  // El portal puede ocultarse/mostrarse al entrar o salir de un módulo.
+  const observer=new MutationObserver(syncCursorMode);
+  observer.observe(portal,{attributes:true,attributeFilter:['class']});
+
+  finePointer.addEventListener?.('change',syncCursorMode);
+  syncCursorMode();
+
+  if(!raf)animateCursor();
+})();
+
 </script>
 
 <div id="subscriptionBlocker" class="subscription-blocker hidden">
@@ -6565,4 +6998,8 @@ updateGestokInstallBanner();
   </div>
 </div>
 <a class="wa-float" href="https://wa.me/5493751232618?text=Hola%20GestOK%2C%20tengo%20una%20consulta%20sobre%20Web%20Control." target="_blank" rel="noopener" aria-label="Abrir WhatsApp de GestOK"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"/><path d="M9 8.8c.5 2.3 2 3.9 4.3 4.7"/><path d="M9 8.8 10.3 8l1.1 2-1 .7M13.3 13.5l.7-1 2 1.1-.8 1.3"/></svg></a>
+
+<div id="gestokCursorHalo" class="gestok-cursor-halo" aria-hidden="true"></div>
+<div id="gestokCursorDot" class="gestok-cursor-dot" aria-hidden="true"></div>
+
 </body></html>
