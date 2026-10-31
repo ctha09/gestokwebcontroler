@@ -1,4 +1,4 @@
-const CACHE_NAME='gestok-web-control-v51-22';
+const CACHE_NAME='gestok-web-control-v51-23';
 
 const APP_SHELL=[
   './manifest.webmanifest',
@@ -36,8 +36,10 @@ self.addEventListener('fetch',event=>{
   const req=event.request;
   const url=new URL(req.url);
 
-  // El HTML principal siempre intenta cargarse desde internet.
-  // Así evitamos que GestOK quede usando una versión anterior.
+  /*
+    El HTML principal siempre intenta cargarse desde internet.
+    Así evitamos que GestOK quede usando una versión vieja.
+  */
   if(
     req.mode==='navigate' ||
     url.pathname.endsWith('/index.html') ||
@@ -57,6 +59,10 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
+  /*
+    Archivos secundarios:
+    primero usa caché y en paralelo intenta actualizarla.
+  */
   event.respondWith(
     caches.match(req).then(cached=>{
 
@@ -64,18 +70,29 @@ self.addEventListener('fetch',event=>{
         .then(response=>{
 
           if(response&&response.ok){
+
             const copy=response.clone();
 
             caches.open(CACHE_NAME)
-              .then(cache=>cache.put(req,copy))
+              .then(cache=>{
+                return cache.put(
+                  req,
+                  copy
+                );
+              })
               .catch(()=>{});
+
           }
 
           return response;
+
         })
-        .catch(()=>cached);
+        .catch(()=>{
+          return cached;
+        });
 
       return cached||network;
+
     })
   );
 });
@@ -170,7 +187,9 @@ self.addEventListener('notificationclick',event=>{
 
           if('focus' in client){
 
-            client.navigate(target);
+            client.navigate(
+              target
+            );
 
             return client.focus();
 
