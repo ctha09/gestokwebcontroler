@@ -1,4 +1,4 @@
-const CACHE_NAME='gestok-web-control-v51-23';
+const CACHE_NAME='gestok-web-control-v51-35';
 
 const APP_SHELL=[
   './manifest.webmanifest',
@@ -20,11 +20,13 @@ self.addEventListener('install',event=>{
 
 self.addEventListener('activate',event=>{
   event.waitUntil(
-    caches.keys().then(keys=>Promise.all(
-      keys
-        .filter(key=>key!==CACHE_NAME)
-        .map(key=>caches.delete(key))
-    ))
+    caches.keys().then(keys=>
+      Promise.all(
+        keys
+          .filter(key=>key!==CACHE_NAME)
+          .map(key=>caches.delete(key))
+      )
+    )
   );
 
   self.clients.claim();
@@ -36,10 +38,8 @@ self.addEventListener('fetch',event=>{
   const req=event.request;
   const url=new URL(req.url);
 
-  /*
-    El HTML principal siempre intenta cargarse desde internet.
-    Así evitamos que GestOK quede usando una versión vieja.
-  */
+  // El HTML principal intenta cargarse siempre desde internet
+  // para evitar que quede una versión vieja guardada.
   if(
     req.mode==='navigate' ||
     url.pathname.endsWith('/index.html') ||
@@ -59,10 +59,8 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  /*
-    Archivos secundarios:
-    primero usa caché y en paralelo intenta actualizarla.
-  */
+  // Recursos secundarios:
+  // usa caché y actualiza cuando hay conexión.
   event.respondWith(
     caches.match(req).then(cached=>{
 
@@ -74,12 +72,12 @@ self.addEventListener('fetch',event=>{
             const copy=response.clone();
 
             caches.open(CACHE_NAME)
-              .then(cache=>{
-                return cache.put(
+              .then(cache=>
+                cache.put(
                   req,
                   copy
-                );
-              })
+                )
+              )
               .catch(()=>{});
 
           }
@@ -87,9 +85,7 @@ self.addEventListener('fetch',event=>{
           return response;
 
         })
-        .catch(()=>{
-          return cached;
-        });
+        .catch(()=>cached);
 
       return cached||network;
 
