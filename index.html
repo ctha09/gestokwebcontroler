@@ -8897,49 +8897,108 @@ updateGestokInstallBanner();
 
   async function resolveCompany(value){
     const raw=(value||'').trim();
-    if(!raw || !selectedType) return {ok:false};
+    if(!raw || !selectedType)return {ok:false};
+
     const slug=slugifyCompany(raw);
     const key=selectedType+'::'+slug;
-    if(companyLookupCache.has(key)) return companyLookupCache.get(key);
-    let res={ok:false};
+
+    if(companyLookupCache.has(key)){
+      return companyLookupCache.get(key);
+    }
+
+    let result={ok:false};
+
     try{
-      const {data,error}=await sb.from('organizations')
-        .select('id,name,login_slug,type,active')
-        .eq('type',selectedType)
-        .or(`login_slug.eq.${slug},name.eq.${raw}`)
-        .maybeSingle();
-      if(!error && data){
-        res={ok:true,org:data};
+      const {data,error}=await sb.rpc('gestok_validate_login_name',{
+        p_login_slug:slug,
+        p_login_raw:raw,
+        p_type:selectedType
+      });
+
+      if(error){
+        console.error('gestok_validate_login_name:',error);
+
+        // Si todavía no se ejecutó el SQL nuevo, no mostramos una X falsa.
+        if(
+          String(error.code||'').includes('PGRST') ||
+          String(error.message||'').toLowerCase().includes('function')
+        ){
+          return {
+            ok:false,
+            setup_error:true
+          };
+        }
+
+        return {ok:false};
       }
-    }catch(e){}
-    companyLookupCache.set(key,res);
-    return res;
+
+      result={
+        ok:data===true || data?.ok===true
+      };
+
+    }catch(error){
+      console.error('Validación de usuario GestOK:',error);
+
+      return {
+        ok:false,
+        setup_error:true
+      };
+    }
+
+    companyLookupCache.set(key,result);
+    return result;
   }
 
   async function validateUsername(opts={}){
     const value=window.companyName?.value?.trim()||'';
-    if(!value){ setStatus(window.companyName,null); return false; }
+
+    if(!value){
+      setStatus(window.companyName,null);
+      return false;
+    }
+
     const result=await resolveCompany(value);
+
+    if(result.setup_error){
+      setStatus(window.companyName,null);
+
+      toast('No se pudo validar el usuario. Verificá que esté ejecutada la actualización de la base de datos.');
+      return false;
+    }
+
     if(result.ok){
       setStatus(window.companyName,'ok');
       await playCheckSound();
-      if(opts.focusPassword) setTimeout(()=>window.companyPassword&&window.companyPassword.focus(),130);
+
+      if(opts.focusPassword){
+        setTimeout(()=>{
+          window.companyPassword?.focus();
+        },130);
+      }
+
       return true;
     }
+
     setStatus(window.companyName,'err');
     await playErrorSound();
+
     return false;
   }
 
   async function validatePasswordField(){
-    const value=window.companyPassword?.value?.trim()||'';
-    if(!value){
+    const value=window.companyPassword?.value||'';
+
+    if(!value.trim()){
       setStatus(window.companyPassword,'err');
       await playErrorSound();
       return false;
     }
-    setStatus(window.companyPassword,'ok');
-    await playCheckSound();
+
+    // Importante:
+    // tener texto NO significa que la contraseña sea correcta.
+    // Se mantiene neutral hasta que Supabase autentique realmente.
+    setStatus(window.companyPassword,null);
+
     return true;
   }
 
@@ -8967,12 +9026,25 @@ updateGestokInstallBanner();
     loginBtn.disabled=true;loginBtn.textContent='Ingresando...';
 
     const {data:authData,error:authError}=await sb.auth.signInWithPassword({email,password});
+
     if(authError||!authData.user){
-      loginBtn.disabled=false;loginBtn.textContent='Ingresar';
+      loginBtn.disabled=false;
+      loginBtn.textContent='Ingresar';
+
+      // El usuario ya fue validado por separado.
+      // Si la autenticación falla, el error corresponde a la contraseña.
+      setStatus(companyName,'ok');
       setStatus(companyPassword,'err');
+
       await playErrorSound();
-      return toast('Empresa o contraseña incorrectos');
+
+      return toast('Contraseña incorrecta');
     }
+
+    // Recién ahora la contraseña está realmente validada.
+    setStatus(companyName,'ok');
+    setStatus(companyPassword,'ok');
+    await playCheckSound();
 
     const {data:member,error:memberError}=await sb.from('organization_members')
       .select('id,organization_id,display_name,role,active')
@@ -9073,7 +9145,10 @@ updateGestokInstallBanner();
       };
     }
 
-    companyName.addEventListener('input',()=>{ setStatus(companyName,null); companyLookupCache.delete(selectedType+'::'+slugifyCompany(companyName.value.trim())); });
+    companyName.addEventListener('input',()=>{
+      setStatus(companyName,null);
+      companyLookupCache.clear();
+    });
     companyName.addEventListener('keydown',async e=>{
       if(e.key.length===1 || e.key==='Backspace' || e.key==='Delete') playKeyMechanical();
       if(e.key==='Enter'){
@@ -9091,7 +9166,15 @@ updateGestokInstallBanner();
         await loginEnhanced();
       }
     });
-    companyPassword.addEventListener('blur',()=>{ if(companyPassword.value.trim()) validatePasswordField(); });
+    companyPassword.addEventListener('blur',()=>{
+      if(!companyPassword.value.trim()){
+        setStatus(companyPassword,null);
+        return;
+      }
+
+      // No mostramos ✓ hasta comprobar la contraseña contra Supabase.
+      setStatus(companyPassword,null);
+    });
 
     loginBtn.addEventListener('pointerdown',()=>playSoftDropLogin(),true);
     loginBtn.onclick=loginEnhanced;
