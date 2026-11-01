@@ -2428,6 +2428,1151 @@ body.carlos-business #stats .carlos-method-grid{
   }
 }
 
+
+/* ============================================================
+   V51.24 · FIX PORTADA COMPLETA / CURSOR / RESPONSIVE
+   ============================================================ */
+
+#portal{
+  inset:0 !important;
+  width:100% !important;
+  max-width:none !important;
+  height:100dvh !important;
+  min-height:100svh !important;
+  box-sizing:border-box !important;
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+}
+
+#portal .portal-shell{
+  width:min(1280px,calc(100% - 48px)) !important;
+  max-width:1280px !important;
+  margin:0 auto !important;
+  box-sizing:border-box !important;
+}
+
+#portal .portal-top{
+  width:100% !important;
+  max-width:none !important;
+  box-sizing:border-box !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+  padding:15px 18px !important;
+}
+
+#portal .hero{
+  width:100% !important;
+  max-width:none !important;
+  box-sizing:border-box !important;
+  margin:34px 0 0 !important;
+  padding:26px 28px !important;
+  border-radius:24px !important;
+}
+
+#portal .hero h1{
+  font-size:clamp(34px,4vw,58px) !important;
+  line-height:1 !important;
+  letter-spacing:-1.8px !important;
+}
+
+#portal .hero p{
+  max-width:720px !important;
+  font-size:13px !important;
+}
+
+#portal .types{
+  width:100% !important;
+  max-width:none !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:18px !important;
+  margin:24px 0 0 !important;
+}
+
+#portal .type{
+  min-width:0 !important;
+  min-height:220px !important;
+  padding:24px !important;
+  box-sizing:border-box !important;
+}
+
+#portal .type h3{
+  font-size:24px !important;
+}
+
+#portal .type p{
+  font-size:12px !important;
+  line-height:1.55 !important;
+  max-width:520px;
+}
+
+#portal .typeicon{
+  width:54px !important;
+  height:54px !important;
+}
+
+@media(max-width:900px){
+  #portal .portal-shell{
+    width:min(100% - 28px,760px) !important;
+  }
+
+  #portal .types{
+    grid-template-columns:1fr !important;
+  }
+
+  #portal .type{
+    min-height:175px !important;
+  }
+
+  #portal .hero h1{
+    font-size:36px !important;
+  }
+}
+
+@media(max-width:560px){
+  #portal{
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
+
+  #portal .portal-shell{
+    width:calc(100% - 20px) !important;
+  }
+
+  #portal .hero{
+    padding:21px 16px !important;
+  }
+
+  #portal .hero h1{
+    font-size:31px !important;
+  }
+
+  #portal .type{
+    padding:18px !important;
+    min-height:165px !important;
+  }
+}
+
+/* Cursor visible y naranja en escritorio */
+@media(pointer:fine){
+  body.gestok-portal-cursor #portal,
+  body.gestok-portal-cursor #portal *{
+    cursor:none !important;
+  }
+
+  .gestok-cursor-dot,
+  .gestok-cursor-halo{
+    display:block !important;
+  }
+}
+
+
+/* ============================================================
+   V51.25 · LOGIN SECTORES · GLASS / CHECK / TRANSPORTE
+   ============================================================ */
+
+#loginStep{
+  position:relative;
+}
+
+#loginStep > .card{
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.085),rgba(255,255,255,.028)) !important;
+  border:1px solid rgba(255,255,255,.11) !important;
+  box-shadow:
+    0 26px 74px rgba(0,0,0,.34),
+    0 0 0 1px rgba(242,140,40,.025),
+    inset 0 1px 0 rgba(255,255,255,.07) !important;
+  backdrop-filter:blur(24px) saturate(150%);
+  -webkit-backdrop-filter:blur(24px) saturate(150%);
+  transition:
+    transform .55s cubic-bezier(.2,.8,.2,1),
+    opacity .5s ease,
+    filter .5s ease,
+    box-shadow .35s ease;
+}
+
+#loginStep > .card::before{
+  content:"";
+  position:absolute;
+  inset:-35%;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 30% 20%,rgba(242,140,40,.16),transparent 34%),
+    radial-gradient(circle at 75% 80%,rgba(90,130,180,.08),transparent 32%);
+  filter:blur(18px);
+  opacity:.72;
+}
+
+#loginStep > .card::after{
+  content:"";
+  position:absolute;
+  top:-140%;
+  left:-45%;
+  width:38%;
+  height:360%;
+  transform:rotate(18deg);
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.12),
+    transparent
+  );
+  pointer-events:none;
+  transition:left .75s cubic-bezier(.2,.8,.2,1);
+}
+
+#loginStep > .card:hover::after{
+  left:120%;
+}
+
+#loginStep > .card > *{
+  position:relative;
+  z-index:1;
+}
+
+#loginStep .field-wrap{
+  position:relative;
+}
+
+#loginStep .field-wrap input{
+  padding-right:48px !important;
+  transition:
+    border-color .25s ease,
+    box-shadow .25s ease,
+    background .25s ease,
+    transform .2s ease !important;
+}
+
+#loginStep .field-wrap input:focus{
+  border-color:rgba(242,140,40,.62) !important;
+  background:rgba(255,255,255,.055) !important;
+  box-shadow:
+    0 0 0 3px rgba(242,140,40,.08),
+    0 0 24px rgba(242,140,40,.07) !important;
+  transform:translateY(-1px);
+}
+
+.login-check{
+  position:absolute;
+  right:13px;
+  top:50%;
+  width:25px;
+  height:25px;
+  margin-top:-12.5px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#0b1c12;
+  background:#41d56f;
+  box-shadow:
+    0 0 0 0 rgba(65,213,111,.38),
+    0 0 18px rgba(65,213,111,.28);
+  opacity:0;
+  transform:scale(.45) rotate(-18deg);
+  pointer-events:none;
+  transition:
+    opacity .2s ease,
+    transform .28s cubic-bezier(.2,.9,.25,1.35);
+}
+
+.login-check::before{
+  content:"✓";
+  font-size:16px;
+  line-height:1;
+  font-weight:900;
+}
+
+.login-check.show{
+  opacity:1;
+  transform:scale(1) rotate(0deg);
+  animation:loginCheckPulse .55s ease-out;
+}
+
+@keyframes loginCheckPulse{
+  0%{box-shadow:0 0 0 0 rgba(65,213,111,.38),0 0 18px rgba(65,213,111,.28)}
+  60%{box-shadow:0 0 0 12px rgba(65,213,111,0),0 0 26px rgba(65,213,111,.34)}
+  100%{box-shadow:0 0 0 0 rgba(65,213,111,0),0 0 18px rgba(65,213,111,.28)}
+}
+
+#loginStep > .card.login-transport{
+  animation:loginTransport .78s cubic-bezier(.2,.72,.15,1) forwards;
+  pointer-events:none;
+}
+
+#loginStep > .card.login-transport::before{
+  animation:loginTransportGlow .78s ease forwards;
+}
+
+@keyframes loginTransport{
+  0%{
+    opacity:1;
+    transform:translateY(0) scale(1);
+    filter:blur(0) brightness(1);
+  }
+  28%{
+    opacity:1;
+    transform:translateY(-2px) scale(1.025);
+    filter:blur(0) brightness(1.18);
+  }
+  72%{
+    opacity:.58;
+    transform:translateY(-18px) scale(.94);
+    filter:blur(5px) brightness(1.3);
+  }
+  100%{
+    opacity:0;
+    transform:translateY(-54px) scale(.78);
+    filter:blur(14px) brightness(1.45);
+  }
+}
+
+@keyframes loginTransportGlow{
+  0%{opacity:.7;filter:blur(18px)}
+  50%{opacity:1;filter:blur(7px)}
+  100%{opacity:0;filter:blur(28px)}
+}
+
+#loginStep .btn.primary,
+#loginStep button[type="submit"]{
+  position:relative;
+  overflow:hidden;
+  transition:
+    transform .18s ease,
+    box-shadow .25s ease,
+    filter .2s ease !important;
+}
+
+#loginStep .btn.primary:hover,
+#loginStep button[type="submit"]:hover{
+  transform:translateY(-2px) scale(1.01);
+  box-shadow:
+    0 12px 28px rgba(242,140,40,.22),
+    0 0 22px rgba(242,140,40,.12);
+}
+
+#loginStep .btn.primary:active,
+#loginStep button[type="submit"]:active{
+  transform:translateY(0) scale(.985);
+}
+
+@media(prefers-reduced-motion:reduce){
+  #loginStep > .card.login-transport{
+    animation:none !important;
+    opacity:0 !important;
+  }
+  .login-check.show{
+    animation:none !important;
+  }
+}
+
+
+/* ============================================================
+   V51.26 · LOGIN MULTISECTOR CINEMÁTICO
+   ============================================================ */
+#loginStep{
+  position:relative;
+  min-height:calc(100vh - 120px);
+  display:grid;
+  place-items:center;
+  padding:38px 22px 48px;
+  overflow:hidden;
+}
+#loginStep .back{
+  position:absolute;
+  top:14px;
+  left:14px;
+  z-index:4;
+}
+#loginStep .login-scene{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+#loginStep .scene-grid{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(transparent 95%, rgba(255,255,255,.035) 100%),
+    linear-gradient(90deg, transparent 95%, rgba(255,255,255,.03) 100%);
+  background-size:100% 54px,54px 100%;
+  opacity:.28;
+  mask-image:linear-gradient(180deg, rgba(0,0,0,.72), rgba(0,0,0,0));
+}
+#loginStep .scene-orb{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(26px);
+  opacity:.45;
+  animation:sceneFloat 12s ease-in-out infinite alternate;
+}
+#loginStep .scene-orb.a{width:340px;height:340px;left:-80px;top:80px;background:rgba(242,140,40,.20)}
+#loginStep .scene-orb.b{width:280px;height:280px;right:8%;top:10%;background:rgba(86,126,255,.16);animation-duration:15s}
+#loginStep .scene-orb.c{width:240px;height:240px;right:-40px;bottom:10%;background:rgba(255,255,255,.08);animation-duration:18s}
+@keyframes sceneFloat{0%{transform:translateY(0) translateX(0) scale(1)}100%{transform:translateY(-18px) translateX(10px) scale(1.08)}}
+#loginStep .scene-particles span{
+  position:absolute;
+  display:block;
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,.18);
+  box-shadow:0 0 12px rgba(255,255,255,.08);
+  animation:particleRise linear infinite;
+}
+@keyframes particleRise{from{transform:translateY(40px);opacity:0}15%{opacity:.8}to{transform:translateY(-90vh);opacity:0}}
+#loginStep .scene-floaters{
+  position:absolute;
+  inset:0;
+}
+#loginStep .scene-card{
+  position:absolute;
+  min-width:150px;
+  padding:14px 16px;
+  border-radius:18px;
+  background:linear-gradient(145deg, rgba(255,255,255,.11), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 16px 44px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.08);
+  color:rgba(255,255,255,.92);
+  backdrop-filter:blur(18px) saturate(140%);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);
+  animation:sceneDrift var(--dur,11s) ease-in-out infinite alternate;
+}
+#loginStep .scene-card .k{display:block;font-size:11px;color:rgba(255,255,255,.65);margin-bottom:7px;text-transform:uppercase;letter-spacing:.9px}
+#loginStep .scene-card .v{display:block;font-size:24px;font-weight:900;letter-spacing:-.5px}
+#loginStep .scene-card .s{display:block;font-size:12px;color:rgba(255,255,255,.75);margin-top:6px}
+#loginStep .scene-card.mini{min-width:unset;padding:12px 14px;font-size:14px;font-weight:800}
+#loginStep .scene-card.bars .bar-wrap{display:flex;align-items:flex-end;gap:8px;height:60px;margin-top:6px}
+#loginStep .scene-card.bars .bar{width:14px;border-radius:999px;background:linear-gradient(180deg, rgba(242,140,40,.94), rgba(242,140,40,.22));animation:barPulse 1.8s ease-in-out infinite}
+#loginStep .scene-card.bars .bar:nth-child(1){height:26px;animation-delay:.1s}
+#loginStep .scene-card.bars .bar:nth-child(2){height:42px;animation-delay:.3s}
+#loginStep .scene-card.bars .bar:nth-child(3){height:56px;animation-delay:.5s}
+#loginStep .scene-card.bars .bar:nth-child(4){height:34px;animation-delay:.7s}
+@keyframes barPulse{50%{transform:scaleY(1.16);filter:brightness(1.15)}}
+@keyframes sceneDrift{0%{transform:translateY(0) translateX(0)}100%{transform:translateY(-12px) translateX(8px)}}
+#loginStep .scene-ticker{
+  position:absolute;
+  left:5%;
+  right:5%;
+  bottom:42px;
+  display:flex;
+  gap:14px;
+  overflow:hidden;
+  mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+#loginStep .scene-ticker .track{
+  display:flex;
+  gap:14px;
+  min-width:max-content;
+  animation:tickerFlow 18s linear infinite;
+}
+#loginStep .scene-ticker .word{
+  padding:10px 16px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.11);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  color:rgba(255,255,255,.82);
+  font-size:13px;
+  font-weight:750;
+  white-space:nowrap;
+}
+@keyframes tickerFlow{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+#loginStep.sector-commerce .scene-card{box-shadow:0 16px 44px rgba(242,140,40,.08), 0 16px 44px rgba(0,0,0,.24)}
+#loginStep.sector-parking .scene-card{box-shadow:0 16px 44px rgba(123,161,255,.07), 0 16px 44px rgba(0,0,0,.24)}
+#loginStep.sector-restaurant .scene-card{box-shadow:0 16px 44px rgba(255,173,92,.08), 0 16px 44px rgba(0,0,0,.24)}
+#loginStep.sector-barbershop .scene-card{box-shadow:0 16px 44px rgba(216,141,191,.10), 0 16px 44px rgba(0,0,0,.24)}
+#loginStep > .card{
+  position:relative;
+  z-index:3;
+  width:min(560px, 92vw);
+  background:linear-gradient(145deg, rgba(255,255,255,.10), rgba(255,255,255,.045)) !important;
+  border:1px solid rgba(255,255,255,.13) !important;
+  backdrop-filter:blur(24px) saturate(155%) !important;
+  -webkit-backdrop-filter:blur(24px) saturate(155%) !important;
+}
+#loginStep > .card::before{
+  background:
+    radial-gradient(circle at 18% 22%, rgba(242,140,40,.18), transparent 30%),
+    radial-gradient(circle at 80% 74%, rgba(96,136,255,.08), transparent 34%);
+}
+#loginStep .form>div{margin-bottom:14px}
+#loginStep .field-wrap{position:relative}
+#loginStep .field-wrap input{
+  background:rgba(15,21,31,.55) !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+}
+#loginStep .field-wrap input::placeholder{color:rgba(255,255,255,.42)}
+#loginStep .login-status{
+  position:absolute;
+  right:12px;
+  top:50%;
+  width:26px;
+  height:26px;
+  margin-top:-13px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  font-size:15px;
+  font-weight:900;
+  color:#fff;
+  opacity:0;
+  transform:scale(.4) rotate(-14deg);
+  pointer-events:none;
+  transition:opacity .18s ease, transform .26s cubic-bezier(.2,.9,.25,1.35), background .2s ease, box-shadow .2s ease;
+}
+#loginStep .login-status.show{opacity:1;transform:scale(1) rotate(0)}
+#loginStep .login-status.ok{background:#3ad36e;box-shadow:0 0 0 0 rgba(58,211,110,.32),0 0 18px rgba(58,211,110,.28);color:#08150d}
+#loginStep .login-status.err{background:#ff5f75;box-shadow:0 0 0 0 rgba(255,95,117,.28),0 0 18px rgba(255,95,117,.28)}
+#loginStep .field-wrap.shake input{animation:fieldShake .34s ease}
+@keyframes fieldShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+#loginStep .field-wrap.err input{border-color:rgba(255,95,117,.58) !important;box-shadow:0 0 0 3px rgba(255,95,117,.07), 0 0 18px rgba(255,95,117,.12) !important}
+#loginStep .field-wrap.ok input{border-color:rgba(58,211,110,.52) !important;box-shadow:0 0 0 3px rgba(58,211,110,.06), 0 0 18px rgba(58,211,110,.10) !important}
+#loginStep .login-check{display:none !important}
+#loginStep .btn.primary::after{
+  content:'';
+  position:absolute;inset:-60% auto -60% -40%;width:34%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+  transform:rotate(20deg);
+  animation:buttonSweep 3.8s ease-in-out infinite;
+}
+@keyframes buttonSweep{0%,72%{left:-40%}100%{left:122%}}
+#loginStep > .card.login-transport{
+  animation:loginTransport2 .85s cubic-bezier(.18,.76,.16,1) forwards;
+}
+@keyframes loginTransport2{
+  0%{opacity:1;transform:translateY(0) scale(1);filter:blur(0) brightness(1)}
+  32%{opacity:1;transform:translateY(-4px) scale(1.02);filter:blur(0) brightness(1.08)}
+  70%{opacity:.54;transform:translateY(-22px) scale(.92);filter:blur(7px) brightness(1.25)}
+  100%{opacity:0;transform:translateY(-66px) scale(.76);filter:blur(16px) brightness(1.44)}
+}
+@media (max-width: 780px){
+  #loginStep{padding:28px 12px 34px}
+  #loginStep .scene-card{transform:none !important;min-width:128px;padding:12px 14px}
+  #loginStep .scene-card .v{font-size:19px}
+  #loginStep .scene-card.bars .bar-wrap{height:46px}
+  #loginStep .scene-ticker{left:10px;right:10px;bottom:18px}
+}
+
+
+/* ============================================================
+   V51.27 · LOGIN FORMATO + LLUVIA NARANJA
+   ============================================================ */
+#loginStep .scene-ticker{display:none !important}
+#loginStep .scene-rain{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:1;
+}
+#loginStep .rain-word{
+  position:absolute;
+  top:-18%;
+  color:rgba(242,140,40,.78);
+  text-shadow:0 0 14px rgba(242,140,40,.20), 0 0 30px rgba(242,140,40,.10);
+  font-weight:900;
+  letter-spacing:.3px;
+  white-space:nowrap;
+  user-select:none;
+  opacity:0;
+  animation-name:rainWordFall;
+  animation-timing-function:linear;
+  animation-iteration-count:infinite;
+}
+@keyframes rainWordFall{
+  0%{transform:translateY(-10vh) translateX(0) rotate(0deg);opacity:0}
+  8%{opacity:.68}
+  80%{opacity:.36}
+  100%{transform:translateY(118vh) translateX(-18px) rotate(2deg);opacity:0}
+}
+#loginStep .scene-floaters{
+  z-index:1;
+}
+#loginStep .scene-card{
+  max-width:240px;
+  opacity:.92;
+}
+#loginStep .scene-card.center-blocked{
+  display:none !important;
+}
+#loginStep .scene-card.safe-left{left:6% !important}
+#loginStep .scene-card.safe-left-2{left:11% !important}
+#loginStep .scene-card.safe-right{left:auto !important; right:6% !important}
+#loginStep .scene-card.safe-right-2{left:auto !important; right:10% !important}
+#loginStep .scene-card.top-row{top:20% !important}
+#loginStep .scene-card.mid-row{top:44% !important}
+#loginStep .scene-card.low-row{top:67% !important}
+#loginStep > .card{
+  margin-inline:auto;
+  position:relative;
+}
+#loginStep .login-scene::after{
+  content:'';
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:min(620px, 96vw);
+  height:min(620px, 86vh);
+  border-radius:32px;
+  background:radial-gradient(circle, rgba(0,0,0,.06), rgba(0,0,0,0) 72%);
+  pointer-events:none;
+}
+@media (max-width: 1100px){
+  #loginStep .scene-card{max-width:200px}
+  #loginStep .scene-card.safe-left-2,
+  #loginStep .scene-card.safe-right-2{display:none !important}
+}
+@media (max-width: 780px){
+  #loginStep .scene-card{display:none !important}
+  #loginStep .rain-word{font-size:12px !important; opacity:.45}
+}
+
+
+/* ============================================================
+   V51.28 · LOGIN CENTRAL PROTEGIDO
+   ============================================================ */
+#loginStep{
+  --login-card-w:520px;
+  grid-template-columns:minmax(0,1fr) minmax(420px,var(--login-card-w)) minmax(0,1fr) !important;
+  align-items:center !important;
+}
+#loginStep > .card{
+  grid-column:2 !important;
+  width:100% !important;
+  max-width:var(--login-card-w) !important;
+  margin:0 auto !important;
+  z-index:5 !important;
+}
+#loginStep .back{
+  z-index:7 !important;
+}
+#loginStep .login-scene{
+  z-index:1 !important;
+}
+#loginStep .scene-center-shield{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:calc(var(--login-card-w) + 110px);
+  height:calc(100% - 90px);
+  transform:translate(-50%,-50%);
+  border-radius:40px;
+  background:linear-gradient(180deg,rgba(7,11,16,.52),rgba(7,11,16,.38));
+  backdrop-filter:blur(22px) saturate(125%);
+  -webkit-backdrop-filter:blur(22px) saturate(125%);
+  box-shadow:0 0 80px rgba(0,0,0,.28);
+  pointer-events:none;
+  z-index:2;
+}
+#loginStep .scene-floaters{
+  z-index:1 !important;
+}
+#loginStep .scene-rain{
+  z-index:1 !important;
+}
+#loginStep .scene-card{
+  position:absolute !important;
+  max-width:220px !important;
+  z-index:1 !important;
+}
+#loginStep .scene-card.left-zone{left:5% !important;right:auto !important}
+#loginStep .scene-card.left-zone.two{left:9% !important}
+#loginStep .scene-card.right-zone{right:5% !important;left:auto !important}
+#loginStep .scene-card.right-zone.two{right:9% !important}
+#loginStep .scene-card.top-zone{top:22% !important}
+#loginStep .scene-card.bottom-zone{top:auto !important;bottom:18% !important}
+#loginStep .scene-card.mid-zone{top:48% !important}
+#loginStep .rain-word{
+  z-index:1 !important;
+  color:rgba(242,140,40,.72) !important;
+  text-shadow:0 0 16px rgba(242,140,40,.22) !important;
+}
+#loginStep .field-wrap,
+#loginStep .field-wrap input,
+#loginStep .form,
+#loginStep .form>div{
+  width:100% !important;
+  max-width:100% !important;
+}
+#loginStep .field-wrap input{
+  display:block !important;
+}
+@media(max-width:1050px){
+  #loginStep{--login-card-w:500px}
+  #loginStep .scene-card{max-width:180px !important}
+  #loginStep .scene-card.left-zone.two,
+  #loginStep .scene-card.right-zone.two{display:none !important}
+}
+@media(max-width:820px){
+  #loginStep{
+    display:block !important;
+    padding:70px 14px 36px !important;
+  }
+  #loginStep > .card{
+    width:min(100%,520px) !important;
+    margin:0 auto !important;
+  }
+  #loginStep .scene-card{display:none !important}
+  #loginStep .scene-center-shield{width:calc(100% - 20px) !important;height:calc(100% - 30px) !important}
+}
+
+
+/* ============================================================
+   V51.29 · LOGIN HORIZONTAL PARA PC
+   ============================================================ */
+
+#loginStep{
+  min-height:calc(100vh - 110px) !important;
+  padding:24px 28px 34px !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:hidden !important;
+}
+
+#loginStep > .card{
+  width:min(760px, calc(100vw - 140px)) !important;
+  max-width:760px !important;
+  min-height:430px !important;
+  padding:30px 34px !important;
+  border-radius:28px !important;
+  margin:0 auto !important;
+  position:relative !important;
+  z-index:10 !important;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.035)) !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  box-shadow:
+    0 28px 80px rgba(0,0,0,.36),
+    0 0 0 1px rgba(242,140,40,.035),
+    inset 0 1px 0 rgba(255,255,255,.07) !important;
+  backdrop-filter:blur(26px) saturate(155%) !important;
+  -webkit-backdrop-filter:blur(26px) saturate(155%) !important;
+}
+
+#loginStep > .card h2{
+  font-size:34px !important;
+  line-height:1.05 !important;
+  margin:14px 0 10px !important;
+}
+
+#loginStep > .card p{
+  font-size:14px !important;
+  line-height:1.55 !important;
+  margin-bottom:22px !important;
+}
+
+#loginStep .form{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:16px 18px !important;
+  align-items:end !important;
+}
+
+#loginStep .form > div{
+  min-width:0 !important;
+  margin:0 !important;
+}
+
+#loginStep .form > button{
+  grid-column:1 / -1 !important;
+  width:100% !important;
+  min-height:54px !important;
+  margin-top:2px !important;
+}
+
+#loginStep .input{
+  width:100% !important;
+  min-height:52px !important;
+  box-sizing:border-box !important;
+}
+
+#loginStep .back{
+  top:18px !important;
+  left:calc(50% - 380px) !important;
+  z-index:12 !important;
+}
+
+#loginStep .scene-floaters,
+#loginStep .scene-rain{
+  z-index:1 !important;
+}
+
+#loginStep .scene-card.safe-left,
+#loginStep .scene-card.safe-left-2{
+  left:3.5% !important;
+  right:auto !important;
+}
+
+#loginStep .scene-card.safe-right,
+#loginStep .scene-card.safe-right-2{
+  right:3.5% !important;
+  left:auto !important;
+}
+
+#loginStep .login-scene::after{
+  width:min(860px, 74vw) !important;
+  height:min(620px, 80vh) !important;
+  background:
+    radial-gradient(
+      circle,
+      rgba(4,8,13,.78) 0%,
+      rgba(4,8,13,.58) 44%,
+      rgba(4,8,13,.16) 72%,
+      transparent 100%
+    ) !important;
+  z-index:2 !important;
+}
+
+@media (max-width:1100px){
+  #loginStep > .card{
+    width:min(680px, calc(100vw - 70px)) !important;
+    max-width:680px !important;
+  }
+
+  #loginStep .back{
+    left:28px !important;
+  }
+}
+
+@media (max-width:760px){
+  #loginStep{
+    min-height:auto !important;
+    padding:28px 12px 36px !important;
+    place-items:start center !important;
+  }
+
+  #loginStep > .card{
+    width:100% !important;
+    max-width:100% !important;
+    min-height:auto !important;
+    padding:22px 18px !important;
+    border-radius:24px !important;
+  }
+
+  #loginStep > .card h2{
+    font-size:28px !important;
+  }
+
+  #loginStep .form{
+    grid-template-columns:1fr !important;
+    gap:14px !important;
+  }
+
+  #loginStep .form > button{
+    grid-column:auto !important;
+  }
+
+  #loginStep .back{
+    position:relative !important;
+    top:auto !important;
+    left:auto !important;
+    justify-self:start !important;
+    margin-bottom:12px !important;
+  }
+
+  #loginStep .scene-card{
+    display:none !important;
+  }
+
+  #loginStep .login-scene::after{
+    width:100% !important;
+    height:100% !important;
+  }
+}
+
+
+/* ============================================================
+   V51.30 · RESTAURAR FORMATO CLÁSICO DEL LOGIN
+   Mantiene efectos nuevos, vuelve al layout anterior
+   ============================================================ */
+
+#loginStep{
+  min-height:calc(100vh - 110px) !important;
+  padding:28px 20px 44px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  overflow:hidden !important;
+}
+
+#loginStep .back{
+  position:relative !important;
+  top:auto !important;
+  left:auto !important;
+  align-self:flex-start !important;
+  margin:12px 0 14px !important;
+  z-index:12 !important;
+}
+
+#loginStep > .card{
+  width:min(520px, calc(100vw - 40px)) !important;
+  max-width:520px !important;
+  min-height:0 !important;
+  height:auto !important;
+  padding:24px 24px 20px !important;
+  margin:0 auto !important;
+  border-radius:24px !important;
+  position:relative !important;
+  z-index:10 !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.09),
+      rgba(255,255,255,.035)
+    ) !important;
+
+  border:1px solid rgba(255,255,255,.12) !important;
+
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.07) !important;
+
+  backdrop-filter:blur(24px) saturate(150%) !important;
+  -webkit-backdrop-filter:blur(24px) saturate(150%) !important;
+}
+
+#loginStep > .card h2{
+  font-size:28px !important;
+  line-height:1.08 !important;
+  margin:12px 0 8px !important;
+}
+
+#loginStep > .card p{
+  font-size:13px !important;
+  line-height:1.55 !important;
+  margin-bottom:18px !important;
+}
+
+#loginStep .form{
+  display:block !important;
+}
+
+#loginStep .form > div{
+  display:block !important;
+  width:100% !important;
+  margin-bottom:14px !important;
+}
+
+#loginStep .form > button{
+  display:block !important;
+  width:100% !important;
+  min-height:50px !important;
+  margin-top:6px !important;
+  grid-column:auto !important;
+}
+
+#loginStep .input{
+  width:100% !important;
+  min-height:48px !important;
+  box-sizing:border-box !important;
+}
+
+#loginStep .field-wrap{
+  width:100% !important;
+}
+
+#loginStep .login-scene::after{
+  width:min(620px, 90vw) !important;
+  height:min(560px, 76vh) !important;
+  background:
+    radial-gradient(
+      circle,
+      rgba(4,8,13,.78) 0%,
+      rgba(4,8,13,.55) 46%,
+      rgba(4,8,13,.12) 74%,
+      transparent 100%
+    ) !important;
+}
+
+#loginStep .scene-card.safe-left,
+#loginStep .scene-card.safe-left-2{
+  left:4% !important;
+  right:auto !important;
+}
+
+#loginStep .scene-card.safe-right,
+#loginStep .scene-card.safe-right-2{
+  right:4% !important;
+  left:auto !important;
+}
+
+@media (max-width:900px){
+  #loginStep > .card{
+    width:min(500px, calc(100vw - 28px)) !important;
+    max-width:500px !important;
+  }
+
+  #loginStep .scene-card{
+    opacity:.55 !important;
+    transform:scale(.9) !important;
+  }
+}
+
+@media (max-width:650px){
+  #loginStep{
+    padding:22px 10px 34px !important;
+  }
+
+  #loginStep > .card{
+    width:100% !important;
+    max-width:100% !important;
+    padding:20px 16px 18px !important;
+    border-radius:22px !important;
+  }
+
+  #loginStep > .card h2{
+    font-size:25px !important;
+  }
+
+  #loginStep .scene-card{
+    display:none !important;
+  }
+
+  #loginStep .back{
+    margin-left:4px !important;
+  }
+}
+
+
+/* ============================================================
+   V51.31 · FIX REAL DEL CONTENEDOR LOGIN
+   La clase .loginbox original tenía max-width:470px.
+   ============================================================ */
+
+#portal .portal-shell{
+  width:min(1280px,calc(100% - 48px)) !important;
+  max-width:1280px !important;
+  margin:0 auto !important;
+}
+
+#loginStep.loginbox{
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+  margin:18px 0 0 !important;
+  box-sizing:border-box !important;
+  align-self:stretch !important;
+}
+
+/* Escena visual ocupa toda la zona de contenido, no 470 px */
+#loginStep .login-scene{
+  width:100% !important;
+  max-width:none !important;
+  left:0 !important;
+  right:0 !important;
+}
+
+/* El formulario mantiene el tamaño clásico y queda centrado */
+#loginStep > .card{
+  width:min(520px,calc(100vw - 48px)) !important;
+  max-width:520px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+
+/* Volver se alinea respecto del formulario, sin recortar el escenario */
+#loginStep .back{
+  width:min(520px,calc(100vw - 48px)) !important;
+  max-width:520px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  align-self:center !important;
+  text-align:left !important;
+  padding-left:0 !important;
+}
+
+/* Las capas de fondo siempre usan todo el ancho real */
+#loginStep .scene-grid,
+#loginStep .scene-floaters,
+#loginStep .scene-rain,
+#loginStep .scene-particles{
+  width:100% !important;
+  max-width:none !important;
+}
+
+/* Evita cualquier recorte heredado */
+#loginStep,
+#loginStep .login-scene,
+#loginStep .scene-floaters,
+#loginStep .scene-rain{
+  clip:auto !important;
+  clip-path:none !important;
+}
+
+@media(max-width:760px){
+  #portal .portal-shell{
+    width:calc(100% - 20px) !important;
+  }
+
+  #loginStep.loginbox{
+    width:100% !important;
+    max-width:none !important;
+    margin-top:10px !important;
+  }
+
+  #loginStep > .card,
+  #loginStep .back{
+    width:100% !important;
+    max-width:100% !important;
+  }
+}
+
+
+/* ============================================================
+   V51.32 · SEPARACIÓN REAL PORTADA / LOGIN
+   ============================================================ */
+
+/* El login debe desaparecer completamente cuando está oculto */
+#loginStep.hidden{
+  display:none !important;
+}
+
+/* La portada de sectores también debe desaparecer del flujo
+   cuando se entra al login de un sector. */
+#typeStep.hidden{
+  display:none !important;
+}
+
+/* Solo aplicar el layout del login cuando realmente está visible */
+#loginStep:not(.hidden){
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  box-sizing:border-box !important;
+}
+
+/* Evita que escenas visuales del login queden visibles cuando se oculta */
+#loginStep.hidden .login-scene,
+#loginStep.hidden .scene-floaters,
+#loginStep.hidden .scene-rain,
+#loginStep.hidden .scene-particles{
+  display:none !important;
+}
+
+/* La portada queda compacta: no reserva espacio para el login */
+#typeStep:not(.hidden){
+  display:block !important;
+  width:100% !important;
+}
+
+/* En la portada no debe existir scroll generado por el login */
+#portal.portal-home-mode{
+  overflow-y:auto !important;
+}
+
+#portal.portal-login-mode{
+  overflow-y:auto !important;
+}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -6823,166 +7968,1357 @@ updateGestokInstallBanner();
 
 
 /* ============================================================
-   V51.23 · PORTADA INTERACTIVA GESTOK
+   V51.24 · PORTADA INTERACTIVA GESTOK · FIX
    ============================================================ */
 (()=>{
   const portal=document.getElementById('portal');
-  const dot=document.getElementById('gestokCursorDot');
-  const halo=document.getElementById('gestokCursorHalo');
+  if(!portal)return;
 
-  if(!portal||!dot||!halo)return;
+  /*
+    Creamos el cursor desde JavaScript.
+    Así no dependemos del orden en el que aparezcan elementos al cargar.
+  */
+  let halo=document.getElementById('gestokCursorHalo');
+  let dot=document.getElementById('gestokCursorDot');
+
+  if(!halo){
+    halo=document.createElement('div');
+    halo.id='gestokCursorHalo';
+    halo.className='gestok-cursor-halo';
+    halo.setAttribute('aria-hidden','true');
+    document.body.appendChild(halo);
+  }
+
+  if(!dot){
+    dot=document.createElement('div');
+    dot.id='gestokCursorDot';
+    dot.className='gestok-cursor-dot';
+    dot.setAttribute('aria-hidden','true');
+    document.body.appendChild(dot);
+  }
 
   const finePointer=window.matchMedia('(pointer:fine)');
-  const reducedMotion=window.matchMedia('(prefers-reduced-motion:reduce)');
+  const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  let targetX=-100,targetY=-100;
-  let haloX=-100,haloY=-100;
-  let raf=0;
+  let targetX=-100;
+  let targetY=-100;
+  let haloX=-100;
+  let haloY=-100;
   let lastTrail=0;
   let audioCtx=null;
+  let cursorRunning=false;
 
-  const portalVisible=()=>!portal.classList.contains('hidden');
+  const portalVisible=()=>{
+    const style=getComputedStyle(portal);
+    return !portal.classList.contains('hidden') &&
+           style.display!=='none' &&
+           style.visibility!=='hidden';
+  };
 
   function syncCursorMode(){
+    const active=finePointer.matches&&portalVisible();
+
     document.body.classList.toggle(
       'gestok-portal-cursor',
-      finePointer.matches&&portalVisible()
+      active
     );
 
-    if(!portalVisible()){
+    if(!active){
       dot.style.opacity='0';
       halo.style.opacity='0';
     }
   }
 
   function animateCursor(){
-    haloX+=(targetX-haloX)*.18;
-    haloY+=(targetY-haloY)*.18;
+    haloX+=(targetX-haloX)*.20;
+    haloY+=(targetY-haloY)*.20;
 
-    halo.style.transform=`translate3d(${haloX}px,${haloY}px,0)`;
-    dot.style.transform=`translate3d(${targetX}px,${targetY}px,0)`;
+    halo.style.transform=
+      `translate3d(${haloX}px,${haloY}px,0)`;
 
-    raf=requestAnimationFrame(animateCursor);
+    dot.style.transform=
+      `translate3d(${targetX}px,${targetY}px,0)`;
+
+    requestAnimationFrame(animateCursor);
   }
 
   function createTrail(x,y){
-    if(reducedMotion.matches||!portalVisible())return;
+    if(
+      reducedMotion.matches ||
+      !finePointer.matches ||
+      !portalVisible()
+    )return;
+
     const now=performance.now();
-    if(now-lastTrail<28)return;
+
+    if(now-lastTrail<24)return;
     lastTrail=now;
 
-    const p=document.createElement('i');
+    const p=document.createElement('span');
     p.className='gestok-cursor-trail';
+
     p.style.left=x+'px';
     p.style.top=y+'px';
+
     document.body.appendChild(p);
-    setTimeout(()=>p.remove(),560);
+
+    setTimeout(()=>{
+      p.remove();
+    },560);
   }
 
-  document.addEventListener('pointermove',e=>{
-    if(!finePointer.matches||!portalVisible())return;
+  document.addEventListener(
+    'pointermove',
+    e=>{
+      if(
+        !finePointer.matches ||
+        !portalVisible()
+      )return;
 
-    targetX=e.clientX;
-    targetY=e.clientY;
+      targetX=e.clientX;
+      targetY=e.clientY;
 
-    dot.style.opacity='1';
-    halo.style.opacity='1';
+      dot.style.opacity='1';
+      halo.style.opacity='1';
 
-    createTrail(e.clientX,e.clientY);
+      createTrail(
+        e.clientX,
+        e.clientY
+      );
 
-    const card=e.target.closest?.('#portal .type');
-    if(card){
-      const r=card.getBoundingClientRect();
-      card.style.setProperty('--mx',`${e.clientX-r.left}px`);
-      card.style.setProperty('--my',`${e.clientY-r.top}px`);
+      const card=e.target.closest?.('#portal .type');
+
+      if(card){
+        const r=card.getBoundingClientRect();
+
+        card.style.setProperty(
+          '--mx',
+          `${e.clientX-r.left}px`
+        );
+
+        card.style.setProperty(
+          '--my',
+          `${e.clientY-r.top}px`
+        );
+      }
+    },
+    {passive:true}
+  );
+
+  document.addEventListener(
+    'mouseleave',
+    ()=>{
+      dot.style.opacity='0';
+      halo.style.opacity='0';
     }
-  },{passive:true});
+  );
 
-  document.addEventListener('pointerleave',()=>{
-    dot.style.opacity='0';
-    halo.style.opacity='0';
-  });
-
-  portal.addEventListener('pointerover',e=>{
-    if(e.target.closest('button,a,.type')){
-      halo.classList.add('hot');
+  portal.addEventListener(
+    'pointerover',
+    e=>{
+      if(
+        e.target.closest(
+          'button,a,.type,input,select'
+        )
+      ){
+        halo.classList.add('hot');
+      }
     }
-  });
+  );
 
-  portal.addEventListener('pointerout',e=>{
-    if(e.target.closest('button,a,.type')){
-      halo.classList.remove('hot');
+  portal.addEventListener(
+    'pointerout',
+    e=>{
+      if(
+        e.target.closest(
+          'button,a,.type,input,select'
+        )
+      ){
+        halo.classList.remove('hot');
+      }
     }
-  });
+  );
 
-  function playDrop(){
+  /*
+    Sonido tipo gota generado con Web Audio.
+    Se crea dentro del primer gesto del usuario para respetar
+    las restricciones de audio de Chrome/Edge.
+  */
+  async function ensureAudio(){
+    try{
+      const AC=
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+      if(!AC)return null;
+
+      if(!audioCtx){
+        audioCtx=new AC();
+      }
+
+      if(audioCtx.state==='suspended'){
+        await audioCtx.resume();
+      }
+
+      return audioCtx;
+    }catch{
+      return null;
+    }
+  }
+
+  async function playDrop(){
     if(!portalVisible())return;
 
+    const ctx=await ensureAudio();
+    if(!ctx)return;
+
     try{
-      const AC=window.AudioContext||window.webkitAudioContext;
-      if(!AC)return;
+      const now=ctx.currentTime;
 
-      audioCtx=audioCtx||new AC();
-      if(audioCtx.state==='suspended')audioCtx.resume();
-
-      const now=audioCtx.currentTime;
-
-      const osc=audioCtx.createOscillator();
-      const gain=audioCtx.createGain();
-      const filter=audioCtx.createBiquadFilter();
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      const filter=ctx.createBiquadFilter();
 
       osc.type='sine';
-      osc.frequency.setValueAtTime(540,now);
-      osc.frequency.exponentialRampToValueAtTime(240,now+.095);
+
+      osc.frequency.setValueAtTime(
+        720,
+        now
+      );
+
+      osc.frequency.exponentialRampToValueAtTime(
+        260,
+        now+.12
+      );
 
       filter.type='lowpass';
-      filter.frequency.setValueAtTime(1500,now);
-      filter.Q.setValueAtTime(.8,now);
+      filter.frequency.setValueAtTime(
+        1800,
+        now
+      );
 
-      gain.gain.setValueAtTime(.0001,now);
-      gain.gain.exponentialRampToValueAtTime(.055,now+.008);
-      gain.gain.exponentialRampToValueAtTime(.0001,now+.13);
+      gain.gain.setValueAtTime(
+        .0001,
+        now
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        .038,
+        now+.008
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        now+.16
+      );
 
       osc.connect(filter);
       filter.connect(gain);
-      gain.connect(audioCtx.destination);
+      gain.connect(ctx.destination);
 
       osc.start(now);
-      osc.stop(now+.145);
+      osc.stop(now+.17);
 
-      const osc2=audioCtx.createOscillator();
-      const gain2=audioCtx.createGain();
+      const ping=ctx.createOscillator();
+      const pingGain=ctx.createGain();
 
-      osc2.type='sine';
-      osc2.frequency.setValueAtTime(920,now+.012);
-      osc2.frequency.exponentialRampToValueAtTime(520,now+.075);
+      ping.type='sine';
 
-      gain2.gain.setValueAtTime(.0001,now);
-      gain2.gain.exponentialRampToValueAtTime(.018,now+.014);
-      gain2.gain.exponentialRampToValueAtTime(.0001,now+.09);
+      ping.frequency.setValueAtTime(
+        1150,
+        now+.008
+      );
 
-      osc2.connect(gain2);
-      gain2.connect(audioCtx.destination);
-      osc2.start(now+.01);
-      osc2.stop(now+.1);
+      ping.frequency.exponentialRampToValueAtTime(
+        650,
+        now+.09
+      );
+
+      pingGain.gain.setValueAtTime(
+        .0001,
+        now
+      );
+
+      pingGain.gain.exponentialRampToValueAtTime(
+        .014,
+        now+.012
+      );
+
+      pingGain.gain.exponentialRampToValueAtTime(
+        .0001,
+        now+.11
+      );
+
+      ping.connect(pingGain);
+      pingGain.connect(ctx.destination);
+
+      ping.start(now+.006);
+      ping.stop(now+.12);
+
     }catch{}
   }
 
-  // Sonido para los clics de la portada, sin interferir con las acciones.
-  portal.addEventListener('pointerdown',e=>{
-    if(e.target.closest('button,a,.type')){
-      playDrop();
+  /*
+    pointerdown ocurre durante el gesto real del usuario.
+    Esto hace mucho más confiable el sonido que ejecutarlo
+    después del click.
+  */
+  portal.addEventListener(
+    'pointerdown',
+    e=>{
+      if(
+        e.target.closest(
+          'button,a,.type,.install-banner'
+        )
+      ){
+        playDrop();
+      }
+    },
+    {capture:true}
+  );
+
+  const observer=new MutationObserver(
+    syncCursorMode
+  );
+
+  observer.observe(
+    portal,
+    {
+      attributes:true,
+      attributeFilter:[
+        'class',
+        'style'
+      ]
     }
-  },true);
+  );
 
-  // El portal puede ocultarse/mostrarse al entrar o salir de un módulo.
-  const observer=new MutationObserver(syncCursorMode);
-  observer.observe(portal,{attributes:true,attributeFilter:['class']});
+  finePointer.addEventListener?.(
+    'change',
+    syncCursorMode
+  );
 
-  finePointer.addEventListener?.('change',syncCursorMode);
+  window.addEventListener(
+    'pageshow',
+    syncCursorMode
+  );
+
+  window.addEventListener(
+    'focus',
+    syncCursorMode
+  );
+
   syncCursorMode();
 
-  if(!raf)animateCursor();
+  if(!cursorRunning){
+    cursorRunning=true;
+    animateCursor();
+  }
+})();
+
+
+/* ============================================================
+   V51.25 · LOGIN INTERACTIVO TODOS LOS SECTORES
+   ============================================================ */
+(()=>{
+  const loginStep=document.getElementById('loginStep');
+  if(!loginStep)return;
+
+  let audioCtx=null;
+  let lastKeyAt=0;
+  let lastDropAt=0;
+
+  async function getAudio(){
+    try{
+      const AC=window.AudioContext||window.webkitAudioContext;
+      if(!AC)return null;
+
+      if(!audioCtx)audioCtx=new AC();
+      if(audioCtx.state==='suspended')await audioCtx.resume();
+
+      return audioCtx;
+    }catch{
+      return null;
+    }
+  }
+
+  async function playMechanicalKey(){
+    const nowPerf=performance.now();
+    if(nowPerf-lastKeyAt<24)return;
+    lastKeyAt=nowPerf;
+
+    const ctx=await getAudio();
+    if(!ctx)return;
+
+    try{
+      const now=ctx.currentTime;
+
+      const click=ctx.createOscillator();
+      const clickGain=ctx.createGain();
+      const filter=ctx.createBiquadFilter();
+
+      click.type='square';
+      click.frequency.setValueAtTime(150,now);
+      click.frequency.exponentialRampToValueAtTime(90,now+.026);
+
+      filter.type='lowpass';
+      filter.frequency.setValueAtTime(760,now);
+
+      clickGain.gain.setValueAtTime(.0001,now);
+      clickGain.gain.exponentialRampToValueAtTime(.018,now+.002);
+      clickGain.gain.exponentialRampToValueAtTime(.0001,now+.032);
+
+      click.connect(filter);
+      filter.connect(clickGain);
+      clickGain.connect(ctx.destination);
+
+      click.start(now);
+      click.stop(now+.036);
+
+      const tick=ctx.createOscillator();
+      const tickGain=ctx.createGain();
+
+      tick.type='triangle';
+      tick.frequency.setValueAtTime(1250,now);
+      tick.frequency.exponentialRampToValueAtTime(760,now+.018);
+
+      tickGain.gain.setValueAtTime(.0001,now);
+      tickGain.gain.exponentialRampToValueAtTime(.006,now+.001);
+      tickGain.gain.exponentialRampToValueAtTime(.0001,now+.021);
+
+      tick.connect(tickGain);
+      tickGain.connect(ctx.destination);
+
+      tick.start(now);
+      tick.stop(now+.024);
+    }catch{}
+  }
+
+  async function playClassicCheck(){
+    const ctx=await getAudio();
+    if(!ctx)return;
+
+    try{
+      const now=ctx.currentTime;
+
+      [660,880].forEach((freq,i)=>{
+        const osc=ctx.createOscillator();
+        const gain=ctx.createGain();
+
+        osc.type='sine';
+        osc.frequency.setValueAtTime(freq,now+i*.055);
+
+        gain.gain.setValueAtTime(.0001,now+i*.055);
+        gain.gain.exponentialRampToValueAtTime(.035,now+i*.055+.006);
+        gain.gain.exponentialRampToValueAtTime(.0001,now+i*.055+.12);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now+i*.055);
+        osc.stop(now+i*.055+.13);
+      });
+    }catch{}
+  }
+
+  async function playSoftDrop(){
+    const nowPerf=performance.now();
+    if(nowPerf-lastDropAt<80)return;
+    lastDropAt=nowPerf;
+
+    const ctx=await getAudio();
+    if(!ctx)return;
+
+    try{
+      const now=ctx.currentTime;
+
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      const filter=ctx.createBiquadFilter();
+
+      osc.type='sine';
+      osc.frequency.setValueAtTime(520,now);
+      osc.frequency.exponentialRampToValueAtTime(215,now+.14);
+
+      filter.type='lowpass';
+      filter.frequency.setValueAtTime(1150,now);
+
+      gain.gain.setValueAtTime(.0001,now);
+      gain.gain.exponentialRampToValueAtTime(.035,now+.009);
+      gain.gain.exponentialRampToValueAtTime(.0001,now+.18);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now+.19);
+
+      const ping=ctx.createOscillator();
+      const pg=ctx.createGain();
+
+      ping.type='sine';
+      ping.frequency.setValueAtTime(820,now+.01);
+      ping.frequency.exponentialRampToValueAtTime(480,now+.09);
+
+      pg.gain.setValueAtTime(.0001,now);
+      pg.gain.exponentialRampToValueAtTime(.012,now+.012);
+      pg.gain.exponentialRampToValueAtTime(.0001,now+.11);
+
+      ping.connect(pg);
+      pg.connect(ctx.destination);
+
+      ping.start(now+.008);
+      ping.stop(now+.12);
+    }catch{}
+  }
+
+  function getLoginCard(){
+    return loginStep.querySelector(':scope > .card') ||
+           loginStep.querySelector('.card');
+  }
+
+  function enhanceFields(){
+    const inputs=[...loginStep.querySelectorAll(
+      'input[type="text"],input[type="email"],input[type="password"]'
+    )];
+
+    inputs.forEach((input,index)=>{
+      if(input.dataset.gestokEnhanced==='1')return;
+      input.dataset.gestokEnhanced='1';
+
+      let wrap=input.parentElement;
+
+      if(!wrap?.classList.contains('field-wrap')){
+        const newWrap=document.createElement('div');
+        newWrap.className='field-wrap';
+
+        input.parentNode.insertBefore(newWrap,input);
+        newWrap.appendChild(input);
+        wrap=newWrap;
+      }
+
+      const check=document.createElement('span');
+      check.className='login-check';
+      check.setAttribute('aria-hidden','true');
+      wrap.appendChild(check);
+
+      let checked=false;
+
+      const validate=()=>{
+        const valid=input.value.trim().length>0;
+
+        if(valid&&!checked){
+          check.classList.add('show');
+          playClassicCheck();
+        }
+
+        if(!valid){
+          check.classList.remove('show');
+        }
+
+        checked=valid;
+      };
+
+      input.addEventListener('keydown',e=>{
+        if(
+          e.key.length===1 ||
+          e.key==='Backspace' ||
+          e.key==='Delete'
+        ){
+          playMechanicalKey();
+        }
+
+        if(e.key==='Enter'){
+          validate();
+        }
+      });
+
+      input.addEventListener('blur',validate);
+
+      input.addEventListener('change',validate);
+
+      input.addEventListener('input',()=>{
+        if(!input.value.trim()){
+          check.classList.remove('show');
+          checked=false;
+        }
+      });
+    });
+  }
+
+  function hookSubmit(){
+    const card=getLoginCard();
+    if(!card)return;
+
+    const submitBtn=
+      loginStep.querySelector('button[type="submit"]') ||
+      [...loginStep.querySelectorAll('button')].find(
+        b=>/ingresar/i.test(b.textContent||'')
+      );
+
+    if(!submitBtn || submitBtn.dataset.gestokTransport==='1')return;
+
+    submitBtn.dataset.gestokTransport='1';
+
+    submitBtn.addEventListener(
+      'click',
+      ()=>{
+        playSoftDrop();
+
+        const inputs=[...loginStep.querySelectorAll(
+          'input[type="text"],input[type="email"],input[type="password"]'
+        )];
+
+        const complete=inputs.length>0 &&
+          inputs.every(i=>i.value.trim().length>0);
+
+        if(!complete)return;
+
+        /*
+          La animación corre de inmediato.
+          Si el login falla, se restaura automáticamente.
+          Si funciona, la navegación/módulo toma el control.
+        */
+        card.classList.remove('login-transport');
+        void card.offsetWidth;
+        card.classList.add('login-transport');
+
+        setTimeout(()=>{
+          if(
+            !loginStep.classList.contains('hidden') &&
+            getComputedStyle(loginStep).display!=='none'
+          ){
+            card.classList.remove('login-transport');
+          }
+        },1100);
+      },
+      true
+    );
+  }
+
+  /*
+    Sonido gota nuevo para controles del login.
+    No se aplica a las teclas porque tienen sonido mecánico propio.
+  */
+  loginStep.addEventListener(
+    'pointerdown',
+    e=>{
+      if(e.target.closest('button,a')){
+        playSoftDrop();
+      }
+    },
+    true
+  );
+
+  function enhance(){
+    enhanceFields();
+    hookSubmit();
+  }
+
+  enhance();
+
+  const observer=new MutationObserver(enhance);
+
+  observer.observe(
+    loginStep,
+    {
+      subtree:true,
+      childList:true
+    }
+  );
+})();
+
+
+/* ============================================================
+   V51.26 · LOGIN LOGIN UX + TEMAS + SONIDO
+   ============================================================ */
+(function(){
+  const loginStep=document.getElementById('loginStep');
+  if(!loginStep) return;
+
+  let loginAudioCtx=null;
+  let lastKeyAudioAt=0;
+  let loginSceneReady=false;
+  const companyLookupCache=new Map();
+
+  async function getLoginAudio(){
+    try{
+      const AC=window.AudioContext||window.webkitAudioContext;
+      if(!AC) return null;
+      if(!loginAudioCtx) loginAudioCtx=new AC();
+      if(loginAudioCtx.state==='suspended') await loginAudioCtx.resume();
+      return loginAudioCtx;
+    }catch(e){return null}
+  }
+
+  async function playKeyMechanical(){
+    const nowPerf=performance.now();
+    if(nowPerf-lastKeyAudioAt<14) return;
+    lastKeyAudioAt=nowPerf;
+    const ctx=await getLoginAudio();
+    if(!ctx) return;
+    const t=ctx.currentTime;
+    try{
+      const body=ctx.createOscillator();
+      const bodyGain=ctx.createGain();
+      const bodyFilter=ctx.createBiquadFilter();
+      body.type='square';
+      body.frequency.setValueAtTime(210,t);
+      body.frequency.exponentialRampToValueAtTime(96,t+.040);
+      bodyFilter.type='lowpass';
+      bodyFilter.frequency.setValueAtTime(980,t);
+      bodyGain.gain.setValueAtTime(.0001,t);
+      bodyGain.gain.exponentialRampToValueAtTime(.05,t+.002);
+      bodyGain.gain.exponentialRampToValueAtTime(.0001,t+.045);
+      body.connect(bodyFilter); bodyFilter.connect(bodyGain); bodyGain.connect(ctx.destination);
+      body.start(t); body.stop(t+.05);
+
+      const tick=ctx.createOscillator();
+      const tickGain=ctx.createGain();
+      tick.type='triangle';
+      tick.frequency.setValueAtTime(1650,t);
+      tick.frequency.exponentialRampToValueAtTime(980,t+.022);
+      tickGain.gain.setValueAtTime(.0001,t);
+      tickGain.gain.exponentialRampToValueAtTime(.024,t+.001);
+      tickGain.gain.exponentialRampToValueAtTime(.0001,t+.026);
+      tick.connect(tickGain); tickGain.connect(ctx.destination);
+      tick.start(t+.001); tick.stop(t+.03);
+    }catch(e){}
+  }
+
+  async function playSoftDropLogin(){
+    const ctx=await getLoginAudio();
+    if(!ctx) return;
+    const t=ctx.currentTime;
+    try{
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      const filter=ctx.createBiquadFilter();
+      osc.type='sine';
+      osc.frequency.setValueAtTime(540,t);
+      osc.frequency.exponentialRampToValueAtTime(220,t+.16);
+      filter.type='lowpass';
+      filter.frequency.setValueAtTime(1250,t);
+      gain.gain.setValueAtTime(.0001,t);
+      gain.gain.exponentialRampToValueAtTime(.03,t+.008);
+      gain.gain.exponentialRampToValueAtTime(.0001,t+.19);
+      osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+      osc.start(t); osc.stop(t+.20);
+    }catch(e){}
+  }
+
+  async function playCheckSound(){
+    const ctx=await getLoginAudio();
+    if(!ctx) return;
+    const t=ctx.currentTime;
+    [690,920].forEach((f,i)=>{
+      const o=ctx.createOscillator();
+      const g=ctx.createGain();
+      o.type='sine';
+      o.frequency.setValueAtTime(f,t+i*.05);
+      g.gain.setValueAtTime(.0001,t+i*.05);
+      g.gain.exponentialRampToValueAtTime(.045,t+i*.05+.006);
+      g.gain.exponentialRampToValueAtTime(.0001,t+i*.05+.13);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(t+i*.05); o.stop(t+i*.05+.14);
+    });
+  }
+
+  async function playErrorSound(){
+    const ctx=await getLoginAudio();
+    if(!ctx) return;
+    const t=ctx.currentTime;
+    [380,240].forEach((f,i)=>{
+      const o=ctx.createOscillator();
+      const g=ctx.createGain();
+      o.type='sawtooth';
+      o.frequency.setValueAtTime(f,t+i*.04);
+      g.gain.setValueAtTime(.0001,t+i*.04);
+      g.gain.exponentialRampToValueAtTime(.03,t+i*.04+.006);
+      g.gain.exponentialRampToValueAtTime(.0001,t+i*.04+.12);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(t+i*.04); o.stop(t+i*.04+.13);
+    });
+  }
+
+  function buildScene(){
+    if(loginSceneReady) return;
+    loginSceneReady=true;
+    const scene=document.createElement('div');
+    scene.className='login-scene';
+    scene.innerHTML='\
+      <div class="scene-grid"></div>\
+      <div class="scene-orb a"></div>\
+      <div class="scene-orb b"></div>\
+      <div class="scene-orb c"></div>\
+      <div class="scene-particles"></div>\
+      <div class="scene-floaters"></div>\
+      <div class="scene-ticker"><div class="track"></div><div class="track clone"></div></div>';
+    loginStep.insertBefore(scene, loginStep.firstChild);
+    const particles=scene.querySelector('.scene-particles');
+    for(let i=0;i<16;i++){
+      const p=document.createElement('span');
+      p.style.left=(4+Math.random()*92)+'%';
+      p.style.bottom=(-10-Math.random()*30)+'px';
+      p.style.animationDuration=(6+Math.random()*8)+'s';
+      p.style.animationDelay=(-Math.random()*10)+'s';
+      p.style.width=p.style.height=(3+Math.random()*4)+'px';
+      particles.appendChild(p);
+    }
+  }
+
+  function sceneCard(cls,left,top,dur,html){
+    return `<div class="scene-card ${cls||''}" style="left:${left};top:${top};--dur:${dur}">${html}</div>`;
+  }
+
+  function renderSceneFor(type){
+    buildScene();
+    const floaters=loginStep.querySelector('.scene-floaters');
+    const track=loginStep.querySelector('.scene-ticker .track');
+    const clone=loginStep.querySelector('.scene-ticker .track.clone');
+    if(!floaters||!track||!clone) return;
+
+    loginStep.classList.remove('sector-commerce','sector-parking','sector-restaurant','sector-barbershop');
+    loginStep.classList.add('sector-'+(type||'commerce'));
+
+    let cards='';
+    let words=[];
+
+    if(type==='commerce'){
+      cards += sceneCard('bars','8%','18%','9.5s',`<span class="k">Ventas del día</span><span class="v">+12%</span><div class="bar-wrap"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>`);
+      cards += sceneCard('mini','68%','22%','10.8s',`💸 Ingresos`);
+      cards += sceneCard('mini','61%','62%','12s',`📈 Balance vivo`);
+      cards += sceneCard('','16%','66%','11.2s',`<span class="k">Caja</span><span class="v">$ 128.500</span><span class="s">Movimientos sincronizados</span>`);
+      words=['Gestiona tu negocio','Ventas','Stock','Balance','Estadísticas','Cobros','Productos'];
+    }else if(type==='parking'){
+      cards += sceneCard('mini','10%','24%','9.5s',`🚗 Ingreso activo`);
+      cards += sceneCard('','66%','18%','11.5s',`<span class="k">Patentes</span><span class="v">48</span><span class="s">Registros en tiempo real</span>`);
+      cards += sceneCard('mini','62%','62%','10.2s',`🅿️ Salidas y cobros`);
+      cards += sceneCard('','15%','66%','13s',`<span class="k">Sesión</span><span class="v">QR + tickets</span><span class="s">Control de entrada y salida</span>`);
+      words=['Gestiona tu estacionamiento','Vehículos','Patentes','Ingresos','Salidas','Cobros','Tarifas'];
+    }else if(type==='restaurant'){
+      cards += sceneCard('mini','10%','24%','9.6s',`🍽️ Pedido nuevo`);
+      cards += sceneCard('','63%','20%','10.4s',`<span class="k">Cocina</span><span class="v">12 órdenes</span><span class="s">Flujo de pedidos en vivo</span>`);
+      cards += sceneCard('mini','58%','64%','12s',`🧾 Carta + QR`);
+      cards += sceneCard('','17%','66%','11.4s',`<span class="k">Mesas</span><span class="v">24 activas</span><span class="s">Seguimiento de órdenes</span>`);
+      words=['Gestiona tu restaurante','Pedidos','Mesas','Carta digital','Cocina','Cobros','Órdenes'];
+    }else{
+      cards += sceneCard('mini','10%','24%','10.2s',`📅 Turnos`);
+      cards += sceneCard('','62%','18%','11.2s',`<span class="k">Reservas</span><span class="v">Agenda viva</span><span class="s">Clientes y servicios conectados</span>`);
+      cards += sceneCard('mini','60%','64%','12.4s',`✂️ Servicios`);
+      cards += sceneCard('','16%','68%','10.8s',`<span class="k">Atención</span><span class="v">Confirmaciones</span><span class="s">Cobros y seguimiento</span>`);
+      words=['Gestiona tu barbería','Gestiona tu peluquería','Gestiona tus masajes','Gestiona tus turnos','Servicios','Clientes','Agenda'];
+    }
+
+    floaters.innerHTML=cards;
+    const trackHtml=words.concat(words).map(w=>`<span class="word">${w}</span>`).join('');
+    track.innerHTML=trackHtml;
+    clone.innerHTML=trackHtml;
+  }
+
+  function ensureFieldStatus(input){
+    if(!input) return null;
+    let wrap=input.closest('.field-wrap');
+    if(!wrap){
+      wrap=document.createElement('div');
+      wrap.className='field-wrap';
+      input.parentNode.insertBefore(wrap,input);
+      wrap.appendChild(input);
+    }
+    wrap.querySelectorAll('.login-status').forEach(x=>x.remove());
+    const status=document.createElement('span');
+    status.className='login-status';
+    wrap.appendChild(status);
+    return status;
+  }
+
+  function setStatus(input, kind){
+    if(!input) return;
+    const wrap=input.closest('.field-wrap');
+    if(!wrap) return;
+    let status=wrap.querySelector('.login-status');
+    if(!status) status=ensureFieldStatus(input);
+    wrap.classList.remove('ok','err','shake');
+    status.classList.remove('show','ok','err');
+    if(kind==='ok'){
+      status.textContent='✓';
+      status.classList.add('show','ok');
+      wrap.classList.add('ok');
+    }else if(kind==='err'){
+      status.textContent='✕';
+      status.classList.add('show','err');
+      wrap.classList.add('err','shake');
+      setTimeout(()=>wrap.classList.remove('shake'),380);
+    }else{
+      status.textContent='';
+    }
+  }
+
+  function replaceLoginControls(){
+    const ids=['companyName','companyPassword','loginBtn'];
+    ids.forEach(id=>{
+      const old=document.getElementById(id);
+      if(!old) return;
+      const nu=old.cloneNode(true);
+      if(id==='companyName' || id==='companyPassword') nu.value=old.value||'';
+      old.replaceWith(nu);
+      window[id]=nu;
+    });
+    ensureFieldStatus(window.companyName);
+    ensureFieldStatus(window.companyPassword);
+  }
+
+  async function resolveCompany(value){
+    const raw=(value||'').trim();
+    if(!raw || !selectedType) return {ok:false};
+    const slug=slugifyCompany(raw);
+    const key=selectedType+'::'+slug;
+    if(companyLookupCache.has(key)) return companyLookupCache.get(key);
+    let res={ok:false};
+    try{
+      const {data,error}=await sb.from('organizations')
+        .select('id,name,login_slug,type,active')
+        .eq('type',selectedType)
+        .or(`login_slug.eq.${slug},name.eq.${raw}`)
+        .maybeSingle();
+      if(!error && data){
+        res={ok:true,org:data};
+      }
+    }catch(e){}
+    companyLookupCache.set(key,res);
+    return res;
+  }
+
+  async function validateUsername(opts={}){
+    const value=window.companyName?.value?.trim()||'';
+    if(!value){ setStatus(window.companyName,null); return false; }
+    const result=await resolveCompany(value);
+    if(result.ok){
+      setStatus(window.companyName,'ok');
+      await playCheckSound();
+      if(opts.focusPassword) setTimeout(()=>window.companyPassword&&window.companyPassword.focus(),130);
+      return true;
+    }
+    setStatus(window.companyName,'err');
+    await playErrorSound();
+    return false;
+  }
+
+  async function validatePasswordField(){
+    const value=window.companyPassword?.value?.trim()||'';
+    if(!value){
+      setStatus(window.companyPassword,'err');
+      await playErrorSound();
+      return false;
+    }
+    setStatus(window.companyPassword,'ok');
+    await playCheckSound();
+    return true;
+  }
+
+  async function runTransport(){
+    const card=loginStep.querySelector(':scope > .card')||loginStep.querySelector('.card');
+    if(!card) return;
+    card.classList.remove('login-transport');
+    void card.offsetWidth;
+    card.classList.add('login-transport');
+    await new Promise(r=>setTimeout(r,430));
+  }
+
+  async function loginEnhanced(){
+    const company=window.companyName.value.trim(), password=window.companyPassword.value;
+    if(!company){
+      setStatus(window.companyName,'err');
+      playErrorSound();
+      return toast('Completá empresa y contraseña');
+    }
+    const userOk=await validateUsername();
+    if(!userOk) return toast('No detectamos ese usuario o empresa para este sector');
+    const passOk=await validatePasswordField();
+    if(!passOk) return toast('Completá empresa y contraseña');
+    const email=`${slugifyCompany(company)}@login.gestok.local`;
+    loginBtn.disabled=true;loginBtn.textContent='Ingresando...';
+
+    const {data:authData,error:authError}=await sb.auth.signInWithPassword({email,password});
+    if(authError||!authData.user){
+      loginBtn.disabled=false;loginBtn.textContent='Ingresar';
+      setStatus(companyPassword,'err');
+      await playErrorSound();
+      return toast('Empresa o contraseña incorrectos');
+    }
+
+    const {data:member,error:memberError}=await sb.from('organization_members')
+      .select('id,organization_id,display_name,role,active')
+      .eq('auth_user_id',authData.user.id)
+      .eq('active',true)
+      .maybeSingle();
+
+    if(memberError||!member){
+      await sb.auth.signOut();loginBtn.disabled=false;loginBtn.textContent='Ingresar';
+      setStatus(companyPassword,'err');
+      await playErrorSound();
+      return toast('El acceso no está vinculado a una empresa activa');
+    }
+
+    const [{data:org,error:orgError},{data:sub,error:subError}]=await Promise.all([
+      sb.from('organizations').select('id,name,login_slug,type,phone,monthly_fee,active,created_at').eq('id',member.organization_id).single(),
+      sb.from('subscriptions').select('status,start_date,next_due_date,trial_started_at,trial_ends_at,reason,updated_at').eq('organization_id',member.organization_id).maybeSingle()
+    ]);
+
+    loginBtn.disabled=false;loginBtn.textContent='Ingresar';
+
+    if(orgError||!org){await sb.auth.signOut();setStatus(companyName,'err');await playErrorSound();return toast('No se pudo cargar la empresa')}
+    if(subError){await sb.auth.signOut();setStatus(companyPassword,'err');await playErrorSound();return toast('No se pudo cargar la suscripción')}
+    if(org.type!==selectedType){await sb.auth.signOut();setStatus(companyName,'err');await playErrorSound();const label=org.type==='commerce'?'Comercio':org.type==='parking'?'Estacionamiento':org.type==='restaurant'?'Restaurante':'Barbería';return toast('Esta empresa pertenece a '+label+'.')}
+
+    DB=loadDB();
+    let mirror=DB.organizations.find(x=>x.id===org.id);
+    const mirrorData={
+      id:org.id,name:org.name,type:org.type,loginSlug:org.login_slug||slugifyCompany(company),phone:org.phone||'',monthlyFee:Number(org.monthly_fee||0),active:org.active!==false,
+      subscription:{status:sub?.status||'Activo',startDate:sub?.start_date||today(),nextDueDate:sub?.next_due_date||today(),trialStartedAt:sub?.trial_started_at||'',trialEndsAt:sub?.trial_ends_at||'',reason:sub?.reason||'',updatedAt:sub?.updated_at||new Date().toISOString()}
+    };
+    if(mirror)Object.assign(mirror,mirrorData);else{mirror=mirrorData;DB.organizations.push(mirror)}
+    if(!DB.records[org.id])DB.records[org.id]={users:[],sales:[],orders:[],ledger:[],activity:[],stock:[],services:[],clients:[],expenses:[],salaryPayments:[]};
+    saveDB();
+
+    ORG=mirror;
+    AUTH_MEMBER_ID=member.id;
+    hideSubscriptionBlocker();
+
+    await runTransport();
+
+    if(ORG.type==='restaurant'){
+      await launchRestaurant(ORG.id);
+      if(org.active===false||subscriptionBlocked(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name),80);
+      if(ORG.subscription?.status==='Prueba gratuita'&&trialExpired(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name,'trial'),100);
+      applyTrialAccess();loadSupportClientMessages();startSupportClientRealtime();renderPushState();handlePendingPushAction();
+      SESSION_RESTORE_DONE=true;return;
+    }
+    if(ORG.type==='parking'){
+      await launchParking(ORG.id);
+      if(org.active===false||subscriptionBlocked(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name),80);
+      if(ORG.subscription?.status==='Prueba gratuita'&&trialExpired(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name,'trial'),100);
+      applyTrialAccess();
+      loadSupportClientMessages();
+      startSupportClientRealtime();
+      renderPushState();
+      handlePendingPushAction();
+      SESSION_RESTORE_DONE=true;
+      return;
+    }
+    if(ORG.type==='barbershop'){
+      initOrgState();
+      U=S.users.find(x=>x.role==='admin')||S.users[0];
+      if(U)U.name=member.display_name||'Administrador';
+      launchBarber(ORG.id);
+      if(org.active===false||subscriptionBlocked(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name),80);
+      if(ORG.subscription?.status==='Prueba gratuita'&&trialExpired(ORG.subscription))setTimeout(()=>showSubscriptionBlocker(org.name,'trial'),100);
+      applyTrialAccess();
+      loadSupportClientMessages();
+      startSupportClientRealtime();
+      renderPushState();
+      handlePendingPushAction();
+      SESSION_RESTORE_DONE=true;
+      return;
+    }
+    await loadCommerceFromSupabase(member.id);
+    enterApp();
+    applyTrialAccess();
+    loadSupportClientMessages();
+    startSupportClientRealtime();
+    renderPushState();
+    handlePendingPushAction();
+    await startCommerceRealtime();
+    if(org.active===false||subscriptionBlocked(ORG.subscription))showSubscriptionBlocker(org.name);
+    SESSION_RESTORE_DONE=true;
+  }
+
+  function bindLoginHandlers(){
+    replaceLoginControls();
+    if(!window.companyName || !window.companyPassword || !window.loginBtn) return;
+
+    const originalChooseType=window.chooseType;
+    if(!window.__gestokChooseTypePatched){
+      window.__gestokChooseTypePatched=true;
+      window.chooseType=function(t){
+        originalChooseType(t);
+        setTimeout(()=>{ renderSceneFor(t); bindLoginHandlers(); },10);
+      };
+    }
+
+    companyName.addEventListener('input',()=>{ setStatus(companyName,null); companyLookupCache.delete(selectedType+'::'+slugifyCompany(companyName.value.trim())); });
+    companyName.addEventListener('keydown',async e=>{
+      if(e.key.length===1 || e.key==='Backspace' || e.key==='Delete') playKeyMechanical();
+      if(e.key==='Enter'){
+        e.preventDefault();
+        await validateUsername({focusPassword:true});
+      }
+    });
+    companyName.addEventListener('blur',()=>{ if(companyName.value.trim()) validateUsername(); });
+
+    companyPassword.addEventListener('input',()=>{ setStatus(companyPassword,null); });
+    companyPassword.addEventListener('keydown',async e=>{
+      if(e.key.length===1 || e.key==='Backspace' || e.key==='Delete') playKeyMechanical();
+      if(e.key==='Enter'){
+        e.preventDefault();
+        await loginEnhanced();
+      }
+    });
+    companyPassword.addEventListener('blur',()=>{ if(companyPassword.value.trim()) validatePasswordField(); });
+
+    loginBtn.addEventListener('pointerdown',()=>playSoftDropLogin(),true);
+    loginBtn.onclick=loginEnhanced;
+    window.login=loginEnhanced;
+  }
+
+  buildScene();
+  if(typeof selectedType!=='undefined' && selectedType) renderSceneFor(selectedType);
+  bindLoginHandlers();
+})();
+
+
+/* ============================================================
+   V51.27 · FIX LOGIN SCENE LAYOUT
+   ============================================================ */
+(function(){
+  const loginStep=document.getElementById('loginStep');
+  if(!loginStep) return;
+
+  function ensureRainLayer(){
+    const scene=loginStep.querySelector('.login-scene');
+    if(!scene) return null;
+    let rain=scene.querySelector('.scene-rain');
+    if(!rain){
+      rain=document.createElement('div');
+      rain.className='scene-rain';
+      scene.appendChild(rain);
+    }
+    return rain;
+  }
+
+  function wordPoolByType(type){
+    if(type==='commerce') return ['Ventas','Stock','Caja','Balance','Ingresos','Productos','Estadísticas','GestOK'];
+    if(type==='parking') return ['Patentes','Vehículos','Cobros','QR','Tarifas','Registros','Estacionamiento','GestOK'];
+    if(type==='restaurant') return ['Pedidos','Mesas','Carta digital','Cocina','Órdenes','Cobros','Restaurante','GestOK'];
+    return ['Turnos','Barbería','Masajes','Servicios','Agenda','Clientes','Reservas','GestOK'];
+  }
+
+  function renderOrangeRain(type){
+    const rain=ensureRainLayer();
+    if(!rain) return;
+    const words=wordPoolByType(type);
+    const count=16;
+    let html='';
+    for(let i=0;i<count;i++){
+      const word=words[i % words.length];
+      const left=(3 + (i*6.1)%92).toFixed(2);
+      const delay=(-Math.random()*12).toFixed(2);
+      const dur=(8 + Math.random()*8).toFixed(2);
+      const size=(12 + Math.random()*12).toFixed(1);
+      const blur=(Math.random()*0.2).toFixed(2);
+      html += `<span class="rain-word" style="left:${left}%;animation-delay:${delay}s;animation-duration:${dur}s;font-size:${size}px;filter:blur(${blur}px)">${word}</span>`;
+    }
+    rain.innerHTML=html;
+  }
+
+  function renderSafeCards(type){
+    const floaters=loginStep.querySelector('.scene-floaters');
+    if(!floaters) return;
+    const card=(cls,content)=>`<div class="scene-card ${cls}">${content}</div>`;
+    let cards='';
+    if(type==='commerce'){
+      cards += card('bars safe-left top-row',`<span class="k">Ventas del día</span><span class="v">+12%</span><div class="bar-wrap"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>`);
+      cards += card('safe-left-2 low-row',`<span class="k">Caja</span><span class="v">$ 128.500</span><span class="s">Movimientos sincronizados</span>`);
+      cards += card('mini safe-right top-row',`💸 Ingresos`);
+      cards += card('mini safe-right-2 low-row',`📈 Balance vivo`);
+    }else if(type==='parking'){
+      cards += card('mini safe-left top-row',`🚗 Ingreso activo`);
+      cards += card('safe-left-2 low-row',`<span class="k">Sesión</span><span class="v">QR + tickets</span><span class="s">Control de entrada y salida</span>`);
+      cards += card('safe-right top-row',`<span class="k">Patentes</span><span class="v">48</span><span class="s">Registros en tiempo real</span>`);
+      cards += card('mini safe-right-2 low-row',`🅿️ Salidas y cobros`);
+    }else if(type==='restaurant'){
+      cards += card('mini safe-left top-row',`🍽️ Pedido nuevo`);
+      cards += card('safe-left-2 low-row',`<span class="k">Mesas</span><span class="v">24 activas</span><span class="s">Seguimiento de órdenes</span>`);
+      cards += card('safe-right top-row',`<span class="k">Cocina</span><span class="v">12 órdenes</span><span class="s">Flujo de pedidos en vivo</span>`);
+      cards += card('mini safe-right-2 low-row',`🧾 Carta + QR`);
+    }else{
+      cards += card('mini safe-left top-row',`📅 Turnos`);
+      cards += card('safe-left-2 low-row',`<span class="k">Atención</span><span class="v">Confirmaciones</span><span class="s">Cobros y seguimiento</span>`);
+      cards += card('safe-right top-row',`<span class="k">Reservas</span><span class="v">Agenda viva</span><span class="s">Clientes y servicios conectados</span>`);
+      cards += card('mini safe-right-2 low-row',`✂️ Servicios`);
+    }
+    floaters.innerHTML=cards;
+  }
+
+  function applyLoginSceneFixes(){
+    const type=(window.selectedType || 'commerce');
+    renderSafeCards(type);
+    renderOrangeRain(type);
+  }
+
+  const originalChooseType=window.chooseType;
+  if(originalChooseType && !window.__gestokChooseTypePatched27){
+    window.__gestokChooseTypePatched27=true;
+    window.chooseType=function(t){
+      originalChooseType(t);
+      setTimeout(applyLoginSceneFixes, 60);
+      setTimeout(applyLoginSceneFixes, 220);
+    };
+  }
+
+  setTimeout(applyLoginSceneFixes, 120);
+  setTimeout(applyLoginSceneFixes, 500);
+  window.addEventListener('resize', ()=>setTimeout(applyLoginSceneFixes, 90));
+})();
+
+
+/* ============================================================
+   V51.28 · ESCENA LATERAL SEGURA
+   ============================================================ */
+(function(){
+  const loginStep=document.getElementById('loginStep');
+  if(!loginStep)return;
+
+  function currentType(){
+    try{
+      if(typeof selectedType!=='undefined' && selectedType)return selectedType;
+    }catch(e){}
+    const badge=(document.getElementById('typeBadge')?.textContent||'').toLowerCase();
+    if(badge.includes('estacion'))return 'parking';
+    if(badge.includes('restaur'))return 'restaurant';
+    if(badge.includes('barber'))return 'barbershop';
+    return 'commerce';
+  }
+
+  function ensureShield(){
+    const scene=loginStep.querySelector('.login-scene');
+    if(!scene)return;
+    if(!scene.querySelector('.scene-center-shield')){
+      const shield=document.createElement('div');
+      shield.className='scene-center-shield';
+      scene.appendChild(shield);
+    }
+  }
+
+  function card(cls,content){return `<div class="scene-card ${cls}">${content}</div>`}
+
+  function renderSideCards(){
+    const floaters=loginStep.querySelector('.scene-floaters');
+    if(!floaters)return;
+    const type=currentType();
+    let cards='';
+
+    if(type==='commerce'){
+      cards += card('bars left-zone top-zone',`<span class="k">Ventas del día</span><span class="v">+12%</span><div class="bar-wrap"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>`);
+      cards += card('left-zone two bottom-zone',`<span class="k">Caja</span><span class="v">$ 128.500</span><span class="s">Movimientos sincronizados</span>`);
+      cards += card('mini right-zone top-zone',`💸 Ingresos`);
+      cards += card('mini right-zone two bottom-zone',`📈 Balance vivo`);
+    }else if(type==='parking'){
+      cards += card('mini left-zone top-zone',`🚗 Ingreso activo`);
+      cards += card('left-zone two bottom-zone',`<span class="k">Sesión</span><span class="v">QR + tickets</span><span class="s">Control de entrada y salida</span>`);
+      cards += card('right-zone top-zone',`<span class="k">Patentes</span><span class="v">48</span><span class="s">Registros en tiempo real</span>`);
+      cards += card('mini right-zone two bottom-zone',`🅿️ Salidas y cobros`);
+    }else if(type==='restaurant'){
+      cards += card('mini left-zone top-zone',`🍽️ Pedido nuevo`);
+      cards += card('left-zone two bottom-zone',`<span class="k">Mesas</span><span class="v">24 activas</span><span class="s">Seguimiento de órdenes</span>`);
+      cards += card('right-zone top-zone',`<span class="k">Cocina</span><span class="v">12 órdenes</span><span class="s">Flujo de pedidos en vivo</span>`);
+      cards += card('mini right-zone two bottom-zone',`🧾 Carta + QR`);
+    }else{
+      cards += card('mini left-zone top-zone',`📅 Turnos`);
+      cards += card('left-zone two bottom-zone',`<span class="k">Atención</span><span class="v">Confirmaciones</span><span class="s">Cobros y seguimiento</span>`);
+      cards += card('right-zone top-zone',`<span class="k">Reservas</span><span class="v">Agenda viva</span><span class="s">Clientes y servicios conectados</span>`);
+      cards += card('mini right-zone two bottom-zone',`✂️ Servicios`);
+    }
+
+    floaters.innerHTML=cards;
+  }
+
+  function fixScene(){
+    ensureShield();
+    renderSideCards();
+  }
+
+  const obs=new MutationObserver(()=>setTimeout(fixScene,20));
+  obs.observe(loginStep,{attributes:true,childList:true,subtree:true,attributeFilter:['class']});
+  setTimeout(fixScene,80);
+  setTimeout(fixScene,250);
+  setTimeout(fixScene,700);
+  window.addEventListener('resize',()=>setTimeout(fixScene,80));
+})();
+
+
+/* ============================================================
+   V51.32 · CONTROL DE VISTAS PORTADA / LOGIN
+   ============================================================ */
+(()=>{
+  const portal=document.getElementById('portal');
+  const typeStep=document.getElementById('typeStep');
+  const loginStep=document.getElementById('loginStep');
+
+  if(!portal||!typeStep||!loginStep)return;
+
+  function syncPortalMode(){
+    const loginVisible=!loginStep.classList.contains('hidden');
+
+    portal.classList.toggle('portal-login-mode',loginVisible);
+    portal.classList.toggle('portal-home-mode',!loginVisible);
+
+    if(loginVisible){
+      typeStep.classList.add('hidden');
+    }else{
+      loginStep.classList.add('hidden');
+      typeStep.classList.remove('hidden');
+    }
+
+    /* Al cambiar de vista volvemos arriba para que nunca aparezca
+       una mezcla visual entre sectores y login. */
+    portal.scrollTop=0;
+    window.scrollTo?.(0,0);
+  }
+
+  const originalChooseType=window.chooseType;
+  if(originalChooseType&&!window.__gestokViewModeChoosePatched){
+    window.__gestokViewModeChoosePatched=true;
+
+    window.chooseType=function(t){
+      originalChooseType(t);
+
+      requestAnimationFrame(()=>{
+        loginStep.classList.remove('hidden');
+        typeStep.classList.add('hidden');
+        syncPortalMode();
+      });
+    };
+  }
+
+  const originalBackType=window.backType;
+  if(originalBackType&&!window.__gestokViewModeBackPatched){
+    window.__gestokViewModeBackPatched=true;
+
+    window.backType=function(){
+      originalBackType();
+
+      requestAnimationFrame(()=>{
+        loginStep.classList.add('hidden');
+        typeStep.classList.remove('hidden');
+        syncPortalMode();
+      });
+    };
+  }
+
+  const observer=new MutationObserver(syncPortalMode);
+
+  observer.observe(loginStep,{
+    attributes:true,
+    attributeFilter:['class']
+  });
+
+  observer.observe(typeStep,{
+    attributes:true,
+    attributeFilter:['class']
+  });
+
+  syncPortalMode();
 })();
 
 </script>
@@ -6998,8 +9334,4 @@ updateGestokInstallBanner();
   </div>
 </div>
 <a class="wa-float" href="https://wa.me/5493751232618?text=Hola%20GestOK%2C%20tengo%20una%20consulta%20sobre%20Web%20Control." target="_blank" rel="noopener" aria-label="Abrir WhatsApp de GestOK"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"/><path d="M9 8.8c.5 2.3 2 3.9 4.3 4.7"/><path d="M9 8.8 10.3 8l1.1 2-1 .7M13.3 13.5l.7-1 2 1.1-.8 1.3"/></svg></a>
-
-<div id="gestokCursorHalo" class="gestok-cursor-halo" aria-hidden="true"></div>
-<div id="gestokCursorDot" class="gestok-cursor-dot" aria-hidden="true"></div>
-
 </body></html>
