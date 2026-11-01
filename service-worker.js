@@ -1,4 +1,4 @@
-const CACHE_NAME='gestok-web-control-v51-35';
+const CACHE_NAME='gestok-web-control-v51-36';
 
 const APP_SHELL=[
   './manifest.webmanifest',
@@ -20,13 +20,11 @@ self.addEventListener('install',event=>{
 
 self.addEventListener('activate',event=>{
   event.waitUntil(
-    caches.keys().then(keys=>
-      Promise.all(
-        keys
-          .filter(key=>key!==CACHE_NAME)
-          .map(key=>caches.delete(key))
-      )
-    )
+    caches.keys().then(keys=>Promise.all(
+      keys
+        .filter(key=>key!==CACHE_NAME)
+        .map(key=>caches.delete(key))
+    ))
   );
 
   self.clients.claim();
@@ -38,8 +36,8 @@ self.addEventListener('fetch',event=>{
   const req=event.request;
   const url=new URL(req.url);
 
-  // El HTML principal intenta cargarse siempre desde internet
-  // para evitar que quede una versión vieja guardada.
+  // El HTML principal siempre intenta cargarse desde internet
+  // para evitar que quede una versión vieja.
   if(
     req.mode==='navigate' ||
     url.pathname.endsWith('/index.html') ||
@@ -60,7 +58,7 @@ self.addEventListener('fetch',event=>{
   }
 
   // Recursos secundarios:
-  // usa caché y actualiza cuando hay conexión.
+  // primero usa caché y luego intenta actualizarla.
   event.respondWith(
     caches.match(req).then(cached=>{
 
