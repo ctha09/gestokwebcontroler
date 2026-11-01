@@ -3812,6 +3812,179 @@ body.carlos-business .carlos-click-ripple{position:fixed;width:10px;height:10px;
 @media(max-width:700px){body.carlos-business .app::before{background-size:auto 100%;background-position:center top;opacity:.30}body.carlos-business .top,body.carlos-business .card,body.carlos-business .row,body.carlos-business .metric{backdrop-filter:blur(16px) saturate(135%) !important;-webkit-backdrop-filter:blur(16px) saturate(135%) !important}}
 @media(prefers-reduced-motion:reduce){body.carlos-business .view.active.carlos-reveal > *,body.carlos-business .carlos-number-pop,body.carlos-business canvas.carlos-chart-live,body.carlos-business .chart.carlos-chart-live{animation:none !important;opacity:1 !important;transform:none !important;filter:none !important}}
 
+
+/* ============================================================
+   V51.39 · CARLOS · FONDO CENTRADO + CONTENIDO COMPLETO
+   ============================================================ */
+
+/* Fondo GestOK más discreto, centrado y realmente difuminado */
+body.carlos-business .app::before{
+  inset:0 !important;
+  background-size:min(680px,54vw) auto !important;
+  background-position:center 48% !important;
+  background-repeat:no-repeat !important;
+  opacity:.12 !important;
+  filter:blur(10px) saturate(.78) contrast(.92) !important;
+  transform:scale(1.04);
+}
+
+/* Capa oscura/vidriada sobre el logo */
+body.carlos-business .app::after{
+  background:
+    radial-gradient(circle at 50% 46%,rgba(242,140,40,.075),transparent 34%),
+    linear-gradient(180deg,rgba(4,7,10,.58),rgba(4,7,10,.74)) !important;
+  backdrop-filter:blur(5px) !important;
+  -webkit-backdrop-filter:blur(5px) !important;
+}
+
+/* El contenido siempre debe estar por delante del fondo */
+body.carlos-business .app>.top,
+body.carlos-business .app>.license-notice,
+body.carlos-business .app>.main,
+body.carlos-business .app>.nav{
+  position:relative !important;
+  z-index:5 !important;
+}
+
+body.carlos-business .main{
+  min-height:0 !important;
+  overflow:hidden !important;
+}
+
+body.carlos-business .view{
+  position:relative !important;
+  z-index:6 !important;
+}
+
+/* Recuperar por completo el Resumen */
+body.carlos-business #home.view.active{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  height:100% !important;
+  overflow-y:auto !important;
+  padding-bottom:130px !important;
+}
+
+/* Ningún bloque del Resumen puede quedar oculto por una animación */
+body.carlos-business #home.view.active > *,
+body.carlos-business #home .quick,
+body.carlos-business #home #scrHomePeriod,
+body.carlos-business #home #trialMainNotice,
+body.carlos-business #home #pushEnableNotice,
+body.carlos-business #home #homeStats,
+body.carlos-business #home #scrHomeSalesCard,
+body.carlos-business #home .twocol{
+  visibility:visible !important;
+  opacity:1 !important;
+  filter:none !important;
+}
+
+/* Espaciado de dashboard */
+body.carlos-business #home .quick{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:12px !important;
+  margin-bottom:14px !important;
+}
+
+body.carlos-business #home #homeStats{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:12px !important;
+  margin-top:12px !important;
+}
+
+body.carlos-business #home #scrHomeSalesCard,
+body.carlos-business #home .twocol{
+  margin-top:12px !important;
+}
+
+/* Vidrio reforzado sin perder legibilidad */
+body.carlos-business .card,
+body.carlos-business .quick button,
+body.carlos-business .row,
+body.carlos-business .metric{
+  background:
+    linear-gradient(145deg,rgba(23,30,40,.68),rgba(13,19,27,.52)) !important;
+  border:1px solid rgba(255,255,255,.105) !important;
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.24),
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
+  backdrop-filter:blur(20px) saturate(138%) !important;
+  -webkit-backdrop-filter:blur(20px) saturate(138%) !important;
+}
+
+/* Animación visible pero segura */
+body.carlos-business #home.carlos-reveal > *{
+  animation:carlosRevealSafe .54s cubic-bezier(.2,.78,.2,1) both !important;
+}
+
+body.carlos-business #home.carlos-reveal > *:nth-child(1){animation-delay:.03s !important}
+body.carlos-business #home.carlos-reveal > *:nth-child(2){animation-delay:.08s !important}
+body.carlos-business #home.carlos-reveal > *:nth-child(3){animation-delay:.13s !important}
+body.carlos-business #home.carlos-reveal > *:nth-child(4){animation-delay:.18s !important}
+body.carlos-business #home.carlos-reveal > *:nth-child(5){animation-delay:.23s !important}
+body.carlos-business #home.carlos-reveal > *:nth-child(n+6){animation-delay:.28s !important}
+
+@keyframes carlosRevealSafe{
+  from{
+    opacity:0;
+    transform:translateY(14px) scale(.99);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+/* Gráficas animadas, sin ocultarlas */
+body.carlos-business canvas.carlos-chart-live,
+body.carlos-business .chart.carlos-chart-live{
+  animation:carlosChartSafe .68s cubic-bezier(.2,.8,.2,1) both !important;
+  transform-origin:bottom center;
+}
+
+@keyframes carlosChartSafe{
+  from{opacity:.45;transform:scaleY(.82)}
+  to{opacity:1;transform:scaleY(1)}
+}
+
+/* Responsive */
+@media(max-width:900px){
+  body.carlos-business .app::before{
+    background-size:min(520px,72vw) auto !important;
+    background-position:center 46% !important;
+    opacity:.10 !important;
+    filter:blur(11px) saturate(.75) !important;
+  }
+
+  body.carlos-business #home #homeStats{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:620px){
+  body.carlos-business .app::before{
+    background-size:84vw auto !important;
+    background-position:center 44% !important;
+    opacity:.075 !important;
+    filter:blur(12px) saturate(.70) !important;
+  }
+
+  body.carlos-business #home .quick{
+    grid-template-columns:1fr !important;
+  }
+
+  body.carlos-business #home #homeStats{
+    grid-template-columns:1fr 1fr !important;
+  }
+
+  body.carlos-business #home .twocol{
+    grid-template-columns:1fr !important;
+  }
+}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -9897,6 +10070,83 @@ updateGestokInstallBanner();
   });
 
   window.addEventListener('pageshow',()=>setTimeout(()=>{if(active()){carlosAnimateCurrentView();carlosAnimateNumbers()}},160));
+})();
+
+
+/* ============================================================
+   V51.39 · CARLOS · RESTAURAR DASHBOARD Y FX SEGUROS
+   ============================================================ */
+(()=>{
+  function carlosHomeReady(){
+    try{
+      return isCarlosBusiness() &&
+             document.body.classList.contains('carlos-business') &&
+             !app.classList.contains('hidden');
+    }catch{
+      return false;
+    }
+  }
+
+  function restoreCarlosHome(){
+    if(!carlosHomeReady())return;
+
+    const home=document.getElementById('home');
+    if(!home)return;
+
+    if(home.classList.contains('active')){
+      home.style.display='block';
+      home.style.visibility='visible';
+      home.style.opacity='1';
+
+      [
+        '.quick',
+        '#scrHomePeriod',
+        '#trialMainNotice',
+        '#pushEnableNotice',
+        '#homeStats',
+        '#scrHomeSalesCard',
+        '.twocol'
+      ].forEach(sel=>{
+        home.querySelectorAll(sel).forEach(el=>{
+          el.style.visibility='visible';
+          el.style.opacity='1';
+          el.style.filter='none';
+        });
+      });
+
+      home.classList.remove('carlos-reveal');
+      void home.offsetWidth;
+      home.classList.add('carlos-reveal');
+
+      setTimeout(()=>{
+        window.carlosAnimateNumbers?.();
+      },110);
+    }
+  }
+
+  const oldGo=window.go;
+  if(oldGo&&!window.__carlosV5139Go){
+    window.__carlosV5139Go=true;
+    window.go=function(v){
+      const r=oldGo(v);
+      setTimeout(restoreCarlosHome,40);
+      return r;
+    };
+  }
+
+  const appNode=document.getElementById('app');
+  if(appNode){
+    new MutationObserver(()=>{
+      if(!appNode.classList.contains('hidden')){
+        setTimeout(restoreCarlosHome,80);
+      }
+    }).observe(appNode,{attributes:true,attributeFilter:['class']});
+  }
+
+  window.addEventListener('pageshow',()=>setTimeout(restoreCarlosHome,140));
+  window.addEventListener('focus',()=>setTimeout(restoreCarlosHome,90));
+
+  setTimeout(restoreCarlosHome,220);
 })();
 
 </script>
