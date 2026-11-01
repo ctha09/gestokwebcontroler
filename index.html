@@ -4299,6 +4299,7 @@ body.carlos-business #stats .carlos-method-grid{
 <div id="toast" class="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>if(!window.supabase){document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>')}</script>
 <script>
 
 const GESTOK_VAPID_PUBLIC_KEY='BOsZ5qZyQr8bQZTkt2mXHYdU6mSTE9KViDy_8UkqY5_-7VpLc31ghHxn5nm-6R39TG5wnu_wH9Frje5vT12vbRU';
@@ -4306,9 +4307,14 @@ let PENDING_PUSH_ACTION=new URLSearchParams(location.search).get('open')||'';
 
 const SUPABASE_URL="https://zvmcjmjbedwaftejdduu.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable__kUv47MYA0ym6Fw7WF4c8A_jLozY3mQ";
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{
-  auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,storageKey:"gestok-web-auth-v15"}
-});
+let sb=null;
+if(window.supabase){
+  sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{
+    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,storageKey:"gestok-web-auth-v15"}
+  });
+}else{
+  console.error('GestOK: no se pudo cargar Supabase JS.');
+}
 </script>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -7880,10 +7886,25 @@ window.addEventListener('storage',e=>{if(e.key===DB_KEY&&ORG){let oldId=ORG.id;D
 
 /* Arranque de GestOK:
    los portales cliente usan el mismo Web Control pero no abren el panel general. */
-if(BIONDI_CLIENT_MODE){
-  initBiondiClientPortal();
+if(sb){
+  if(BIONDI_CLIENT_MODE){
+    initBiondiClientPortal();
+  }else{
+    restoreSavedSession();
+  }
 }else{
-  restoreSavedSession();
+  setTimeout(()=>{
+    try{
+      const splash=document.getElementById('splash');
+      if(splash)splash.classList.add('hidden');
+      const portal=document.getElementById('portal');
+      if(portal)portal.classList.remove('hidden');
+      const typeStep=document.getElementById('typeStep');
+      if(typeStep){
+        typeStep.innerHTML='<div class="card" style="max-width:680px;margin:40px auto;padding:24px"><h2>No se pudo iniciar GestOK</h2><p style="color:#9aa5b2;line-height:1.6">No se cargó la conexión necesaria con Supabase. Revisá tu conexión a internet y recargá la página.</p><button class="btn primary" onclick="location.reload()">Reintentar</button></div>';
+      }
+    }catch(e){}
+  },100);
 }
 
 /* ============================================================
@@ -8175,85 +8196,62 @@ updateGestokInstallBanner();
     try{
       const now=ctx.currentTime;
 
-      const osc=ctx.createOscillator();
-      const gain=ctx.createGain();
-      const filter=ctx.createBiquadFilter();
+      const drop=ctx.createOscillator();
+      const dropGain=ctx.createGain();
+      const dropFilter=ctx.createBiquadFilter();
 
-      osc.type='sine';
+      drop.type='sine';
+      drop.frequency.setValueAtTime(760,now);
+      drop.frequency.exponentialRampToValueAtTime(260,now+.16);
 
-      osc.frequency.setValueAtTime(
-        720,
-        now
-      );
+      dropFilter.type='lowpass';
+      dropFilter.frequency.setValueAtTime(1350,now);
+      dropFilter.Q.setValueAtTime(.7,now);
 
-      osc.frequency.exponentialRampToValueAtTime(
-        260,
-        now+.12
-      );
+      dropGain.gain.setValueAtTime(.0001,now);
+      dropGain.gain.exponentialRampToValueAtTime(.032,now+.006);
+      dropGain.gain.exponentialRampToValueAtTime(.0001,now+.19);
 
-      filter.type='lowpass';
-      filter.frequency.setValueAtTime(
-        1800,
-        now
-      );
+      drop.connect(dropFilter);
+      dropFilter.connect(dropGain);
+      dropGain.connect(ctx.destination);
 
-      gain.gain.setValueAtTime(
-        .0001,
-        now
-      );
+      drop.start(now);
+      drop.stop(now+.20);
 
-      gain.gain.exponentialRampToValueAtTime(
-        .038,
-        now+.008
-      );
+      const ripple=ctx.createOscillator();
+      const rippleGain=ctx.createGain();
 
-      gain.gain.exponentialRampToValueAtTime(
-        .0001,
-        now+.16
-      );
+      ripple.type='sine';
+      ripple.frequency.setValueAtTime(980,now+.035);
+      ripple.frequency.exponentialRampToValueAtTime(520,now+.13);
 
-      osc.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
+      rippleGain.gain.setValueAtTime(.0001,now+.025);
+      rippleGain.gain.exponentialRampToValueAtTime(.011,now+.04);
+      rippleGain.gain.exponentialRampToValueAtTime(.0001,now+.15);
 
-      osc.start(now);
-      osc.stop(now+.17);
+      ripple.connect(rippleGain);
+      rippleGain.connect(ctx.destination);
 
-      const ping=ctx.createOscillator();
-      const pingGain=ctx.createGain();
+      ripple.start(now+.03);
+      ripple.stop(now+.16);
 
-      ping.type='sine';
+      const plip=ctx.createOscillator();
+      const plipGain=ctx.createGain();
 
-      ping.frequency.setValueAtTime(
-        1150,
-        now+.008
-      );
+      plip.type='triangle';
+      plip.frequency.setValueAtTime(1350,now);
+      plip.frequency.exponentialRampToValueAtTime(850,now+.045);
 
-      ping.frequency.exponentialRampToValueAtTime(
-        650,
-        now+.09
-      );
+      plipGain.gain.setValueAtTime(.0001,now);
+      plipGain.gain.exponentialRampToValueAtTime(.0055,now+.003);
+      plipGain.gain.exponentialRampToValueAtTime(.0001,now+.055);
 
-      pingGain.gain.setValueAtTime(
-        .0001,
-        now
-      );
+      plip.connect(plipGain);
+      plipGain.connect(ctx.destination);
 
-      pingGain.gain.exponentialRampToValueAtTime(
-        .014,
-        now+.012
-      );
-
-      pingGain.gain.exponentialRampToValueAtTime(
-        .0001,
-        now+.11
-      );
-
-      ping.connect(pingGain);
-      pingGain.connect(ctx.destination);
-
-      ping.start(now+.006);
-      ping.stop(now+.12);
+      plip.start(now);
+      plip.stop(now+.06);
 
     }catch{}
   }
@@ -8688,23 +8686,52 @@ updateGestokInstallBanner();
 
   async function playSoftDropLogin(){
     const ctx=await getLoginAudio();
-    if(!ctx) return;
+    if(!ctx)return;
+
     const t=ctx.currentTime;
+
     try{
-      const osc=ctx.createOscillator();
+      const drop=ctx.createOscillator();
       const gain=ctx.createGain();
       const filter=ctx.createBiquadFilter();
-      osc.type='sine';
-      osc.frequency.setValueAtTime(540,t);
-      osc.frequency.exponentialRampToValueAtTime(220,t+.16);
+
+      drop.type='sine';
+      drop.frequency.setValueAtTime(700,t);
+      drop.frequency.exponentialRampToValueAtTime(245,t+.17);
+
       filter.type='lowpass';
       filter.frequency.setValueAtTime(1250,t);
+      filter.Q.setValueAtTime(.6,t);
+
       gain.gain.setValueAtTime(.0001,t);
-      gain.gain.exponentialRampToValueAtTime(.03,t+.008);
-      gain.gain.exponentialRampToValueAtTime(.0001,t+.19);
-      osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
-      osc.start(t); osc.stop(t+.20);
-    }catch(e){}
+      gain.gain.exponentialRampToValueAtTime(.028,t+.006);
+      gain.gain.exponentialRampToValueAtTime(.0001,t+.20);
+
+      drop.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      drop.start(t);
+      drop.stop(t+.21);
+
+      const ripple=ctx.createOscillator();
+      const rg=ctx.createGain();
+
+      ripple.type='sine';
+      ripple.frequency.setValueAtTime(920,t+.035);
+      ripple.frequency.exponentialRampToValueAtTime(500,t+.13);
+
+      rg.gain.setValueAtTime(.0001,t+.025);
+      rg.gain.exponentialRampToValueAtTime(.010,t+.04);
+      rg.gain.exponentialRampToValueAtTime(.0001,t+.15);
+
+      ripple.connect(rg);
+      rg.connect(ctx.destination);
+
+      ripple.start(t+.03);
+      ripple.stop(t+.16);
+
+    }catch{}
   }
 
   async function playCheckSound(){
@@ -9238,12 +9265,28 @@ updateGestokInstallBanner();
     renderSideCards();
   }
 
-  const obs=new MutationObserver(()=>setTimeout(fixScene,20));
-  obs.observe(loginStep,{attributes:true,childList:true,subtree:true,attributeFilter:['class']});
-  setTimeout(fixScene,80);
+  // V51.35: NO observar childList/subtree aquí.
+  // renderSideCards() modifica los hijos de loginStep; observar esos mismos
+  // cambios volvía a llamar fixScene() indefinidamente y CodePen detenía el Preview.
+  let sceneFixTimer=0;
+  function scheduleSceneFix(delay=40){
+    clearTimeout(sceneFixTimer);
+    sceneFixTimer=setTimeout(fixScene,delay);
+  }
+
+  const obs=new MutationObserver(mutations=>{
+    const classChanged=mutations.some(m=>m.type==='attributes'&&m.attributeName==='class');
+    if(classChanged)scheduleSceneFix(40);
+  });
+
+  obs.observe(loginStep,{
+    attributes:true,
+    attributeFilter:['class']
+  });
+
+  scheduleSceneFix(80);
   setTimeout(fixScene,250);
-  setTimeout(fixScene,700);
-  window.addEventListener('resize',()=>setTimeout(fixScene,80));
+  window.addEventListener('resize',()=>scheduleSceneFix(80));
 })();
 
 
@@ -9257,21 +9300,24 @@ updateGestokInstallBanner();
 
   if(!portal||!typeStep||!loginStep)return;
 
+  let lastPortalMode=null;
   function syncPortalMode(){
     const loginVisible=!loginStep.classList.contains('hidden');
+    const mode=loginVisible?'login':'home';
+
+    if(lastPortalMode===mode)return;
+    lastPortalMode=mode;
 
     portal.classList.toggle('portal-login-mode',loginVisible);
     portal.classList.toggle('portal-home-mode',!loginVisible);
 
     if(loginVisible){
-      typeStep.classList.add('hidden');
+      if(!typeStep.classList.contains('hidden'))typeStep.classList.add('hidden');
     }else{
-      loginStep.classList.add('hidden');
-      typeStep.classList.remove('hidden');
+      if(!loginStep.classList.contains('hidden'))loginStep.classList.add('hidden');
+      if(typeStep.classList.contains('hidden'))typeStep.classList.remove('hidden');
     }
 
-    /* Al cambiar de vista volvemos arriba para que nunca aparezca
-       una mezcla visual entre sectores y login. */
     portal.scrollTop=0;
     window.scrollTo?.(0,0);
   }
