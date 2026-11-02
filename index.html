@@ -3847,6 +3847,76 @@ body.carlos-business #stats .chartbox canvas{width:100%;height:100%;display:bloc
   body.carlos-business #stats .chartbox{height:255px !important}
 }
 
+
+/* ============================================================
+   V51.43 · CARLOS · TIPOGRAFÍA, GRÁFICO Y CURSOR
+   Todo scoped por clase carlos-business. El resto de GestOK no cambia.
+   ============================================================ */
+body.carlos-business #home .topbrand{font-size:14px !important}
+body.carlos-business .top h1{font-size:clamp(26px,2.3vw,32px) !important}
+body.carlos-business .role{font-size:12px !important;max-width:230px}
+body.carlos-business .license-notice{font-size:13px !important;padding:14px 16px}
+body.carlos-business .license-notice button{font-size:13px !important}
+body.carlos-business #home .quick button{min-height:89px !important;padding:15px 17px !important}
+body.carlos-business #home .quick span{font-size:22px !important}
+body.carlos-business #home .quick b{font-size:17px !important;margin-top:13px !important;line-height:1.2}
+body.carlos-business #homeStats .metric{min-height:126px !important;padding:19px !important}
+body.carlos-business #homeStats .metric > span{font-size:15px !important;line-height:1.4}
+body.carlos-business #homeStats .metric > strong{font-size:clamp(28px,2.45vw,36px) !important;line-height:1.12}
+body.carlos-business #homeStats .metric > small{font-size:13px !important;line-height:1.4}
+body.carlos-business #home .head h3{font-size:21px !important}
+body.carlos-business #home .head p{font-size:15px !important}
+body.carlos-business #home .row strong{font-size:16px !important}
+body.carlos-business #home .row small{font-size:14px !important}
+body.carlos-business .section p{font-size:15px !important}
+body.carlos-business #stats .chartbox{height:auto !important;min-height:0 !important}
+body.carlos-business #stats .chartbox canvas{display:none !important}
+body.carlos-business #stats .carlos-trend-chart{display:block}
+.carlos-trend-chart{display:none}
+body.carlos-business .carlos-trend-header{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:8px 4px 14px;font-size:14px;color:var(--muted)}
+body.carlos-business .carlos-trend-header strong{font-size:16px;color:#f8f9fb}
+body.carlos-business .carlos-trend-scroll{overflow-x:auto;padding:4px 6px 7px;scrollbar-width:thin}
+body.carlos-business .carlos-trend-grid{display:grid;gap:9px;align-items:end;min-width:100%;height:278px;border-bottom:1px solid rgba(255,255,255,.08)}
+body.carlos-business .carlos-trend-col{display:flex;flex-direction:column;height:100%;min-width:0;justify-content:end;gap:7px;text-align:center}
+body.carlos-business .carlos-trend-value{font-size:11px;color:#f3bd80;min-height:15px;white-space:nowrap;font-variant-numeric:tabular-nums}
+body.carlos-business .carlos-trend-column{height:213px;display:flex;align-items:end;justify-content:center;border-bottom:1px solid rgba(255,255,255,.07)}
+body.carlos-business .carlos-trend-bar{display:block;width:min(100%,54px);background:linear-gradient(180deg,#ffb25e,#f28c28 70%,#a55b18);border:1px solid rgba(255,191,119,.34);border-radius:9px 9px 3px 3px;box-shadow:0 0 20px rgba(242,140,40,.11);transition:filter .22s ease,box-shadow .22s ease;animation:carlosBarIn .85s cubic-bezier(.2,.85,.2,1) both;transform-origin:bottom}
+body.carlos-business .carlos-trend-bar.carlos-trend-zero{height:3px !important;opacity:.2;box-shadow:none}
+body.carlos-business .carlos-trend-col:hover .carlos-trend-bar{filter:brightness(1.22);box-shadow:0 0 24px rgba(242,140,40,.26)}
+body.carlos-business .carlos-trend-label{font-size:12px;color:#aeb8c4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:20px}
+body.carlos-business .carlos-trend-empty{font-size:14px;color:#b9c4d0;margin:10px 4px}
+@keyframes carlosBarIn{from{transform:scaleY(.12);opacity:.35}to{transform:scaleY(1);opacity:1}}
+/* Cursor igual a la portada, sin modificar otros negocios ni el táctil. */
+@media(pointer:fine){
+ body.carlos-business.carlos-fine-cursor .app,
+ body.carlos-business.carlos-fine-cursor .app *{cursor:none !important}
+}
+#carlosCursorDot,#carlosCursorHalo{position:fixed;left:0;top:0;pointer-events:none;z-index:25000;opacity:0;transition:opacity .18s ease}
+#carlosCursorDot{width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#f28c28;box-shadow:0 0 9px #f28c28,0 0 20px rgba(242,140,40,.52)}
+#carlosCursorHalo{width:33px;height:33px;margin:-16.5px 0 0 -16.5px;border:1px solid rgba(242,140,40,.56);border-radius:50%;background:radial-gradient(circle,rgba(242,140,40,.16),transparent 70%);box-shadow:0 0 24px rgba(242,140,40,.15);transition:width .16s,height .16s,margin .16s,border-color .16s,opacity .18s}
+#carlosCursorHalo.hot{width:48px;height:48px;margin:-24px 0 0 -24px;border-color:rgba(242,140,40,.95)}
+.carlos-cursor-trail{position:fixed;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;z-index:24999;pointer-events:none;background:rgba(242,140,40,.36);box-shadow:0 0 14px rgba(242,140,40,.34);animation:carlosTrailOut .45s ease-out forwards}
+@keyframes carlosTrailOut{to{transform:scale(.1);opacity:0}}
+@media(hover:hover) and (pointer:fine){
+ body.carlos-business .view .card:hover,
+ body.carlos-business .quick button:hover,
+ body.carlos-business .view .row:hover,
+ body.carlos-business .nav button:hover{transform:translateY(-3px) scale(1.012);border-color:rgba(242,140,40,.34);box-shadow:0 15px 36px rgba(0,0,0,.25),0 0 18px rgba(242,140,40,.075);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+}
+@media(max-width:720px){
+ body.carlos-business #home .quick button{min-height:78px !important;padding:13px !important}
+ body.carlos-business #home .quick b{font-size:15px !important}
+ body.carlos-business #homeStats .metric{min-height:105px !important;padding:13px !important}
+ body.carlos-business #homeStats .metric > span{font-size:13px !important}
+ body.carlos-business #homeStats .metric > strong{font-size:clamp(22px,5vw,28px) !important}
+ body.carlos-business .carlos-trend-grid{height:234px}
+ body.carlos-business .carlos-trend-column{height:170px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.carlos-business .carlos-trend-bar{animation:none !important}
+ .carlos-cursor-trail{display:none !important}
+}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -4162,7 +4232,7 @@ body.carlos-business #stats .chartbox canvas{width:100%;height:100%;display:bloc
     </div>
     <div id="carlosStatsMovementList" class="list"></div>
   </div>
-</div><div class="card" style="margin-top:8px"><div class="head"><div><h3 id="chartTitle">Ingresos</h3><p id="chartSubtitle">Visualización del período seleccionado.</p></div></div><div class="chartbox"><canvas id="statsChart"></canvas></div></div>
+</div><div class="card" style="margin-top:8px"><div class="head"><div><h3 id="chartTitle">Ingresos</h3><p id="chartSubtitle">Visualización del período seleccionado.</p></div></div><div class="chartbox"><canvas id="statsChart"></canvas><div id="carlosTrendChart" class="carlos-trend-chart" aria-label="Gráfico de ingresos por período" role="img"></div></div></div>
     <div class="card" style="margin-top:8px"><div class="head"><div><h3>Detalle escrito</h3><p>Valores utilizados para construir la gráfica.</p></div></div><div id="statsWritten" class="list"></div></div>
   </section>
 
@@ -6218,7 +6288,7 @@ function go(v){
  clearMenuCurrent.innerHTML=`Sección actual: <strong>${menuNames[v]||'Inicio'}</strong>`;
  $$('#commerceClearMenu [data-clear-v]').forEach(x=>x.classList.toggle('active',x.dataset.clearV===v));
 }
-closeMore();render();if(v==='stats'&&isActiveAdmin())requestAnimationFrame(drawStatsChart);if(isCarlosBusiness())window.GestOKCarlos42?.enter?.(v);if(v==='gestok')markNoticesRead()}
+closeMore();render();if(v==='stats'&&isActiveAdmin())requestAnimationFrame(drawStatsChart);if(isCarlosBusiness())window.GestOKCarlos43?.enter?.(v);if(v==='gestok')markNoticesRead()}
 window.go=go;$$('.nav button[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-action="whatsapp"]').forEach(x=>x.onclick=()=>{closeMore();openGestokWhatsApp()});back.onclick=closeMore;logoutCompany.onclick=async()=>{closeMore();await stopCommerceRealtime();await stopSupportClientRealtime();await sb.auth.signOut();hideSubscriptionBlocker();app.classList.add('hidden');portal.classList.remove('hidden');ORG=null;S=null;U=null;AUTH_MEMBER_ID=null;backType()};function closeChoice(){choice.classList.add('hidden')}window.closeChoice=closeChoice;
 
 /* Dock Comercio · V46: interacción nativa y universal.
@@ -7897,12 +7967,12 @@ function render(){
  renderPayroll();
  renderStats();
  renderGestOK();
- if(isCarlosBusiness())window.GestOKCarlos42?.refresh?.();
+ if(isCarlosBusiness())window.GestOKCarlos43?.refresh?.();
 }
 
 /* Estadísticas */
 const periods=[['daily','Diaria'],['weekly','Semanal'],['monthly','Mensual'],['yearly','Anual']];
-window.setPeriod=p=>{STAT_PERIOD=p;renderStats();requestAnimationFrame(drawStatsChart);if(isCarlosBusiness())window.GestOKCarlos42?.enter?.('stats')};
+window.setPeriod=p=>{STAT_PERIOD=p;renderStats();requestAnimationFrame(drawStatsChart);if(isCarlosBusiness())window.GestOKCarlos43?.refresh?.()};
 function startOfWeek(d){let x=new Date(d),day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);x.setHours(0,0,0,0);return x}
 function selectedCommerceMonthParts(){
  if(COMMERCE_REVIEW_MONTH==='all')return null;
@@ -7977,9 +8047,33 @@ function periodSeries(){
 }
 function currentPeriodFilter(date){
  if(COMMERCE_REVIEW_MONTH!=='all')return commerceMonthMatch(date);
+ let raw=String(date||'');
+ // Carlos: "Todos los meses" displays the SAME moving window as periodSeries().
+ // Daily=7 days; weekly=8 weeks; monthly=12 months; yearly=5 years.
+ if(isCarlosBusiness()){
+   const stamp=raw.slice(0,10);
+   const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(stamp);
+   const d=m?new Date(Number(m[1]),Number(m[2])-1,Number(m[3]),12):new Date(date);
+   if(!Number.isFinite(d.getTime()))return false;
+   const now=new Date(),todayLocal=new Date(now.getFullYear(),now.getMonth(),now.getDate(),12);
+   if(STAT_PERIOD==='daily'){
+     const from=new Date(todayLocal);from.setDate(from.getDate()-6);
+     return d>=from && d<=new Date(todayLocal.getTime()+86400000);
+   }
+   if(STAT_PERIOD==='weekly'){
+     const from=startOfWeek(todayLocal);from.setDate(from.getDate()-49);
+     return d>=from && d<=new Date(todayLocal.getTime()+86400000);
+   }
+   if(STAT_PERIOD==='monthly'){
+     return d>=new Date(now.getFullYear(),now.getMonth()-11,1) &&
+            d<new Date(now.getFullYear(),now.getMonth()+1,1);
+   }
+   return d>=new Date(now.getFullYear()-4,0,1) &&
+          d<new Date(now.getFullYear()+1,0,1);
+ }
  let d=new Date(date),now=new Date();
  if(STAT_PERIOD==='daily')return d.toDateString()===now.toDateString();
- if(STAT_PERIOD==='weekly'){let s=startOfWeek(now),e=new Date(s);e.setDate(e.getDate()+7);return d>=s&&d<e}
+ if(STAT_PERIOD==='weekly'){let x=startOfWeek(now),e=new Date(x);e.setDate(e.getDate()+7);return d>=x&&d<e}
  if(STAT_PERIOD==='monthly')return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
  return d.getFullYear()===now.getFullYear();
 }
@@ -8036,8 +8130,44 @@ function renderStats(){
    +`<div class="row"><strong>Gastos del período seleccionado</strong><span class="outflow">−${money(expensesValue)}</span></div>`
    +`<div class="row"><strong>Sueldos del período seleccionado</strong><span class="outflow">−${money(salariesValue)}</span></div>`
    +`<div class="row"><strong>Resultado neto</strong><span class="${net<0?'outflow':'money'}">${money(net)}</span></div>`;
+ if(isCarlosBusiness())requestAnimationFrame(drawCarlosTrendChart);
 }
+
+/* V51.43: Gráfica Carlos sincronizada con estadísticas (no usa datos ficticios). */
+function drawCarlosTrendChart(){
+ if(!isCarlosBusiness()||!document.getElementById('stats')?.classList.contains('active'))return;
+ const box=document.getElementById('carlosTrendChart');
+ if(!box||!S)return;
+ const rows=periodSeries();
+ const values=rows.map(r=>Math.max(0,Number(r.amount)||0));
+ const max=Math.max(0,...values);
+ const sum=values.reduce((a,x)=>a+x,0);
+ const n=rows.length||1;
+ const fmt=new Intl.NumberFormat('es-AR',{notation:'compact',maximumFractionDigits:1});
+ // CSS grid; scroll horizontally on narrow screens instead of compressing data.
+ const ncol=Math.min(35,n);
+ const bars=rows.map((r,i)=>{
+   const v=values[i];
+   const h=max>0 && v>0?Math.max(5,Math.round(v/max*100)):0;
+   const label=String(r.label).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+   const exact=money(v);
+   const shown=v>0?fmt.format(v):'0';
+   return `<div class="carlos-trend-col" title="${label}: ${exact}">
+     <div class="carlos-trend-value">${v>0?shown:' '}</div>
+     <div class="carlos-trend-column"><span class="carlos-trend-bar ${v===0?'carlos-trend-zero':''}" style="height:${h}%"></span></div>
+     <span class="carlos-trend-label">${label}</span>
+   </div>`;
+ }).join('');
+ const context=COMMERCE_REVIEW_MONTH==='all'
+   ?{daily:'Últimos 7 días',weekly:'Últimas 8 semanas',monthly:'Últimos 12 meses',yearly:'Últimos 5 años'}[STAT_PERIOD]
+   :commerceMonthLabel(COMMERCE_REVIEW_MONTH);
+ box.innerHTML=`<div class="carlos-trend-header"><span>${context}</span><strong>Total: ${money(sum)}</strong></div>`+
+   `<div class="carlos-trend-scroll"><div class="carlos-trend-grid" style="grid-template-columns:repeat(${ncol},minmax(${n>16?32:48}px,1fr))">${bars}</div></div>`+
+   (max===0?'<p class="carlos-trend-empty">No hay ingresos registrados en el período seleccionado. Elegí otro mes o período.</p>':'');
+}
+
 function drawStatsChart(){
+ if(isCarlosBusiness()){drawCarlosTrendChart();return;}
  let c=statsChart,r=c.getBoundingClientRect();if(r.width<20)return;
  let dpr=window.devicePixelRatio||1;
  c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr);
@@ -9793,199 +9923,175 @@ updateGestokInstallBanner();
 })();
 
 
-/* =============================================================
-   V51.42 | Carlos FX: no monkeypatch de navegación ni de render.
-   Accesibilidad y datos son prioritarios.
-   ============================================================= */
+/* ============================================================
+   V51.43 · CARLOS · FX ESTABLES (aislados por organización)
+   Un único ciclo de contadores por sección durante esta apertura del sistema.
+   ============================================================ */
 (()=>{
-  let soundCtx=null, lastKey=0,lastClick=0, refreshJob=0, lastView='';
-  const states=new WeakMap();
-  const tracked=new Set();
-  const moneyFmt=new Intl.NumberFormat('es-AR',{
-    style:'currency',currency:'ARS',maximumFractionDigits:0
-  });
-  const intFmt=new Intl.NumberFormat('es-AR',{maximumFractionDigits:0});
-  const motion=window.matchMedia('(prefers-reduced-motion:reduce)');
+ const visited=new Set();
+ const activeCounters=new Set();
+ const styleMotion=window.matchMedia('(prefers-reduced-motion:reduce)');
+ const fine=window.matchMedia('(pointer:fine)');
+ const numberFmt=new Intl.NumberFormat('es-AR',{maximumFractionDigits:0});
+ const moneyFmt=new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0});
+ let ctx=null,lastClick=0,lastKey=0,hoverX=-100,hoverY=-100,pointerX=-100,pointerY=-100,raf=0;
+ let cursorDot=null,cursorHalo=null,prevTrail=0;
 
-  function active(){
-    try{return isCarlosBusiness() && document.body.classList.contains('carlos-business')
-      && !app.classList.contains('hidden');}catch{return false}
-  }
-  function audio(){
-    try{
-      const AC=window.AudioContext||window.webkitAudioContext;
-      if(!AC)return null;
-      if(!soundCtx)soundCtx=new AC();
-      if(soundCtx.state==='suspended')soundCtx.resume().catch(()=>{});
-      return soundCtx;
-    }catch{return null}
-  }
-  function clickSound(){
-    if(performance.now()-lastClick<65)return;
-    lastClick=performance.now();
-    const a=audio();if(!a)return;
-    try{
-      const t=a.currentTime;
-      const o=a.createOscillator(),g=a.createGain(),f=a.createBiquadFilter();
-      o.type='triangle';o.frequency.setValueAtTime(530,t);
-      o.frequency.exponentialRampToValueAtTime(285,t+.043);
-      f.type='lowpass';f.frequency.value=1180;
-      g.gain.setValueAtTime(.0001,t);
-      g.gain.exponentialRampToValueAtTime(.023,t+.002);
-      g.gain.exponentialRampToValueAtTime(.0001,t+.057);
-      o.connect(f);f.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.063);
-    }catch{}
-  }
-  function typingSound(){
-    if(performance.now()-lastKey<26)return;
-    lastKey=performance.now();
-    const a=audio();if(!a)return;
-    try{
-      const t=a.currentTime;
-      const o=a.createOscillator(),g=a.createGain(),f=a.createBiquadFilter();
-      o.type='square';o.frequency.setValueAtTime(170,t);
-      o.frequency.exponentialRampToValueAtTime(95,t+.027);
-      f.type='lowpass';f.frequency.value=890;
-      g.gain.setValueAtTime(.0001,t);
-      g.gain.exponentialRampToValueAtTime(.022,t+.002);
-      g.gain.exponentialRampToValueAtTime(.0001,t+.035);
-      o.connect(f);f.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.04);
-    }catch{}
-  }
-  document.addEventListener('pointerdown',e=>{
-    if(!active())return;
-    const target=e.target instanceof Element?e.target:null;
-    if(target?.closest('button,a,[role="button"],[onclick],.commerce-option,.profile-entry-card')){
-      clickSound();
-    }
-  },true);
-  document.addEventListener('keydown',e=>{
-    if(!active() || e.repeat || e.isComposing)return;
-    const el=e.target;
-    if(!(el instanceof HTMLInputElement) && !(el instanceof HTMLTextAreaElement)
-        && !(el instanceof HTMLSelectElement) && !el?.isContentEditable)return;
-    if(e.key.length===1||e.key==='Backspace'||e.key==='Delete'||e.key==='Enter')typingSound();
-  },true);
+ function active(){
+   try{return isCarlosBusiness()&&document.body.classList.contains('carlos-business')&&!app.classList.contains('hidden')}catch{return false}
+ }
+ function audio(){
+   try{
+     const AC=window.AudioContext||window.webkitAudioContext;
+     if(!AC)return null;
+     if(!ctx)ctx=new AC();
+     if(ctx.state==='suspended')ctx.resume().catch(()=>{});
+     return ctx;
+   }catch{return null}
+ }
+ function compactClick(){
+   if(performance.now()-lastClick<75)return;
+   lastClick=performance.now();
+   const a=audio();if(!a)return;
+   try{
+     const t=a.currentTime,o=a.createOscillator(),g=a.createGain(),f=a.createBiquadFilter();
+     o.type='triangle';o.frequency.setValueAtTime(460,t);o.frequency.exponentialRampToValueAtTime(270,t+.046);
+     f.type='lowpass';f.frequency.value=1100;
+     g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.028,t+.003);g.gain.exponentialRampToValueAtTime(.0001,t+.067);
+     o.connect(f);f.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.074);
+   }catch{}
+ }
+ function typing(){
+   if(performance.now()-lastKey<28)return;
+   lastKey=performance.now();
+   const a=audio();if(!a)return;
+   try{
+     const t=a.currentTime,o=a.createOscillator(),g=a.createGain(),f=a.createBiquadFilter();
+     o.type='square';o.frequency.setValueAtTime(185,t);o.frequency.exponentialRampToValueAtTime(100,t+.027);
+     f.type='lowpass';f.frequency.value=830;
+     g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.021,t+.002);g.gain.exponentialRampToValueAtTime(.0001,t+.04);
+     o.connect(f);f.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.045);
+   }catch{}
+ }
+ document.addEventListener('pointerdown',e=>{
+   if(!active())return;
+   if(e.target instanceof Element && e.target.closest('button,a,input,textarea,select,[role="button"],[onclick],.commerce-option'))compactClick();
+ },true);
+ document.addEventListener('keydown',e=>{
+   if(!active()||e.repeat||e.isComposing)return;
+   const target=e.target;
+   if(!(target instanceof HTMLInputElement)&&!(target instanceof HTMLTextAreaElement)&&!target?.isContentEditable)return;
+   if(e.key.length===1||e.key==='Backspace'||e.key==='Delete')typing();
+ },true);
 
-  // Solo cifras completas; nunca etiquetas, IDs ni textos de formularios.
-  function numeric(raw){
-    const text=String(raw||'').trim();
-    if(!text||!/^[-+]?\s*(?:(?:ARS|\$)\s*)?-?[\d.,\s]+\s*%?$/.test(text))return null;
-    let s=text.replace(/ARS|\$|\s/g,'');
-    const percent=s.endsWith('%');s=s.replace('%','');
-    if(s.includes(','))s=s.replace(/\./g,'').replace(',','.');
-    else s=s.replace(/\./g,'');
-    const number=Number(s);
-    if(!Number.isFinite(number))return null;
-    return {number,kind:/ARS|\$/.test(text)?'money':percent?'percent':'integer'};
-  }
-  function format(x,kind){
-    if(kind==='money')return moneyFmt.format(x);
-    if(kind==='percent')return intFmt.format(Math.round(x))+'%';
-    return intFmt.format(Math.round(x));
-  }
-  function stop(el){
-    const s=states.get(el);
-    if(s?.raf)cancelAnimationFrame(s.raf);
-    if(s){el.textContent=s.final;states.delete(el)}
-    tracked.delete(el);
-  }
-  function animate(el,restart=false){
-    if(!el?.isConnected)return;
-    const old=states.get(el);
-    let literal=el.textContent.trim();
-    if(old){
-      if(literal===old.shown&&!restart){
-        return; // No convertir nuestro propio número animado en un dato nuevo.
-      }
-      if(old.final===literal&&!restart){
-        // Un render repuso el mismo valor real: restauramos la cifra visual
-        // y dejamos avanzar el contador que ya estaba activo, sin reiniciarlo.
-        el.textContent=old.shown;
-        return;
-      }
-      if(literal===old.shown)literal=old.final;
-      if(old.raf)cancelAnimationFrame(old.raf);
-      states.delete(el);tracked.delete(el);
-    }
-    const parsed=numeric(literal);
-    if(!parsed)return;
-    const previous=old && old.kind===parsed.kind?old.lastValue:0;
-    if(parsed.number===0||motion.matches||document.hidden){
-      el.textContent=literal;
-      return;
-    }
-    start(el,literal,parsed.kind,parsed.number,restart?0:(previous||0),1650);
-  }
-  function start(el,final,kind,target,from,duration){
-    let s={final,kind,target,shown:el.textContent,lastValue:from,raf:0};
-    states.set(el,s);tracked.add(el);
-    const t0=performance.now();let lastPaint=0;
-    function frame(now){
-      if(!el.isConnected){tracked.delete(el);states.delete(el);return}
-      if(states.get(el)!==s)return;
-      if(el.textContent!==s.shown && el.textContent!==final){
-        // El sistema escribió un valor real nuevo. No lo sobreescribimos.
-        tracked.delete(el);states.delete(el);return;
-      }
-      const p=Math.min(1,(now-t0)/duration);
-      if(now-lastPaint>=45||p>=1){
-        lastPaint=now;
-        const eased=1-Math.pow(1-p,3);
-        s.lastValue=from+(target-from)*eased;
-        s.shown=p>=1?final:format(s.lastValue,kind);
-        el.textContent=s.shown;
-      }
-      if(p<1)s.raf=requestAnimationFrame(frame);
-      else{tracked.delete(el);states.delete(el);el.textContent=final}
-    }
-    s.raf=requestAnimationFrame(frame);
-  }
-  function view(){return document.querySelector('.view.active')}
-  function metrics(){
-    const v=view();if(!v)return [];
-    return [...v.querySelectorAll('.metric > strong,.carlos-method-card > strong')]
-      .filter(el=>el.getClientRects().length>0);
-  }
-  function refresh(restart=false){
-    if(!active())return;
-    cancelAnimationFrame(refreshJob);
-    refreshJob=requestAnimationFrame(()=>{
-      if(!active())return;
-      const v=view();if(!v)return;
-      const section=v.id;
-      const reenter=restart||section!==lastView;
-      lastView=section;
-      metrics().forEach(el=>animate(el,reenter));
-      if(section==='stats')chart();
-    });
-  }
-  function chart(){
-    if(!active()||!document.getElementById('stats')?.classList.contains('active'))return;
-    // Esperar el layout y el alto del canvas: no dibujar sobre ancho cero.
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      if(!active()||!document.getElementById('stats')?.classList.contains('active'))return;
-      try{if(statsChart.getBoundingClientRect().width>20)drawStatsChart()}
-      catch(e){console.warn('GestOK Carlos · gráfica:',e)}
-    }));
-  }
-  function enter(v){
-    if(!active())return;
-    // Al navegar termina cualquier contador anterior en el valor verdadero.
-    for(const el of [...tracked])stop(el);
-    lastView='';
-    requestAnimationFrame(()=>refresh(true));
-    if(v==='stats')chart();
-  }
-  function finish(){for(const el of [...tracked])stop(el)}
-  document.addEventListener('visibilitychange',()=>{
-    if(document.hidden)finish();else refresh();
-  });
-  window.addEventListener('pageshow',()=>refresh());
-  window.GestOKCarlos42={refresh,enter,chart};
-  requestAnimationFrame(()=>refresh());
+ function setupCursor(){
+   if(cursorDot)return;
+   cursorDot=document.createElement('div');cursorDot.id='carlosCursorDot';cursorDot.setAttribute('aria-hidden','true');
+   cursorHalo=document.createElement('div');cursorHalo.id='carlosCursorHalo';cursorHalo.setAttribute('aria-hidden','true');
+   document.body.append(cursorHalo,cursorDot);
+ }
+ function paintCursor(){
+   raf=0;
+   if(!active()||!fine.matches){hideCursor();return}
+   hoverX+=(pointerX-hoverX)*.2;hoverY+=(pointerY-hoverY)*.2;
+   cursorHalo.style.transform=`translate3d(${hoverX}px,${hoverY}px,0)`;
+   cursorDot.style.transform=`translate3d(${pointerX}px,${pointerY}px,0)`;
+   if(Math.abs(pointerX-hoverX)>.25||Math.abs(pointerY-hoverY)>.25)raf=requestAnimationFrame(paintCursor);
+ }
+ function hideCursor(){
+   if(cursorDot){cursorDot.style.opacity='0';cursorHalo.style.opacity='0';}
+   document.body.classList.remove('carlos-fine-cursor');
+ }
+ document.addEventListener('pointermove',e=>{
+   if(!active()||!fine.matches||e.pointerType==='touch'){hideCursor();return}
+   setupCursor();
+   pointerX=e.clientX;pointerY=e.clientY;
+   cursorDot.style.opacity='1';cursorHalo.style.opacity='1';
+   cursorHalo.classList.toggle('hot',Boolean(e.target.closest?.('button,a,[role="button"],[onclick],.card,.metric,.row')));
+   document.body.classList.add('carlos-fine-cursor');
+   if(!raf)raf=requestAnimationFrame(paintCursor);
+   if(!styleMotion.matches && performance.now()-prevTrail>50){
+     prevTrail=performance.now();
+     const piece=document.createElement('i');piece.className='carlos-cursor-trail';
+     piece.style.left=e.clientX+'px';piece.style.top=e.clientY+'px';
+     document.body.appendChild(piece);setTimeout(()=>piece.remove(),450);
+   }
+ },{passive:true});
+ document.addEventListener('mouseout',e=>{if(!e.relatedTarget)hideCursor()});
+
+ function parse(raw){
+   const text=String(raw||'').trim();
+   if(!/^(-?\s*(?:\$\s*)?\d[\d.,\s]*%?)$/.test(text))return null;
+   let cleaned=text.replace(/[\$\s]/g,'');const percent=cleaned.endsWith('%');
+   cleaned=cleaned.replace('%','');
+   if(cleaned.includes(','))cleaned=cleaned.replace(/\./g,'').replace(',','.');
+   else cleaned=cleaned.replace(/\./g,'');
+   const value=Number(cleaned);
+   return Number.isFinite(value)?{value,kind:text.includes('$')?'money':percent?'percent':'integer'}:null;
+ }
+ function fmt(v,kind){
+   if(kind==='money')return moneyFmt.format(v);
+   if(kind==='percent')return numberFmt.format(v)+'%';
+   return numberFmt.format(v);
+ }
+ function animate(el){
+   if(!el?.isConnected)return;
+   const original=el.textContent.trim(),n=parse(original);
+   if(!n||n.value===0||styleMotion.matches)return;
+   const current={el,original,last:original,raf:0};activeCounters.add(current);
+   const start=performance.now(),duration=1950;
+   function frame(now){
+     if(!el.isConnected){activeCounters.delete(current);return}
+     if(el.textContent!==current.last && el.textContent!==current.original){
+       // A new actual value arrived: never overwrite the application's data.
+       activeCounters.delete(current);return;
+     }
+     const t=Math.min(1,(now-start)/duration);
+     const eased=t*t*(3-2*t);
+     current.last=t>=1?original:fmt(n.value*eased,n.kind);
+     el.textContent=current.last;
+     if(t<1)current.raf=requestAnimationFrame(frame);
+     else{el.textContent=original;activeCounters.delete(current)}
+   }
+   current.raf=requestAnimationFrame(frame);
+ }
+ function finish(){
+   for(const c of activeCounters){if(c.raf)cancelAnimationFrame(c.raf);c.el.textContent=c.original;}
+   activeCounters.clear();
+ }
+ function view(){return document.querySelector('.view.active')}
+ function enter(section){
+   if(!active())return;
+   finish();
+   const v=view();if(!v)return;
+   const id=v.id;
+   if(id==='stats')requestAnimationFrame(drawCarlosTrendChart);
+   if(visited.has(id))return;
+   visited.add(id);
+   // Wait for the synchronous render and one paint, then animate exactly once.
+   setTimeout(()=>{
+     if(!active()||view()?.id!==id)return;
+     const fields=[...v.querySelectorAll('.metric > strong,.carlos-method-card > strong')]
+       .filter(el=>el.getClientRects().length>0);
+     fields.forEach(animate);
+   },250);
+ }
+ function refresh(){
+   if(!active())return;
+   const id=view()?.id;
+   if(id==='stats')requestAnimationFrame(drawCarlosTrendChart);
+   // Data refreshes do not restart a counter or change the DOM of any view.
+ }
+ window.GestOKCarlos43={enter,refresh,finish};
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){finish();hideCursor()}});
+ window.addEventListener('pagehide',()=>{finish();hideCursor()});
+ const appNode=document.getElementById('app');
+ if(appNode){new MutationObserver(()=>{
+   if(appNode.classList.contains('hidden')){finish();hideCursor();visited.clear()}
+   else if(active())setTimeout(()=>enter(view()?.id),350);
+ }).observe(appNode,{attributes:true,attributeFilter:['class']});}
+ setTimeout(()=>{if(active())enter(view()?.id)},500);
 })();
-
 </script>
 
 <div id="subscriptionBlocker" class="subscription-blocker hidden">
