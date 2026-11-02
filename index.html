@@ -3781,115 +3781,70 @@ body.carlos-business #stats .carlos-method-grid{
 }
 
 
-/* ============================================================
-   V51.41 · CARLOS · VIDRIO + SONIDOS + NÚMEROS
-   Sin fondos. Sin tocar infraestructura ni navegación.
-   ============================================================ */
-body.carlos-business{
-  --carlos-glass-bg:rgba(20,27,36,.64);
-  --carlos-glass-bg-soft:rgba(255,255,255,.045);
-  --carlos-glass-edge:rgba(255,255,255,.10);
-  --carlos-orange:#f28c28;
+/* =============================================================
+   V51.42 | Carlos · restauración de identidad visual
+   No se reemplazan colores originales, fondos ni disposición.
+   ============================================================= */
+body.carlos-business .app{
+  background:radial-gradient(circle at 100% 0%,rgba(242,140,40,.06),transparent 24%),#090d11 !important;
 }
-
-/* Vidrio únicamente: no modifica display/position/opacity de las vistas */
-body.carlos-business .top,
-body.carlos-business .card,
-body.carlos-business .metric,
-body.carlos-business .row,
-body.carlos-business .quick button,
+/* Vidrio oscuro: conserva la paleta azul-negra original. */
+body.carlos-business .view .card,
+body.carlos-business .view .metric{
+  background:linear-gradient(145deg,rgba(22,29,38,.91),rgba(18,24,32,.85));
+  border-color:rgba(92,111,134,.27);
+  box-shadow:0 14px 36px rgba(0,0,0,.19),inset 0 1px 0 rgba(255,255,255,.045);
+  -webkit-backdrop-filter:blur(13px) saturate(112%);
+  backdrop-filter:blur(13px) saturate(112%);
+}
+/* Compras, proveedores, barra de acciones y movimientos mantienen
+   sus fondos con acentos originales: solo aplicamos desenfoque. */
 body.carlos-business .purchase-card,
 body.carlos-business .supplier-card,
 body.carlos-business .balance-card,
-body.carlos-business .stock-card,
-body.carlos-business .user-card,
-body.carlos-business .expense-card,
-body.carlos-business .payroll-card,
-body.carlos-business .modal-card,
-body.carlos-business .list > div,
-body.carlos-business .panel,
-body.carlos-business .toolbar{
-  background:
-    linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025)) !important;
-  border-color:var(--carlos-glass-edge) !important;
-  box-shadow:
-    0 14px 38px rgba(0,0,0,.22),
-    inset 0 1px 0 rgba(255,255,255,.055) !important;
-  backdrop-filter:blur(18px) saturate(135%) !important;
-  -webkit-backdrop-filter:blur(18px) saturate(135%) !important;
+body.carlos-business .stockcard,
+body.carlos-business .row,
+body.carlos-business .quick button,
+body.carlos-business .modal{
+  -webkit-backdrop-filter:blur(10px) saturate(112%);
+  backdrop-filter:blur(10px) saturate(112%);
 }
-
-body.carlos-business .top{
-  background:
-    linear-gradient(90deg,rgba(23,19,16,.64),rgba(13,19,27,.64)) !important;
+/* La primera acción conserva exactamente su naranja. */
+body.carlos-business .quick button:first-child{
+  background:linear-gradient(145deg,#ff9f36,#dc7319) !important;
+  color:#17100a !important;
 }
-
-@media (hover:hover) and (pointer:fine){
-  body.carlos-business .card,
-  body.carlos-business .metric,
-  body.carlos-business .row,
-  body.carlos-business .quick button,
-  body.carlos-business .purchase-card,
-  body.carlos-business .supplier-card{
-    transition:
-      transform .20s ease,
-      border-color .20s ease,
-      box-shadow .20s ease;
-  }
-
-  body.carlos-business .card:hover,
-  body.carlos-business .metric:hover,
-  body.carlos-business .row:hover,
-  body.carlos-business .quick button:hover,
-  body.carlos-business .purchase-card:hover,
-  body.carlos-business .supplier-card:hover{
-    transform:translateY(-1px);
-    border-color:rgba(242,140,40,.22) !important;
-    box-shadow:
-      0 18px 44px rgba(0,0,0,.25),
-      0 0 20px rgba(242,140,40,.05),
-      inset 0 1px 0 rgba(255,255,255,.06) !important;
-  }
-}
-
-/* Solo efecto visual del click, no afecta layout */
-body.carlos-business .carlos-click-pulse{
-  position:fixed;
-  width:7px;
-  height:7px;
-  margin:-3.5px 0 0 -3.5px;
-  border-radius:50%;
-  pointer-events:none;
-  z-index:99999;
-  border:1px solid rgba(242,140,40,.42);
-  animation:carlosClickPulse .28s ease-out forwards;
-}
-@keyframes carlosClickPulse{
-  to{
-    width:25px;
-    height:25px;
-    margin:-12.5px 0 0 -12.5px;
-    opacity:0;
-  }
-}
-
-/* Número animado: sin cambiar estilos permanentes */
-body.carlos-business .carlos-number-animating{
-  will-change:contents;
-}
-
-@media(max-width:700px){
-  body.carlos-business .top,
-  body.carlos-business .card,
-  body.carlos-business .metric,
-  body.carlos-business .row{
-    backdrop-filter:blur(14px) saturate(125%) !important;
-    -webkit-backdrop-filter:blur(14px) saturate(125%) !important;
-  }
-}
-
-@media(prefers-reduced-motion:reduce){
-  body.carlos-business .carlos-click-pulse{display:none !important}
+/* Tipografía Carlos: más legible en escritorio, sin rediseñar el resto. */
+body.carlos-business .top h1{font-size:clamp(23px,2.2vw,28px) !important}
+body.carlos-business .section h2{font-size:clamp(23px,2.3vw,28px) !important}
+body.carlos-business .section p,
+body.carlos-business .head p{font-size:14px !important;line-height:1.5 !important}
+body.carlos-business .head h3{font-size:17px !important}
+body.carlos-business .metric span,
+body.carlos-business .carlos-method-card span{font-size:14px !important}
+body.carlos-business .metric strong{font-size:clamp(24px,2.2vw,30px) !important;line-height:1.15 !important;font-variant-numeric:tabular-nums}
+body.carlos-business .metric small{font-size:13px !important}
+body.carlos-business .quick b{font-size:15px !important}
+body.carlos-business .row strong,
+body.carlos-business .purchase-title{font-size:16px !important}
+body.carlos-business .row small,
+body.carlos-business .purchase-sub,
+body.carlos-business .purchase-meta span{font-size:13px !important}
+body.carlos-business .purchase-meta strong{font-size:15px !important}
+body.carlos-business .carlos-method-card strong{font-size:19px !important;font-variant-numeric:tabular-nums}
+body.carlos-business .role{font-size:11px !important}
+body.carlos-business #stats .chartbox{height:300px !important;min-height:260px}
+body.carlos-business #stats .chartbox canvas{width:100%;height:100%;display:block}
+/* Nunca modificar opacity/display/transform de tarjetas de datos. */
+@media (max-width:650px){
+  body.carlos-business .metric strong{font-size:22px !important}
+  body.carlos-business .metric span{font-size:13px !important}
+  body.carlos-business .quick b{font-size:13px !important}
+  body.carlos-business .row strong,
+  body.carlos-business .purchase-title{font-size:14px !important}
+  body.carlos-business .row small,
+  body.carlos-business .purchase-sub{font-size:12px !important}
+  body.carlos-business #stats .chartbox{height:255px !important}
 }
 
 </style>
@@ -6250,12 +6205,20 @@ function applyActiveRolePermissions(){
   }
 }
 
-function go(v){if(isCarlosBusiness()&&v==='orders')v='purchases';if(!isCarlosBusiness()&&['purchases','suppliers'].includes(v))v='home';if(['balance','stats','payroll','users'].includes(v)&&!isActiveAdmin()){toast('Solo el administrador puede acceder a esta sección');v='home'}if(['stock','expenses','payroll'].includes(v)&&ORG.type==='barbershop')v='home';$$('.view').forEach(x=>x.classList.remove('active'));($('#'+v)||$('#home')).classList.add('active');$$('.nav button[data-v]').forEach(x=>x.classList.toggle('active',x.dataset.v===v));title.textContent={home:'Resumen',orders:ORG.type==='barbershop'?'Turnos':'Pedidos',purchases:'Compras',suppliers:'Proveedores',commercialflow:'Movimientos comerciales',activity:'Actividad',balance:'Balance',sales:'Ventas',history:'Historial',stats:'Estadísticas',stock:'Stock',expenses:'Gastos',payroll:'Sueldos',users:'Usuarios',gestok:'GestOK'}[v]||'Resumen';if($('#clearMenuCurrent')){
+function go(v){
+ if(isCarlosBusiness()&&v==='stats'&&!window.__carlosStatsFirstOpenDone){
+   window.__carlosStatsFirstOpenDone=true;
+   if(STAT_PERIOD==='daily' && COMMERCE_REVIEW_MONTH==='all' &&
+      (S?.sales||[]).length && periodSeries().every(r=>Number(r.amount||0)===0)){
+     STAT_PERIOD='monthly';
+   }
+ }
+ if(isCarlosBusiness()&&v==='orders')v='purchases';if(!isCarlosBusiness()&&['purchases','suppliers'].includes(v))v='home';if(['balance','stats','payroll','users'].includes(v)&&!isActiveAdmin()){toast('Solo el administrador puede acceder a esta sección');v='home'}if(['stock','expenses','payroll'].includes(v)&&ORG.type==='barbershop')v='home';$$('.view').forEach(x=>x.classList.remove('active'));($('#'+v)||$('#home')).classList.add('active');$$('.nav button[data-v]').forEach(x=>x.classList.toggle('active',x.dataset.v===v));title.textContent={home:'Resumen',orders:ORG.type==='barbershop'?'Turnos':'Pedidos',purchases:'Compras',suppliers:'Proveedores',commercialflow:'Movimientos comerciales',activity:'Actividad',balance:'Balance',sales:'Ventas',history:'Historial',stats:'Estadísticas',stock:'Stock',expenses:'Gastos',payroll:'Sueldos',users:'Usuarios',gestok:'GestOK'}[v]||'Resumen';if($('#clearMenuCurrent')){
  const menuNames={home:'Inicio',sales:'Ventas',orders:'Pedidos',purchases:'Compras',suppliers:'Proveedores',commercialflow:'Movimientos',activity:'Actividad',balance:'Balance',history:'Historial',stats:'Estadísticas',stock:'Stock',expenses:'Gastos',payroll:'Sueldos',users:'Usuarios',gestok:'GestOK'};
  clearMenuCurrent.innerHTML=`Sección actual: <strong>${menuNames[v]||'Inicio'}</strong>`;
  $$('#commerceClearMenu [data-clear-v]').forEach(x=>x.classList.toggle('active',x.dataset.clearV===v));
 }
-closeMore();render();if(v==='stats'&&isActiveAdmin())requestAnimationFrame(drawStatsChart);if(v==='gestok')markNoticesRead()}
+closeMore();render();if(v==='stats'&&isActiveAdmin())requestAnimationFrame(drawStatsChart);if(isCarlosBusiness())window.GestOKCarlos42?.enter?.(v);if(v==='gestok')markNoticesRead()}
 window.go=go;$$('.nav button[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-v]').forEach(x=>x.onclick=()=>go(x.dataset.v));$$('.commerce-option[data-action="whatsapp"]').forEach(x=>x.onclick=()=>{closeMore();openGestokWhatsApp()});back.onclick=closeMore;logoutCompany.onclick=async()=>{closeMore();await stopCommerceRealtime();await stopSupportClientRealtime();await sb.auth.signOut();hideSubscriptionBlocker();app.classList.add('hidden');portal.classList.remove('hidden');ORG=null;S=null;U=null;AUTH_MEMBER_ID=null;backType()};function closeChoice(){choice.classList.add('hidden')}window.closeChoice=closeChoice;
 
 /* Dock Comercio · V46: interacción nativa y universal.
@@ -7934,11 +7897,12 @@ function render(){
  renderPayroll();
  renderStats();
  renderGestOK();
+ if(isCarlosBusiness())window.GestOKCarlos42?.refresh?.();
 }
 
 /* Estadísticas */
 const periods=[['daily','Diaria'],['weekly','Semanal'],['monthly','Mensual'],['yearly','Anual']];
-window.setPeriod=p=>{STAT_PERIOD=p;renderStats();requestAnimationFrame(drawStatsChart)};
+window.setPeriod=p=>{STAT_PERIOD=p;renderStats();requestAnimationFrame(drawStatsChart);if(isCarlosBusiness())window.GestOKCarlos42?.enter?.('stats')};
 function startOfWeek(d){let x=new Date(d),day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);x.setHours(0,0,0,0);return x}
 function selectedCommerceMonthParts(){
  if(COMMERCE_REVIEW_MONTH==='all')return null;
@@ -8082,15 +8046,23 @@ function drawStatsChart(){
  ctx.clearRect(0,0,w,h);
  ctx.strokeStyle='rgba(150,162,175,.16)';
  for(let i=0;i<4;i++){let y=pt+(h-pt-pb)*(i/3);ctx.beginPath();ctx.moveTo(pl,y);ctx.lineTo(w-pr,y);ctx.stroke()}
- ctx.fillStyle='#96a2af';ctx.font='9px system-ui';ctx.textAlign='right';
+ ctx.fillStyle='#96a2af';ctx.font=isCarlosBusiness()?'12px system-ui':'9px system-ui';ctx.textAlign='right';
  for(let i=0;i<4;i++){let v=max*(1-i/3),y=pt+(h-pt-pb)*(i/3)+3;ctx.fillText(v>=1000?Math.round(v/1000)+'k':Math.round(v),pl-6,y)}
  let pts=data.map((x,i)=>({x:pl+(w-pl-pr)*(data.length===1?.5:i/(data.length-1)),y:h-pb-(x.amount/max)*(h-pt-pb),...x}));
  let g=ctx.createLinearGradient(0,pt,0,h-pb);g.addColorStop(0,'rgba(242,140,40,.26)');g.addColorStop(1,'rgba(242,140,40,0)');
  ctx.beginPath();ctx.moveTo(pts[0].x,h-pb);pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.lineTo(pts.at(-1).x,h-pb);ctx.closePath();ctx.fillStyle=g;ctx.fill();
  ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.strokeStyle='#f28c28';ctx.lineWidth=2.5;ctx.stroke();
  ctx.fillStyle='#f28c28';pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,3.3,0,Math.PI*2);ctx.fill()});
- ctx.textAlign='center';ctx.fillStyle='#96a2af';ctx.font='9px system-ui';
+ ctx.textAlign='center';ctx.fillStyle='#aeb8c3';ctx.font=isCarlosBusiness()?'11px system-ui':'9px system-ui';
  pts.forEach((p,i)=>{if(data.length<=12||i%2===0)ctx.fillText(p.label,p.x,h-9)});
+ if(isCarlosBusiness() && data.every(r=>Number(r.amount||0)===0)){
+   ctx.save();
+   ctx.fillStyle='#aeb8c3';ctx.font='13px system-ui';ctx.textAlign='center';
+   ctx.fillText('Sin ingresos en este período',w/2,h/2-5);
+   ctx.font='11px system-ui';
+   ctx.fillText('Probá otro período o mes para ver el historial',w/2,h/2+16);
+   ctx.restore();
+ }
 }
 window.addEventListener('resize',()=>{if(stats.classList.contains('active'))drawStatsChart()});
 
@@ -9821,278 +9793,197 @@ updateGestokInstallBanner();
 })();
 
 
-/* ============================================================
-   V51.41 · CARLOS · EFECTOS SEGUROS
-   Solo vidrio, teclado, click compacto y números.
-   ============================================================ */
+/* =============================================================
+   V51.42 | Carlos FX: no monkeypatch de navegación ni de render.
+   Accesibilidad y datos son prioritarios.
+   ============================================================= */
 (()=>{
-  let audioCtx=null;
-  let lastKeyAt=0;
-  let lastClickAt=0;
-  const animatedTargets=new WeakMap();
+  let soundCtx=null, lastKey=0,lastClick=0, refreshJob=0, lastView='';
+  const states=new WeakMap();
+  const tracked=new Set();
+  const moneyFmt=new Intl.NumberFormat('es-AR',{
+    style:'currency',currency:'ARS',maximumFractionDigits:0
+  });
+  const intFmt=new Intl.NumberFormat('es-AR',{maximumFractionDigits:0});
+  const motion=window.matchMedia('(prefers-reduced-motion:reduce)');
 
-  function isCarlosActive(){
-    try{
-      return isCarlosBusiness() &&
-             document.body.classList.contains('carlos-business') &&
-             !app.classList.contains('hidden');
-    }catch{
-      return false;
-    }
+  function active(){
+    try{return isCarlosBusiness() && document.body.classList.contains('carlos-business')
+      && !app.classList.contains('hidden');}catch{return false}
   }
-
-  async function getAudio(){
+  function audio(){
     try{
       const AC=window.AudioContext||window.webkitAudioContext;
       if(!AC)return null;
-      if(!audioCtx)audioCtx=new AC();
-      if(audioCtx.state==='suspended')await audioCtx.resume();
-      return audioCtx;
-    }catch{
-      return null;
-    }
+      if(!soundCtx)soundCtx=new AC();
+      if(soundCtx.state==='suspended')soundCtx.resume().catch(()=>{});
+      return soundCtx;
+    }catch{return null}
   }
-
-  async function playCompactClick(){
-    const nowPerf=performance.now();
-    if(nowPerf-lastClickAt<55)return;
-    lastClickAt=nowPerf;
-
-    const ctx=await getAudio();
-    if(!ctx)return;
-
+  function clickSound(){
+    if(performance.now()-lastClick<65)return;
+    lastClick=performance.now();
+    const a=audio();if(!a)return;
     try{
-      const t=ctx.currentTime;
-
-      const osc=ctx.createOscillator();
-      const gain=ctx.createGain();
-      const filter=ctx.createBiquadFilter();
-
-      osc.type='triangle';
-      osc.frequency.setValueAtTime(620,t);
-      osc.frequency.exponentialRampToValueAtTime(310,t+.045);
-
-      filter.type='lowpass';
-      filter.frequency.setValueAtTime(1100,t);
-
-      gain.gain.setValueAtTime(.0001,t);
-      gain.gain.exponentialRampToValueAtTime(.025,t+.002);
-      gain.gain.exponentialRampToValueAtTime(.0001,t+.065);
-
-      osc.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
-
-      osc.start(t);
-      osc.stop(t+.07);
-
-      const tick=ctx.createOscillator();
-      const tickGain=ctx.createGain();
-      tick.type='sine';
-      tick.frequency.setValueAtTime(1050,t);
-      tick.frequency.exponentialRampToValueAtTime(720,t+.025);
-      tickGain.gain.setValueAtTime(.0001,t);
-      tickGain.gain.exponentialRampToValueAtTime(.006,t+.001);
-      tickGain.gain.exponentialRampToValueAtTime(.0001,t+.03);
-      tick.connect(tickGain);
-      tickGain.connect(ctx.destination);
-      tick.start(t);
-      tick.stop(t+.035);
+      const t=a.currentTime;
+      const o=a.createOscillator(),g=a.createGain(),f=a.createBiquadFilter();
+      o.type='triangle';o.frequency.setValueAtTime(530,t);
+      o.frequency.exponentialRampToValueAtTime(285,t+.043);
+      f.type='lowpass';f.frequency.value=1180;
+      g.gain.setValueAtTime(.0001,t);
+      g.gain.exponentialRampToValueAtTime(.023,t+.002);
+      g.gain.exponentialRampToValueAtTime(.0001,t+.057);
+      o.connect(f);f.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.063);
     }catch{}
   }
-
-  async function playMechanicalKey(){
-    const nowPerf=performance.now();
-    if(nowPerf-lastKeyAt<18)return;
-    lastKeyAt=nowPerf;
-
-    const ctx=await getAudio();
-    if(!ctx)return;
-
+  function typingSound(){
+    if(performance.now()-lastKey<26)return;
+    lastKey=performance.now();
+    const a=audio();if(!a)return;
     try{
-      const t=ctx.currentTime;
-      const osc=ctx.createOscillator();
-      const gain=ctx.createGain();
-      const filter=ctx.createBiquadFilter();
-
-      osc.type='square';
-      osc.frequency.setValueAtTime(205,t);
-      osc.frequency.exponentialRampToValueAtTime(92,t+.035);
-
-      filter.type='lowpass';
-      filter.frequency.setValueAtTime(900,t);
-
-      gain.gain.setValueAtTime(.0001,t);
-      gain.gain.exponentialRampToValueAtTime(.032,t+.002);
-      gain.gain.exponentialRampToValueAtTime(.0001,t+.042);
-
-      osc.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(t);
-      osc.stop(t+.045);
+      const t=a.currentTime;
+      const o=a.createOscillator(),g=a.createGain(),f=a.createBiquadFilter();
+      o.type='square';o.frequency.setValueAtTime(170,t);
+      o.frequency.exponentialRampToValueAtTime(95,t+.027);
+      f.type='lowpass';f.frequency.value=890;
+      g.gain.setValueAtTime(.0001,t);
+      g.gain.exponentialRampToValueAtTime(.022,t+.002);
+      g.gain.exponentialRampToValueAtTime(.0001,t+.035);
+      o.connect(f);f.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.04);
     }catch{}
   }
-
   document.addEventListener('pointerdown',e=>{
-    if(!isCarlosActive())return;
-
-    const interactive=e.target.closest(
-      'button,a,[role="button"],.nav button,.quick button,.row[onclick],.card[onclick],[onclick]'
-    );
-
-    if(!interactive)return;
-
-    playCompactClick();
-
-    const pulse=document.createElement('i');
-    pulse.className='carlos-click-pulse';
-    pulse.style.left=e.clientX+'px';
-    pulse.style.top=e.clientY+'px';
-    document.body.appendChild(pulse);
-    setTimeout(()=>pulse.remove(),320);
+    if(!active())return;
+    const target=e.target instanceof Element?e.target:null;
+    if(target?.closest('button,a,[role="button"],[onclick],.commerce-option,.profile-entry-card')){
+      clickSound();
+    }
   },true);
-
   document.addEventListener('keydown',e=>{
-    if(!isCarlosActive())return;
-
+    if(!active() || e.repeat || e.isComposing)return;
     const el=e.target;
-    const editable=
-      el instanceof HTMLInputElement ||
-      el instanceof HTMLTextAreaElement ||
-      el?.isContentEditable;
-
-    if(!editable)return;
-
-    if(
-      e.key.length===1 ||
-      e.key==='Backspace' ||
-      e.key==='Delete' ||
-      e.key==='Enter'
-    ){
-      playMechanicalKey();
-    }
+    if(!(el instanceof HTMLInputElement) && !(el instanceof HTMLTextAreaElement)
+        && !(el instanceof HTMLSelectElement) && !el?.isContentEditable)return;
+    if(e.key.length===1||e.key==='Backspace'||e.key==='Delete'||e.key==='Enter')typingSound();
   },true);
 
-  function parseNumeric(text){
-    const raw=String(text??'').trim();
-    if(!raw)return null;
-
-    const cleaned=raw
-      .replace(/\s/g,'')
-      .replace(/ARS/gi,'')
-      .replace(/\$/g,'')
-      .replace(/\./g,'')
-      .replace(',','.');
-
-    const match=cleaned.match(/-?\d+(?:\.\d+)?/);
-    if(!match)return null;
-
-    const n=Number(match[0]);
-    return Number.isFinite(n)?n:null;
+  // Solo cifras completas; nunca etiquetas, IDs ni textos de formularios.
+  function numeric(raw){
+    const text=String(raw||'').trim();
+    if(!text||!/^[-+]?\s*(?:(?:ARS|\$)\s*)?-?[\d.,\s]+\s*%?$/.test(text))return null;
+    let s=text.replace(/ARS|\$|\s/g,'');
+    const percent=s.endsWith('%');s=s.replace('%','');
+    if(s.includes(','))s=s.replace(/\./g,'').replace(',','.');
+    else s=s.replace(/\./g,'');
+    const number=Number(s);
+    if(!Number.isFinite(number))return null;
+    return {number,kind:/ARS|\$/.test(text)?'money':percent?'percent':'integer'};
   }
-
-  function formatValue(el,value,finalText){
-    if(/\$|ARS/i.test(finalText)){
-      return new Intl.NumberFormat('es-AR',{
-        style:'currency',
-        currency:'ARS',
-        maximumFractionDigits:0
-      }).format(value);
-    }
-
-    if(/%/.test(finalText)){
-      return Math.round(value)+'%';
-    }
-
-    return new Intl.NumberFormat('es-AR',{
-      maximumFractionDigits:0
-    }).format(Math.round(value));
+  function format(x,kind){
+    if(kind==='money')return moneyFmt.format(x);
+    if(kind==='percent')return intFmt.format(Math.round(x))+'%';
+    return intFmt.format(Math.round(x));
   }
-
-  function animateNumber(el){
-    if(!el||!document.contains(el))return;
-
-    const finalText=el.textContent?.trim()||'';
-    const target=parseNumeric(finalText);
-    if(target===null)return;
-
-    const prev=animatedTargets.get(el);
-    if(prev===finalText)return;
-    animatedTargets.set(el,finalText);
-
-    const duration=2200;
-    const started=performance.now();
-    el.classList.add('carlos-number-animating');
-
-    function frame(now){
-      if(!document.contains(el))return;
-
-      const p=Math.min(1,(now-started)/duration);
-      const eased=1-Math.pow(1-p,3);
-      const current=target*eased;
-
-      el.textContent=formatValue(el,current,finalText);
-
-      if(p<1){
-        requestAnimationFrame(frame);
-      }else{
-        el.textContent=finalText;
-        el.classList.remove('carlos-number-animating');
+  function stop(el){
+    const s=states.get(el);
+    if(s?.raf)cancelAnimationFrame(s.raf);
+    if(s){el.textContent=s.final;states.delete(el)}
+    tracked.delete(el);
+  }
+  function animate(el,restart=false){
+    if(!el?.isConnected)return;
+    const old=states.get(el);
+    let literal=el.textContent.trim();
+    if(old){
+      if(literal===old.shown&&!restart){
+        return; // No convertir nuestro propio número animado en un dato nuevo.
       }
+      if(old.final===literal&&!restart){
+        // Un render repuso el mismo valor real: restauramos la cifra visual
+        // y dejamos avanzar el contador que ya estaba activo, sin reiniciarlo.
+        el.textContent=old.shown;
+        return;
+      }
+      if(literal===old.shown)literal=old.final;
+      if(old.raf)cancelAnimationFrame(old.raf);
+      states.delete(el);tracked.delete(el);
     }
-
-    requestAnimationFrame(frame);
+    const parsed=numeric(literal);
+    if(!parsed)return;
+    const previous=old && old.kind===parsed.kind?old.lastValue:0;
+    if(parsed.number===0||motion.matches||document.hidden){
+      el.textContent=literal;
+      return;
+    }
+    start(el,literal,parsed.kind,parsed.number,restart?0:(previous||0),1650);
   }
-
-  function animateVisibleNumbers(){
-    if(!isCarlosActive())return;
-
-    const activeView=document.querySelector('.view.active');
-    if(!activeView)return;
-
-    const candidates=new Set();
-
-    [
-      '.metric strong',
-      '.kpi strong',
-      '.stat strong',
-      '.summary strong',
-      '[data-kpi]',
-      '[id^="k"]',
-      '#sCount','#sTotal',
-      '#stRevenue','#stSalesCount','#stAverage',
-      '#stExpenses','#stSalaries','#stNet','#stOutflows',
-      '#purchaseMonthTotal','#purchaseSupplierCount'
-    ].forEach(sel=>{
-      activeView.querySelectorAll(sel).forEach(el=>candidates.add(el));
+  function start(el,final,kind,target,from,duration){
+    let s={final,kind,target,shown:el.textContent,lastValue:from,raf:0};
+    states.set(el,s);tracked.add(el);
+    const t0=performance.now();let lastPaint=0;
+    function frame(now){
+      if(!el.isConnected){tracked.delete(el);states.delete(el);return}
+      if(states.get(el)!==s)return;
+      if(el.textContent!==s.shown && el.textContent!==final){
+        // El sistema escribió un valor real nuevo. No lo sobreescribimos.
+        tracked.delete(el);states.delete(el);return;
+      }
+      const p=Math.min(1,(now-t0)/duration);
+      if(now-lastPaint>=45||p>=1){
+        lastPaint=now;
+        const eased=1-Math.pow(1-p,3);
+        s.lastValue=from+(target-from)*eased;
+        s.shown=p>=1?final:format(s.lastValue,kind);
+        el.textContent=s.shown;
+      }
+      if(p<1)s.raf=requestAnimationFrame(frame);
+      else{tracked.delete(el);states.delete(el);el.textContent=final}
+    }
+    s.raf=requestAnimationFrame(frame);
+  }
+  function view(){return document.querySelector('.view.active')}
+  function metrics(){
+    const v=view();if(!v)return [];
+    return [...v.querySelectorAll('.metric > strong,.carlos-method-card > strong')]
+      .filter(el=>el.getClientRects().length>0);
+  }
+  function refresh(restart=false){
+    if(!active())return;
+    cancelAnimationFrame(refreshJob);
+    refreshJob=requestAnimationFrame(()=>{
+      if(!active())return;
+      const v=view();if(!v)return;
+      const section=v.id;
+      const reenter=restart||section!==lastView;
+      lastView=section;
+      metrics().forEach(el=>animate(el,reenter));
+      if(section==='stats')chart();
     });
-
-    candidates.forEach(animateNumber);
   }
-
-  const originalGo=window.go;
-  if(originalGo&&!window.__carlosV5141Go){
-    window.__carlosV5141Go=true;
-    window.go=function(v){
-      const result=originalGo(v);
-      setTimeout(animateVisibleNumbers,180);
-      return result;
-    };
+  function chart(){
+    if(!active()||!document.getElementById('stats')?.classList.contains('active'))return;
+    // Esperar el layout y el alto del canvas: no dibujar sobre ancho cero.
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      if(!active()||!document.getElementById('stats')?.classList.contains('active'))return;
+      try{if(statsChart.getBoundingClientRect().width>20)drawStatsChart()}
+      catch(e){console.warn('GestOK Carlos · gráfica:',e)}
+    }));
   }
-
-  const originalRender=window.render;
-  if(originalRender&&!window.__carlosV5141Render){
-    window.__carlosV5141Render=true;
-    window.render=function(...args){
-      const result=originalRender.apply(this,args);
-      setTimeout(animateVisibleNumbers,220);
-      return result;
-    };
+  function enter(v){
+    if(!active())return;
+    // Al navegar termina cualquier contador anterior en el valor verdadero.
+    for(const el of [...tracked])stop(el);
+    lastView='';
+    requestAnimationFrame(()=>refresh(true));
+    if(v==='stats')chart();
   }
-
-  window.addEventListener('pageshow',()=>setTimeout(animateVisibleNumbers,320));
-  setTimeout(animateVisibleNumbers,420);
+  function finish(){for(const el of [...tracked])stop(el)}
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden)finish();else refresh();
+  });
+  window.addEventListener('pageshow',()=>refresh());
+  window.GestOKCarlos42={refresh,enter,chart};
+  requestAnimationFrame(()=>refresh());
 })();
 
 </script>
