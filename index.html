@@ -3917,6 +3917,33 @@ body.carlos-business .carlos-trend-empty{font-size:14px;color:#b9c4d0;margin:10p
  .carlos-cursor-trail{display:none !important}
 }
 
+
+/* V51.44: confirmación de borrado en SCR — aislada del diseño de Carlos. */
+.scr-delete-confirm-overlay{
+  position:fixed;inset:0;z-index:30000;display:grid;place-items:center;
+  background:rgba(0,0,0,.78);backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);padding:16px;box-sizing:border-box;
+}
+.scr-delete-confirm-dialog{
+  width:min(440px,100%);max-height:90dvh;overflow-y:auto;box-sizing:border-box;
+  background:linear-gradient(145deg,#1b222c,#10161d);color:#f5f7fa;
+  border:1px solid rgba(255,255,255,.14);border-radius:20px;
+  padding:23px;box-shadow:0 24px 72px rgba(0,0,0,.55);
+}
+.scr-delete-eyebrow{font-size:11px;font-weight:800;color:#f28c28;letter-spacing:.06em}
+.scr-delete-confirm-dialog h3{font-size:23px;line-height:1.2;margin:10px 0 9px}
+.scr-delete-description{font-size:13px;line-height:1.6;color:#b9c3d0;margin:10px 0 15px}
+.scr-delete-order-detail{display:grid;gap:5px;padding:15px;border:1px solid #343c48;background:#202833;border-radius:14px}
+.scr-delete-order-detail strong{font-size:15px;overflow-wrap:anywhere}
+.scr-delete-order-detail small{font-size:12px;color:#bac5d0}
+.scr-delete-order-detail .scr-delete-amount{font-size:19px;color:#f28c28;margin-top:5px}
+.scr-delete-error{font-size:13px;line-height:1.5;color:#ffd2d7;background:rgba(255,87,110,.11);border:1px solid rgba(255,87,110,.36);border-radius:12px;padding:11px;margin-bottom:12px}
+.scr-delete-error[hidden]{display:none}
+.scr-delete-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.scr-delete-actions .btn{min-height:44px;font-size:13px;font-weight:850}
+.scr-delete-actions [data-action="delete"]{color:white;background:#ba3d51;border:1px solid #df5368}
+.scr-delete-actions [data-action="delete"]:disabled{opacity:.6}
+@media(max-width:440px){.scr-delete-confirm-dialog{padding:18px}.scr-delete-actions{grid-template-columns:1fr}}
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -6632,20 +6659,112 @@ saveOrder.onclick=async()=>{
   closeOrder();await loadCommerceFromSupabase(U?.id);render();toast('Pedido sincronizado');
 };
 
-window.deleteOrder=async id=>{
+/* SCR: eliminación confirmada, con error visible y verificación en Supabase.
+   No altera otras empresas ni los datos hasta confirmar el borrado. */
+window.deleteOrder=id=>{
   if(!isSCRBusiness())return toast('Esta opción está habilitada únicamente para SCR');
-  const o=S.orders.find(x=>x.id===id);if(!o)return toast('Pedido no encontrado');
+  if(!ORG?.id||!S?.orders)return toast('No se pudo identificar la empresa activa');
+  const order=S.orders.find(x=>String(x.id)===String(id));
+  if(!order)return toast('Pedido no encontrado. Actualizá la lista.');
 
-  const text=o.ledgerPosted
-    ?`¿Eliminar "${o.title}"?\n\nComo está cobrado, al eliminarlo también dejará de aparecer como ingreso en Balance.`
-    :`¿Eliminar "${o.title}"?\n\nEsta acción no se puede deshacer.`;
+  document.getElementById('scr-delete-confirm-overlay')?.remove();
+  const overlay=document.createElement('div');
+  overlay.id='scr-delete-confirm-overlay';
+  overlay.className='scr-delete-confirm-overlay';
+  overlay.setAttribute('role','presentation');
 
-  if(!confirm(text))return;
+  const dialog=document.createElement('div');
+  dialog.className='scr-delete-confirm-dialog';
+  dialog.setAttribute('role','dialog');
+  dialog.setAttribute('aria-modal','true');
+  dialog.setAttribute('aria-labelledby','scr-delete-title');
+  dialog.innerHTML=`
+    <span class="scr-delete-eyebrow">GestOK · SCR</span>
+    <h3 id="scr-delete-title">¿Eliminar este pedido?</h3>
+    <p class="scr-delete-description">Esta acción es permanente y no se puede deshacer.</p>
+    <div class="scr-delete-order-detail">
+      <strong data-detail="title"></strong>
+      <small data-detail="client"></small>
+      <strong data-detail="amount" class="scr-delete-amount"></strong>
+    </div>
+    <p class="scr-delete-description" data-detail="accounting"></p>
+    <div class="scr-delete-error" role="alert" aria-live="assertive" hidden></div>
+    <div class="scr-delete-actions">
+      <button type="button" class="btn secondary" data-action="cancel">Cancelar</button>
+      <button type="button" class="btn" data-action="delete">Eliminar pedido</button>
+    </div>`;
 
-  const {error}=await sb.rpc('scr_delete_order',{p_organization_id:ORG.id,p_order_id:id});
-  if(error)return toast(error.message);
+  dialog.querySelector('[data-detail="title"]').textContent=order.title||'Pedido';
+  dialog.querySelector('[data-detail="client"]').textContent=`Cliente: ${order.client||'Sin especificar'}`;
+  dialog.querySelector('[data-detail="amount"]').textContent=money(order.amount);
+  dialog.querySelector('[data-detail="accounting"]').textContent=order.ledgerPosted
+    ?'Este pedido está cobrado. Al eliminarlo, su ingreso también dejará de contabilizarse en el Balance y las Estadísticas.'
+    :'El pedido desaparecerá de Pedidos. No se modificarán las ventas, compras ni otros registros.';
 
-  await loadCommerceFromSupabase(U?.id);render();toast('Pedido eliminado');
+  overlay.appendChild(dialog);
+  document.body.appendChild(overlay);
+  const deleteBtn=dialog.querySelector('[data-action="delete"]');
+  const cancelBtn=dialog.querySelector('[data-action="cancel"]');
+  const errorBox=dialog.querySelector('.scr-delete-error');
+  let working=false;
+  const onKey=e=>{if(e.key==='Escape'&&!working)close();};
+  const close=()=>{document.removeEventListener('keydown',onKey);overlay.remove();};
+  document.addEventListener('keydown',onKey);
+  cancelBtn.onclick=close;
+  overlay.onclick=e=>{if(e.target===overlay&&!working)close();};
+  deleteBtn.focus();
+
+  deleteBtn.onclick=async()=>{
+    if(working)return;
+    working=true;
+    deleteBtn.disabled=true;
+    cancelBtn.disabled=true;
+    deleteBtn.textContent='Eliminando…';
+    errorBox.hidden=true;
+    errorBox.textContent='';
+
+    try{
+      if(!sb)throw new Error('Sin conexión con Supabase. Volvé a intentarlo.');
+      if(!isSCRBusiness()||!ORG?.id)throw new Error('La sesión de SCR ya no está activa.');
+
+      const result=await sb.rpc('scr_delete_order',{
+        p_organization_id:ORG.id,
+        p_order_id:order.id
+      });
+      if(result.error){
+        const e=result.error;
+        const message=String(e.message||'Error de Supabase');
+        if(e.code==='PGRST202'||/could not find the function|function.*does not exist/i.test(message)){
+          throw new Error('La función scr_delete_order no está disponible en Supabase. Ejecutá el SQL V36 de reparación y volvé a intentar.');
+        }
+        throw new Error('Supabase: '+message);
+      }
+      if(result.data!==true){
+        throw new Error('Supabase no confirmó el borrado. El pedido sigue intacto.');
+      }
+
+      const preferred=U?.id;
+      await loadCommerceFromSupabase(preferred);
+      if(S.orders.some(o=>String(o.id)===String(order.id))){
+        throw new Error('La base respondió, pero el pedido sigue en la lista. Actualizá la página y revisá los permisos.');
+      }
+      render();
+      if($('#stats')?.classList.contains('active'))requestAnimationFrame(drawStatsChart);
+      close();
+      toast('Pedido eliminado correctamente');
+    }catch(e){
+      console.error('GestOK SCR - Eliminar pedido:',e);
+      errorBox.textContent=e?.message||'No se pudo eliminar el pedido. Intentá nuevamente.';
+      errorBox.hidden=false;
+    }finally{
+      working=false;
+      if(overlay.isConnected){
+        deleteBtn.disabled=false;
+        cancelBtn.disabled=false;
+        deleteBtn.textContent='Eliminar pedido';
+      }
+    }
+  };
 };
 
 window.changePaymentStatus=async(oid,paymentStatus)=>{
@@ -7811,7 +7930,7 @@ function renderOrders(){
    </div>
    <div class="oaction">
      <select class="select" onchange="changeStatus('${o.id}',this.value)">${st.map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select>
-     ${isSCRBusiness()?`<div class="order-admin-actions"><button class="btn secondary" onclick="openEditOrder('${o.id}')">Editar pedido</button><button class="btn secondary danger-order" onclick="deleteOrder('${o.id}')">Eliminar</button></div>`:''}
+     ${isSCRBusiness()?`<div class="order-admin-actions"><button class="btn secondary" onclick="openEditOrder('${o.id}')">Editar pedido</button><button type="button" class="btn secondary danger-order" onclick="deleteOrder('${o.id}')">Eliminar</button></div>`:''}
    </div>
  </article>`).join(''):'<div class="empty">No hay registros para el mes seleccionado.</div>';
 }
