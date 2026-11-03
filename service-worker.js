@@ -1,5 +1,5 @@
 
-const CACHE_NAME='gestok-web-control-v51-45';
+const CACHE_NAME='gestok-web-control-v51-47';
 
 const APP_SHELL=[
   './manifest.webmanifest',
@@ -10,10 +10,9 @@ const APP_SHELL=[
 ];
 
 self.addEventListener('install',event=>{
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache=>cache.addAll(APP_SHELL))
-      .catch(()=>null)
+  event.waitUntil(caches.open(CACHE_NAME)
+    .then(cache=>cache.addAll(APP_SHELL))
+    .catch(()=>null)
   );
 
   self.skipWaiting();
@@ -33,14 +32,17 @@ self.addEventListener('activate',event=>{
   self.clients.claim();
 });
 
+/* ============================================================
+   CACHÉ Y ACTUALIZACIONES
+   ============================================================ */
+
 self.addEventListener('fetch',event=>{
   if(event.request.method!=='GET')return;
 
   const req=event.request;
   const url=new URL(req.url);
 
-  // El HTML principal siempre intenta cargarse
-  // desde internet para evitar versiones anteriores.
+  // El HTML principal intenta cargarse desde internet.
   if(
     req.mode==='navigate' ||
     url.pathname.endsWith('/index.html') ||
@@ -58,8 +60,7 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  // Recursos secundarios:
-  // utiliza caché y actualiza cuando hay conexión.
+  // Caché para recursos secundarios.
   event.respondWith(
     caches.match(req).then(cached=>{
 
@@ -82,7 +83,6 @@ self.addEventListener('fetch',event=>{
     })
   );
 });
-
 
 /* ============================================================
    NOTIFICACIONES PUSH
@@ -121,7 +121,6 @@ self.addEventListener('push',event=>{
     self.registration.showNotification(title,options)
   );
 });
-
 
 /* ============================================================
    CLICK EN NOTIFICACIÓN
