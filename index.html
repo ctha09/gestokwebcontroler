@@ -4014,6 +4014,30 @@ body.carlos-business.gestok-ai-open .gestok-cursor-dot,body.carlos-business.gest
 /* V51.46: micrófono con grabación controlada y diagnóstico */
 #gestokAiPanel .ai-diagnostic-btn{margin-left:8px;color:#f6ab58;background:transparent;border:1px solid #f28c2845;border-radius:7px;font:700 11px system-ui;cursor:pointer;padding:5px 7px}
 #gestokAiPanel #gestokAiMic.recording{background:#b93e3e!important;color:#fff!important;box-shadow:0 0 0 4px #ff64642d}
+
+/* V51.47 - Modo sin API de IA: consultas y operaciones determinísticas. */
+#gestokAiPanel .ai-quick{display:flex;flex:0 0 auto;gap:6px;overflow-x:auto;padding:10px 12px;
+  border-bottom:1px solid #ffffff16;scrollbar-width:thin;min-height:48px}
+#gestokAiPanel .ai-quick button{flex:0 0 auto;border-radius:999px;padding:8px 11px;background:#24303d;
+  border:1px solid #ffffff21;color:#e9eef6;font:700 12px system-ui;cursor:pointer}
+#gestokAiPanel .ai-quick button:hover{border-color:#f28c28;background:#493522}
+#gestokAiPanel .ai-quick button.ai-quick-operate{background:#f28c28;color:#141b25;border-color:#f28c28}
+#gestokAiPanel .ai-ops[hidden]{display:none!important}
+#gestokAiPanel .ai-ops{max-height:51%;overflow:auto;padding:13px 15px;flex:0 0 auto;
+  border-block:1px solid #f28c2860;background:#141d28}
+#gestokAiPanel .ai-ops-head{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:12px}
+#gestokAiPanel .ai-ops-head strong{font-size:15px}
+#gestokAiPanel .ai-ops label{display:block;color:#cdd6e1;font:700 12px system-ui;margin:9px 0 5px}
+#gestokAiPanel .ai-ops input,#gestokAiPanel .ai-ops select,#gestokAiPanel .ai-ops textarea{
+  display:block;width:100%;border:1px solid #ffffff30;color:#f9fafb;background:#202a36;
+  border-radius:9px;min-height:36px;padding:9px;font:13px system-ui;box-sizing:border-box}
+#gestokAiPanel .ai-ops textarea{resize:vertical;min-height:56px}
+#gestokAiPanel .ai-ops-note{color:#b1bcca;font-size:11px;line-height:1.5;margin:12px 0}
+#gestokAiPanel .ai-ops-fields{display:grid;gap:4px}
+#gestokAiPanel .ai-ops .ai-btn.primary{width:100%;margin-top:8px}
+#gestokAiPanel .ai-proposal{max-height:54%;overflow:auto;flex-shrink:0}
+#gestokAiPanel .ai-msg{font-size:13.5px}
+@media(max-width:600px){#gestokAiPanel .ai-ops{max-height:49%}}
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -4456,15 +4480,25 @@ body.carlos-business.gestok-ai-open .gestok-cursor-dot,body.carlos-business.gest
 </nav>
 
 <button id="gestokAiToggle" type="button" title="Abrir GestOK IA"><span class="ai-dot"></span>GestOK IA</button>
-<div id="gestokAiPanel" role="dialog" aria-modal="false" aria-label="GestOK IA para Carlos" hidden>
+<div id="gestokAiPanel" role="dialog" aria-modal="false" aria-label="GestOK Asistente para Carlos" hidden>
   <div class="ai-head">
     <span style="font-size:26px;color:#f28c28">✦</span>
-    <div class="ai-head-text"><strong>Gest<span style="color:#f28c28">OK</span> IA</strong><small>Asistente de Carlos · datos en Supabase</small></div>
+    <div class="ai-head-text"><strong>Gest<span style="color:#f28c28">OK</span> Asistente</strong><small>Carlos · preguntas programadas · sin API de IA</small></div>
     <button id="gestokAiVoice" class="ai-mini-btn" title="Activar o desactivar lectura por voz" aria-label="Lectura por voz" aria-pressed="false">🔇</button>
     <button id="gestokAiClose" class="ai-mini-btn" title="Cerrar" aria-label="Cerrar">×</button>
   </div>
-  <div class="ai-info">Consultá tu negocio o prepará operaciones. Ningún cambio se aplica sin tu confirmación. <button id="gestokAiDiagnostic" type="button" class="ai-diagnostic-btn">Comprobar conexión</button></div>
+  <div class="ai-info">Elegí una consulta o usá operaciones guiadas. No utilizamos OpenAI. <button id="gestokAiDiagnostic" type="button" class="ai-diagnostic-btn">Actualizar datos</button></div>
+  <div id="gestokAiQuick" class="ai-quick" aria-label="Preguntas predeterminadas"></div>
   <div id="gestokAiMessages" class="ai-messages" aria-live="polite"></div>
+  <div id="gestokAiOps" class="ai-ops" hidden>
+    <div class="ai-ops-head"><strong>Operaciones guiadas</strong><button id="gestokAiOpsClose" class="ai-mini-btn" type="button" aria-label="Cerrar operaciones">×</button></div>
+    <label for="gestokAiActionKind">Elegí qué querés hacer</label>
+    <select id="gestokAiActionKind"></select>
+    <div id="gestokAiTargetArea"></div>
+    <div id="gestokAiFields" class="ai-ops-fields"></div>
+    <p class="ai-ops-note">Primero se prepara un borrador. Ningún registro se crea, edita o elimina hasta que confirmes la operación.</p>
+    <button id="gestokAiOpsPrepare" class="ai-btn primary" type="button">Preparar operación</button>
+  </div>
   <div id="gestokAiProposal" class="ai-proposal">
     <strong>Operación pendiente de confirmación</strong>
     <pre id="gestokAiDiff"></pre>
@@ -4473,10 +4507,10 @@ body.carlos-business.gestok-ai-open .gestok-cursor-dot,body.carlos-business.gest
   </div>
   <div class="ai-compose">
     <button id="gestokAiMic" class="ai-mini-btn" title="Dictar con micrófono" aria-label="Dictar">🎙</button>
-    <textarea id="gestokAiInput" maxlength="1200" rows="2" placeholder="Ej.: ¿Cuál es el saldo operativo?" aria-label="Preguntarle a GestOK IA"></textarea>
+    <textarea id="gestokAiInput" maxlength="1200" rows="2" placeholder="Escribí una consulta, por ejemplo: ventas del mes" aria-label="Preguntarle a GestOK IA"></textarea>
     <button id="gestokAiSend" class="ai-btn primary" type="button">Enviar</button>
   </div>
-  <div class="ai-footer">Los importes son datos reales de la empresa. El saldo operativo no equivale al dinero del banco.</div>
+  <div class="ai-footer">Respuestas programadas con datos de Carlos. Sin consumo de tokens. El saldo operativo no es el saldo bancario.</div>
 </div>
 </section>
 
@@ -10320,238 +10354,305 @@ updateGestokInstallBanner();
 <a class="wa-float" href="https://wa.me/5493751232618?text=Hola%20GestOK%2C%20tengo%20una%20consulta%20sobre%20Web%20Control." target="_blank" rel="noopener" aria-label="Abrir WhatsApp de GestOK"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"/><path d="M9 8.8c.5 2.3 2 3.9 4.3 4.7"/><path d="M9 8.8 10.3 8l1.1 2-1 .7M13.3 13.5l.7-1 2 1.1-.8 1.3"/></svg></a>
 <script>
 
-/* ============================================================
-   V51.45 · GestOK IA Carlos · interfaz sin tocar módulos existentes
-   ============================================================ */
+/* V51.47: GestOK Asistente local sin OpenAI. Consultas predefinidas y cambios con RPC de confirmación. */
 (()=>{
-  const $id=id=>document.getElementById(id);
-  const toggle=$id('gestokAiToggle'),panel=$id('gestokAiPanel');
-  const messages=$id('gestokAiMessages'),input=$id('gestokAiInput');
-  const send=$id('gestokAiSend'),mic=$id('gestokAiMic');
-  const speak=$id('gestokAiVoice'),close=$id('gestokAiClose');
-  const proposalBox=$id('gestokAiProposal'),diff=$id('gestokAiDiff');
-  const warning=$id('gestokAiWarning'),confirmBtn=$id('gestokAiConfirm');
-  const cancelBtn=$id('gestokAiCancel');
-  if(!toggle||!panel)return;
-  let busy=false,voiceEnabled=false,pending=null;
-  let history=[],recognition=null;
+  const el=id=>document.getElementById(id);
+  const toggle=el('gestokAiToggle'),panel=el('gestokAiPanel');
+  const messages=el('gestokAiMessages'),input=el('gestokAiInput');
+  const send=el('gestokAiSend'),mic=el('gestokAiMic');
+  const voice=el('gestokAiVoice'),close=el('gestokAiClose');
+  const quick=el('gestokAiQuick'),diag=el('gestokAiDiagnostic');
+  const proposal=el('gestokAiProposal'),diff=el('gestokAiDiff'),warning=el('gestokAiWarning');
+  const confirm=el('gestokAiConfirm'),cancel=el('gestokAiCancel');
+  const ops=el('gestokAiOps'),opsClose=el('gestokAiOpsClose');
+  const kindSelect=el('gestokAiActionKind'),targetArea=el('gestokAiTargetArea');
+  const fields=el('gestokAiFields'),prepare=el('gestokAiOpsPrepare');
+  if(!toggle||!panel||!quick||!ops)return;
 
-  const allowed=()=>{
-    try{return isCarlosBusiness()&&isActiveAdmin()&&sb&&ORG?.id&&!app.classList.contains('hidden')}
-    catch{return false}
-  };
+  let busy=false,voiceEnabled=false,pendingId=null,recordOptions=[],supplierOptions=[];
+  const valid=()=>{try{return isCarlosBusiness()&&isActiveAdmin()&&sb&&ORG?.id&&!app.classList.contains('hidden')}catch{return false}};
+  const currency=n=>new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(Number(n)||0);
+  const niceDate=s=>{try{return new Date(s).toLocaleDateString('es-AR')}catch{return String(s||'—')}};
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const simplify=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+
+  const questions=[
+    ['balance','💰 Saldo operativo'],['sales_month','📈 Ventas del mes'],
+    ['purchases_month','🛒 Compras del mes'],['orders_status','📦 Pedidos por estado'],
+    ['orders_recent','🧾 Últimos pedidos'],['sales_recent','💳 Últimas ventas'],
+    ['purchases_recent','📋 Últimas compras'],['history','🕘 Historial reciente'],
+    ['suppliers','🚚 Proveedores'],['stock','⚠️ Stock bajo'],
+    ['expenses','📉 Gastos y sueldos']
+  ];
+  const kinds=[
+    ['sale_create','Crear venta'],['sale_update','Editar venta'],['sale_delete','Eliminar venta'],
+    ['purchase_create','Crear compra'],['purchase_update','Editar compra'],['purchase_delete','Eliminar compra'],
+    ['order_create','Crear pedido'],['order_update','Editar pedido'],['order_delete','Eliminar pedido']
+  ];
   function bubble(text,role='assistant'){
-    const el=document.createElement('div');
-    el.className='ai-msg '+role;
-    el.textContent=String(text||'');
-    messages.appendChild(el);
-    messages.scrollTop=messages.scrollHeight;
-    return el;
+    const x=document.createElement('div');x.className='ai-msg '+role;x.textContent=String(text||'');
+    messages.appendChild(x);messages.scrollTop=messages.scrollHeight;return x;
   }
-  function tell(text){
+  function say(t){
     if(!voiceEnabled||!('speechSynthesis' in window))return;
+    try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(t).slice(0,900));u.lang='es-AR';u.rate=.95;speechSynthesis.speak(u)}catch{}
+  }
+  function setBusy(v){busy=v;send.disabled=v;input.disabled=v;confirm.disabled=v;prepare.disabled=v;mic.disabled=v;diag.disabled=v;send.textContent=v?'Consultando…':'Enviar'}
+  function clearProposal(){pendingId=null;proposal.classList.remove('visible');diff.textContent='';warning.textContent=''}
+  async function ensureSession(){
+    if(!valid())throw new Error('Ingresá como administrador del negocio Carlos.');
+    const {data,error}=await sb.auth.getSession();
+    if(error||!data?.session?.access_token)throw new Error('Sesión vencida. Cerrá sesión y volvé a ingresar.');
+  }
+  async function rpc(fn,args){await ensureSession();const {data,error}=await sb.rpc(fn,args);if(error)throw new Error(error.message||'No se pudo consultar Supabase.');return data}
+  async function rows(table,order,limit=12,filters=[]){
+    await ensureSession();
+    let q=sb.from(table).select('*').eq('organization_id',ORG.id).order(order,{ascending:false}).limit(limit);
+    for(const [op,key,val] of filters){q=q[op](key,val)}
+    const {data,error}=await q;
+    if(error)throw new Error(error.message||'Error consultando '+table);
+    return data||[];
+  }
+  function monthStart(){
+    const d=new Date();const year=d.getFullYear(),month=String(d.getMonth()+1).padStart(2,'0');
+    return `${year}-${month}-01T00:00:00-03:00`;
+  }
+  function dateDescription(x){return x?.sale_at||x?.purchased_at||x?.created_at||x?.expense_at||''}
+  async function respond(key){
+    if(!valid()||busy)return;
+    const label=questions.find(x=>x[0]===key)?.[1]||'Consulta';
+    const loading=bubble('Consultando '+label.toLowerCase()+'…');setBusy(true);
     try{
-      window.speechSynthesis.cancel();
-      const utterance=new SpeechSynthesisUtterance(String(text).slice(0,750));
-      utterance.lang='es-AR';utterance.rate=1;utterance.pitch=1;
-      window.speechSynthesis.speak(utterance);
-    }catch{}
-  }
-  function setBusy(value){
-    busy=value;
-    send.disabled=value;input.disabled=value;
-    confirmBtn.disabled=value;mic.disabled=value;
-    send.textContent=value?'Procesando…':'Enviar';
-  }
-  function clearProposal(){
-    pending=null;proposalBox.classList.remove('visible');
-    diff.textContent='';warning.textContent='';
-  }
-  function showProposal(p){
-    pending=p;
-    const titles={
-      sale_create:'Crear venta',sale_update:'Editar venta',sale_delete:'Eliminar venta',
-      purchase_create:'Crear compra',purchase_update:'Editar compra',purchase_delete:'Eliminar compra',
-      order_create:'Crear pedido',order_update:'Editar pedido',order_delete:'Eliminar pedido'
-    };
-    const view={accion:titles[p.kind]||p.kind,datos:p.payload};
-    if(p.current)view.registro_actual=p.current;
-    diff.textContent=JSON.stringify(view,null,2);
-    warning.textContent=p.warning||'Revisá todos los datos antes de confirmar. La IA no ejecutó ningún cambio.';
-    proposalBox.classList.add('visible');
-    confirmBtn.focus();
-  }
-  async function invoke(body){
-    const {data:sessionData,error:sessionError}=await sb.auth.getSession();
-    const accessToken=sessionData?.session?.access_token;
-    if(sessionError||!accessToken){
-      throw new Error('No hay una sesión de Supabase activa. Volvé a iniciar sesión en Carlos.');
-    }
-    if(!ORG?.id)throw new Error('No se detectó la empresa Carlos.');
-    const {data,error}=await sb.functions.invoke('gestok-ai',{
-      body:{...body,organization_id:ORG.id},
-      headers:{Authorization:'Bearer '+accessToken}
-    });
-    if(error){
-      let detail='';
-      try{detail=(await error.context?.clone?.().json?.())?.error||''}catch{}
-      throw new Error(detail||error.message||'No se pudo conectar con GestOK IA');
-    }
-    if(data?.error)throw new Error(data.error);
-    return data;
-  }
-  async function ask(){
-    if(busy||!allowed())return;
-    const message=input.value.trim();
-    if(!message)return;
-    clearProposal();input.value='';
-    bubble(message,'user');
-    const loading=bubble('Consultando los datos de Carlos…');
-    setBusy(true);
-    try{
-      const data=await invoke({mode:'chat',message,history:history.slice(-8)});
-      loading.remove();
-      const text=String(data.answer||'No recibí una respuesta.');
-      bubble(text);
-      tell(text);
-      history.push({role:'user',content:message},{role:'assistant',content:text});
-      if(history.length>16)history=history.slice(-16);
-      if(data.proposal)showProposal(data.proposal);
-    }catch(e){
-      loading.remove();bubble('No pude responder: '+(e?.message||e),'warn');
-    }finally{setBusy(false);input.focus()}
-  }
-  async function approve(){
-    if(busy||!pending||!allowed())return;
-    const p=pending;
-    setBusy(true);
-    try{
-      const data=await invoke({mode:'confirm',action_id:p.id});
-      clearProposal();
-      const label=data?.data?.result?.tipo||'operación ejecutada';
-      const text='Confirmado: '+label.replaceAll('_',' ')+'. Actualicé los datos de GestOK.';
-      bubble(text);tell(text);
-      const activeView=document.querySelector('.view.active')?.id;
-      await loadCommerceFromSupabase(U?.id);
-      render();
-      if(activeView==='stats')requestAnimationFrame(drawStatsChart);
-    }catch(e){
-      bubble('La operación NO se ejecutó: '+(e?.message||e),'warn');
-    }finally{setBusy(false)}
-  }
-  const diagnostic=$id('gestokAiDiagnostic');
-  diagnostic?.addEventListener('click',async()=>{
-    if(busy||!allowed())return;
-    diagnostic.disabled=true;
-    const line=bubble('Comprobando sesión, permisos y datos…');
-    try{
-      const result=await invoke({mode:'diagnostic'});
-      const n=result.counts||{};
-      line.textContent=`Conexión válida con Carlos. Ventas: ${n.sales??'—'} · Compras: ${n.purchases??'—'} · Pedidos: ${n.orders??'—'}.`;
-    }catch(e){line.textContent='Conexión fallida: '+(e?.message||e);line.classList.add('warn')}
-    finally{diagnostic.disabled=false}
-  });
-  toggle.addEventListener('click',()=>{
-    if(!allowed())return;
-    panel.hidden=false;
-    document.body.classList.add('gestok-ai-open');
-    if(!messages.children.length){
-      bubble('Hola. Soy GestOK IA, conectada al panel de prueba Carlos. Preguntame por balance, compras, ventas, pedidos, historial o proveedores. También puedo preparar operaciones para que las revises y confirmes.');
-    }
-    input.focus();
-  });
-  close.addEventListener('click',()=>{panel.hidden=true;document.body.classList.remove('gestok-ai-open');window.speechSynthesis?.cancel?.()});
-  send.addEventListener('click',ask);
-  input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ask()}});
-  confirmBtn.addEventListener('click',approve);
-  cancelBtn.addEventListener('click',()=>{clearProposal();bubble('Operación descartada. No se modificó ningún registro.');});
-  speak.addEventListener('click',()=>{
-    voiceEnabled=!voiceEnabled;
-    speak.classList.toggle('active',voiceEnabled);
-    speak.textContent=voiceEnabled?'🔊':'🔇';
-    speak.setAttribute('aria-pressed',String(voiceEnabled));
-    if(!voiceEnabled)window.speechSynthesis?.cancel?.();
-    else tell('Lectura por voz activada.');
-  });
-  // Grabación controlada: un clic inicia, otro clic detiene y transcribe.
-  // Evita depender exclusivamente del reconocimiento remoto de voz del navegador.
-  let recorder=null,recordedStream=null,recordChunks=[],recordTimer=null,cancelRecording=false;
-  function stopTracks(){
-    clearTimeout(recordTimer);recordTimer=null;
-    if(recordedStream){recordedStream.getTracks().forEach(t=>t.stop());recordedStream=null;}
-  }
-  async function transcribeBlob(blob){
-    if(blob.size<200)return bubble('La grabación está vacía. Intentá nuevamente.','warn');
-    if(blob.size>2600000)return bubble('El audio es demasiado largo. Grabá un mensaje más corto.','warn');
-    const buffer=new Uint8Array(await blob.arrayBuffer());
-    let base64='';
-    for(let i=0;i<buffer.length;i+=32768){
-      base64+=String.fromCharCode(...buffer.subarray(i,i+32768));
-    }
-    const loading=bubble('Transcribiendo tu voz…');
-    setBusy(true);
-    try{
-      const mime=String(blob.type||'audio/webm').split(';')[0];
-      const data=await invoke({mode:'transcribe',mime_type:mime,audio_base64:btoa(base64)});
-      loading.remove();
-      if(data.text){
-        input.value=(input.value+' '+data.text).trim().slice(0,1200);
-        bubble('Texto reconocido: '+data.text);
-        input.focus();
-      }else bubble('No se escucharon palabras. Probá de nuevo.','warn');
-    }catch(e){loading.remove();bubble('No se pudo transcribir: '+(e?.message||e),'warn')}
+      let answer='';
+      if(key==='balance'){
+        const d=await rpc('gestok_ai_summary',{p_org:ORG.id});
+        answer=`Saldo operativo estimado (histórico): ${currency(d.saldo_operativo_estimado)}.\n`+
+          `Ventas: ${currency(d.ventas_total)}; pedidos contabilizados: ${currency(d.pedidos_contabilizados_total)}.\n`+
+          `Gastos (incluidas compras): ${currency(d.egresos_gastos_y_compras_total)}; sueldos: ${currency(d.sueldos_total)}.\n`+
+          `Es una estimación histórica, no el saldo bancario ni el capital contable.`;
+      }else if(key==='sales_month'){
+        const d=await rows('sales','sale_at',1000,[['gte','sale_at',monthStart()]]);
+        answer=`Ventas registradas desde el inicio de este mes: ${d.length} · Total: ${currency(d.reduce((a,x)=>a+Number(x.amount||0),0))}.`+
+          (d.length===1000?' Se alcanzó el límite de 1.000 filas de esta consulta.':'');
+      }else if(key==='purchases_month'){
+        const d=await rows('purchases','purchased_at',1000,[['gte','purchased_at',monthStart()]]);
+        answer=`Compras registradas desde el inicio de este mes: ${d.length} · Total: ${currency(d.reduce((a,x)=>a+Number(x.amount||0),0))}.`+
+          (d.length===1000?' Se alcanzó el límite de 1.000 filas de esta consulta.':'');
+      }else if(key==='orders_status'){
+        const d=await rows('orders','created_at',1000);
+        const counts={};for(const o of d){counts[o.status||'Sin estado']=(counts[o.status||'Sin estado']||0)+1}
+        answer=`Pedidos consultados: ${d.length}.\n`+Object.entries(counts).map(([s,n])=>`${s}: ${n}`).join('\n')+
+          (d.length===1000?'\nSolo se contaron los 1.000 pedidos más recientes.':'');
+      }else if(key==='orders_recent'){
+        const d=await rows('orders','created_at',8);
+        answer=d.length?'Últimos pedidos:\n'+d.map(x=>`• ${niceDate(x.created_at)} · ${x.title} · ${x.client_name} · ${currency(x.amount)} · ${x.status}`).join('\n'):'No hay pedidos registrados.';
+      }else if(key==='sales_recent'){
+        const d=await rows('sales','sale_at',8);
+        answer=d.length?'Últimas ventas:\n'+d.map(x=>`• ${niceDate(x.sale_at)} · ${x.concept} · ${currency(x.amount)} · ${x.customer_name||'Cliente'}`).join('\n'):'No hay ventas registradas.';
+      }else if(key==='purchases_recent'){
+        const d=await rows('purchases','purchased_at',8);
+        answer=d.length?'Últimas compras:\n'+d.map(x=>`• ${niceDate(x.purchased_at)} · ${x.description} · ${currency(x.amount)} · ${x.supplier_name||'Proveedor'}`).join('\n'):'No hay compras registradas.';
+      }else if(key==='history'){
+        const data=await rpc('commerce_balance_report',{p_organization_id:ORG.id});
+        const d=Array.isArray(data)?data.slice().sort((a,b)=>String(b.movement_date).localeCompare(String(a.movement_date))).slice(0,10):[];
+        answer=d.length?'Historial de movimientos (últimos 10):\n'+d.map(x=>`• ${niceDate(x.movement_date)} · ${x.concept||x.movement_kind||'Movimiento'} · ${x.direction==='expense'?'-':'+'}${currency(x.amount)}`).join('\n'):'No hay movimientos en el historial.';
+      }else if(key==='suppliers'){
+        const d=await rows('suppliers','name',30,[['eq','active',true]]);
+        answer=d.length?'Proveedores activos (hasta 30):\n'+d.map(x=>`• ${x.name}${x.category?' · '+x.category:''}`).join('\n'):'Todavía no hay proveedores activos.';
+      }else if(key==='stock'){
+        const d=await rows('stock_items','created_at',1000,[['eq','active',true]]);
+        const low=d.filter(x=>Number(x.quantity||0)<=Number(x.min_quantity||0));
+        answer=low.length?'Productos con stock bajo:\n'+low.slice(0,20).map(x=>`• ${x.name}: ${x.quantity} (mínimo ${x.min_quantity})`).join('\n')+(low.length>20?`\nY ${low.length-20} más.`:''):'No encontré productos por debajo de su mínimo entre los consultados.';
+      }else if(key==='expenses'){
+        const d=await rpc('gestok_ai_summary',{p_org:ORG.id});
+        answer=`Gastos históricos (incluyendo compras): ${currency(d.egresos_gastos_y_compras_total)}.\n`+
+          `Compras incluidas en ese total: ${currency(d.compras_total_incluidas_en_egresos)}.\n`+
+          `Sueldos pagados: ${currency(d.sueldos_total)}. No sumes compras dos veces.`;
+      }else{answer='Esa consulta no está programada. Elegí una de las preguntas disponibles.'}
+      loading.textContent=answer;say(answer);
+    }catch(e){loading.classList.add('warn');loading.textContent='No pude consultar los registros: '+(e?.message||e)}
     finally{setBusy(false)}
   }
-  function resetMic(){
-    mic.classList.remove('active','recording');mic.textContent='🎙';mic.title='Dictar con micrófono';
+  function intent(t){
+    const s=simplify(t);
+    if(/saldo|capital|balance|dinero disponible/.test(s))return 'balance';
+    if(/(venta|ingreso)/.test(s)&&/(mes|actual|total)/.test(s))return 'sales_month';
+    if(/(compra)/.test(s)&&/(mes|actual|total)/.test(s))return 'purchases_month';
+    if(/pedido/.test(s)&&/(pendiente|estado|cuantos|cantidad)/.test(s))return 'orders_status';
+    if(/ultimo.*pedido|pedido.*reciente/.test(s))return 'orders_recent';
+    if(/ultima.*venta|venta.*reciente/.test(s))return 'sales_recent';
+    if(/ultima.*compra|compra.*reciente/.test(s))return 'purchases_recent';
+    if(/historial|movimiento/.test(s))return 'history';
+    if(/proveedor/.test(s))return 'suppliers';
+    if(/stock|inventario/.test(s))return 'stock';
+    if(/gasto|sueldo|egreso/.test(s))return 'expenses';
+    return null;
   }
-  const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-  mic.addEventListener('click',async()=>{
-    if(busy)return;
-    if(recorder?.state==='recording'){recorder.stop();return;}
-    if(!window.MediaRecorder||!navigator.mediaDevices?.getUserMedia){
-      if(!Recognition)return bubble('El navegador no admite grabación de voz. Podés escribir el comando.','warn');
-      const r=new Recognition();r.lang='es-AR';r.interimResults=false;r.maxAlternatives=1;
-      r.onresult=e=>{input.value=(input.value+' '+(e.results?.[0]?.[0]?.transcript||'')).trim();input.focus()};
-      r.onerror=e=>bubble('El dictado del navegador falló ('+e.error+'). Escribí el comando o probá Chrome actualizado.','warn');
-      r.onend=resetMic;
-      try{r.start();mic.classList.add('active')}catch{resetMic()}
+  async function ask(){
+    if(busy||!valid())return;
+    const value=input.value.trim();if(!value)return;
+    input.value='';bubble(value,'user');
+    const key=intent(value);
+    if(key)await respond(key);
+    else bubble('Soy un asistente con preguntas programadas, no una IA generativa. Elegí una pregunta de los botones de arriba o escribí: saldo, compras del mes, pedidos pendientes, historial o stock bajo.');
+  }
+  function closeOps(){ops.hidden=true;clearProposal()}
+  const selectedRecord=()=>recordOptions.find(x=>x.id===el('gestokAiTarget')?.value)||null;
+  function titleOf(kind){return kinds.find(x=>x[0]===kind)?.[1]||kind}
+  function formInput(name,key,value='',type='text',required=true){
+    return `<label>${esc(name)}<input data-key="${esc(key)}" type="${esc(type)}" value="${esc(value)}" ${required?'required':''}></label>`;
+  }
+  function formTextarea(name,key,value=''){
+    return `<label>${esc(name)}<textarea data-key="${esc(key)}">${esc(value)}</textarea></label>`;
+  }
+  function formSelect(name,key,options,value){
+    return `<label>${esc(name)}<select data-key="${esc(key)}">${options.map(o=>`<option value="${esc(o[0])}" ${String(o[0])===String(value)?'selected':''}>${esc(o[1])}</option>`).join('')}</select></label>`;
+  }
+  function drawFields(){
+    const k=kindSelect.value,x=selectedRecord();
+    fields.innerHTML='';
+    if(k.endsWith('_delete')){
+      fields.innerHTML=`<p class="ai-ops-note">Se eliminará el registro seleccionado, con los efectos contables correspondientes.</p>`+formInput('Escribí ELIMINAR para habilitar el borrado','delete_check','','text');
       return;
     }
-    try{
-      cancelRecording=false;
-      recordedStream=await navigator.mediaDevices.getUserMedia({audio:true});
-      const preferred=['audio/webm;codecs=opus','audio/mp4','audio/webm'];
-      const mimeType=preferred.find(m=>MediaRecorder.isTypeSupported(m));
-      recorder=new MediaRecorder(recordedStream,mimeType?{mimeType}:undefined);
-      recordChunks=[];
-      recorder.ondataavailable=e=>{if(e.data?.size)recordChunks.push(e.data)};
-      recorder.onstop=async()=>{
-        const type=recorder?.mimeType||mimeType||'audio/webm';
-        const blob=new Blob(recordChunks,{type});
-        stopTracks();resetMic();recorder=null;recordChunks=[];
-        if(!cancelRecording)await transcribeBlob(blob);
-      };
-      recorder.onerror=()=>{stopTracks();resetMic();bubble('Error grabando el micrófono.','warn')};
-      recorder.start();mic.classList.add('active','recording');mic.textContent='■';
-      mic.title='Detener y transcribir grabación (máximo 25 segundos)';
-      recordTimer=setTimeout(()=>{if(recorder?.state==='recording')recorder.stop()},25000);
-    }catch(e){stopTracks();resetMic();bubble('No se pudo abrir el micrófono: '+(e?.message||e),'warn')}
-  });
-  close.addEventListener('click',()=>{
-    cancelRecording=true;
-    if(recorder?.state==='recording')recorder.stop();
-    else stopTracks();
-  });
-  // No persiste conversaciones ni datos sensibles en localStorage.
-  // Al salir de Carlos, se oculta la UI; el backend siempre revalida la sesión.
-  const appNode=$id('app');
-  if(appNode){new MutationObserver(()=>{
-    if(appNode.classList.contains('hidden')){
-      panel.hidden=true;document.body.classList.remove('gestok-ai-open');clearProposal();history=[];messages.textContent='';
-      window.speechSynthesis?.cancel?.();
+    let f='';
+    const pay=[['Efectivo','Efectivo'],['Transferencia','Transferencia'],['QR','QR'],['Tarjeta','Tarjeta'],['Otro','Otro']];
+    if(k.startsWith('sale_')){
+      f+=formInput('Concepto','concept',x?.concept||'');
+      f+=formInput('Cliente','client',x?.customer_name||'Cliente ocasional');
+      f+=formInput('Importe en pesos','amount',x?.amount||'','number');
+      f+=formSelect('Medio de pago','payment',pay,x?.payment_method||'Efectivo');
+      f+=formTextarea('Observaciones','notes',x?.notes||'');
+    }else if(k.startsWith('purchase_')){
+      f+=formInput('Descripción de la compra','description',x?.description||'');
+      f+=formSelect('Proveedor','supplier_id',supplierOptions.map(y=>[y.id,y.name]),x?.supplier_id||supplierOptions[0]?.id||'');
+      f+=formInput('Importe en pesos','amount',x?.amount||'','number');
+      f+=formSelect('Medio de pago','payment',pay,x?.payment_method||'Transferencia');
+      f+=formTextarea('Observaciones','notes',x?.notes||'');
+    }else if(k.startsWith('order_')){
+      f+=formInput('Título del pedido','title',x?.title||'');
+      f+=formInput('Cliente','client',x?.client_name||'');
+      f+=formInput('Importe en pesos','amount',x?.amount||'','number');
+      f+=formInput('Entrega prevista (opcional)','due_date',x?.due_date||'','date',false);
+      f+=formTextarea('Descripción','description',x?.description||'');
     }
-  }).observe(appNode,{attributes:true,attributeFilter:['class']})}
+    fields.innerHTML=f;
+  }
+  async function updateOperation(){
+    if(busy||!valid())return;
+    const k=kindSelect.value,table=k.startsWith('sale_')?'sales':k.startsWith('purchase_')?'purchases':'orders';
+    targetArea.textContent='';fields.textContent='';recordOptions=[];supplierOptions=[];
+    setBusy(true);
+    try{
+      if(k.startsWith('purchase_')){
+        supplierOptions=await rows('suppliers','name',200,[['eq','active',true]]);
+      }
+      if(!k.endsWith('_create')){
+        const order=table==='sales'?'sale_at':table==='purchases'?'purchased_at':'created_at';
+        recordOptions=await rows(table,order,100);
+        if(!recordOptions.length){targetArea.textContent='No encontré registros para editar o eliminar.';return}
+        const label=document.createElement('label');label.textContent='Registro a modificar';
+        const select=document.createElement('select');select.id='gestokAiTarget';
+        for(const r of recordOptions){
+          const opt=document.createElement('option');opt.value=r.id;
+          const name=r.concept||r.description||r.title||'Sin título';
+          opt.textContent=`${name} · ${currency(r.amount)}`;select.appendChild(opt);
+        }
+        select.onchange=drawFields;label.appendChild(select);targetArea.appendChild(label);
+      }
+      drawFields();
+    }catch(e){bubble('No pude preparar la operación: '+(e?.message||e),'warn')}
+    finally{setBusy(false)}
+  }
+  async function prepareOperation(){
+    if(!valid()||busy)return;
+    const kind=kindSelect.value;
+    const rec=selectedRecord();
+    if(!kind.endsWith('_create')&&!rec){bubble('Primero elegí el registro que querés modificar.','warn');return}
+    const payload={};if(rec)payload.id=rec.id;
+    for(const field of fields.querySelectorAll('[data-key]')){
+      const key=field.dataset.key;
+      if(key==='delete_check'){
+        if(field.value.trim().toUpperCase()!=='ELIMINAR'){bubble('Para borrar, escribí ELIMINAR exactamente.','warn');return}
+      }else if(key==='amount'){
+        const amount=Number(field.value);
+        if(!Number.isFinite(amount)||amount<=0){bubble('Ingresá un importe mayor que cero.','warn');return}
+        payload[key]=amount;
+      }else{payload[key]=field.value.trim()}
+    }
+    if(!kind.endsWith('_delete')){
+      const key=kind.startsWith('sale_')?'concept':kind.startsWith('purchase_')?'description':'title';
+      if(!payload[key]){bubble('Completá la descripción o título del registro.','warn');return}
+      if(kind.startsWith('order_')&&!payload.client){bubble('Completá el cliente.','warn');return}
+      if(kind.startsWith('purchase_')&&!payload.supplier_id){bubble('Seleccioná un proveedor activo.','warn');return}
+    }
+    setBusy(true);clearProposal();
+    try{
+      const id=await rpc('gestok_ai_propose',{p_org:ORG.id,p_action_type:kind,p_payload:payload});
+      if(!id)throw new Error('Supabase no devolvió el identificador de la propuesta.');
+      pendingId=id;
+      diff.textContent=JSON.stringify({operacion:titleOf(kind),datos:payload,actual:rec?{id:rec.id,importe:rec.amount}:undefined},null,2);
+      warning.textContent='Borrador listo. Verificá todos los datos. Solo se ejecutará si pulsás Confirmar operación. Vence en 10 minutos.';
+      proposal.classList.add('visible');ops.hidden=true;
+      bubble('Preparé '+titleOf(kind).toLowerCase()+'. Revisá la propuesta y confirmá o cancelá. Todavía no se modificaron tus registros.');
+    }catch(e){bubble('No pude preparar la operación: '+(e?.message||e)+'. Si falta el RPC, ejecutá el SQL V37.','warn')}
+    finally{setBusy(false)}
+  }
+  async function approve(){
+    if(!pendingId||busy||!valid())return;
+    const id=pendingId;setBusy(true);
+    try{
+      const result=await rpc('gestok_ai_confirm',{p_action_id:id});
+      if(result?.ok!==true)throw new Error('El servidor no confirmó el cambio.');
+      clearProposal();bubble('Operación confirmada y registrada en GestOK. Se actualizarán los datos.');
+      await loadCommerceFromSupabase(U?.id);render();
+    }catch(e){bubble('NO se pudo completar la operación: '+(e?.message||e),'warn')}
+    finally{setBusy(false)}
+  }
+  function openOperations(){if(!valid())return;ops.hidden=false;updateOperation()}
+  questions.forEach(([key,label])=>{
+    const btn=document.createElement('button');btn.type='button';btn.textContent=label;
+    btn.onclick=()=>respond(key);quick.appendChild(btn);
+  });
+  const operationsButton=document.createElement('button');operationsButton.type='button';
+  operationsButton.textContent='✎ Operaciones';operationsButton.className='ai-quick-operate';
+  operationsButton.onclick=openOperations;quick.appendChild(operationsButton);
+  for(const [value,label] of kinds){const opt=document.createElement('option');opt.value=value;opt.textContent=label;kindSelect.appendChild(opt)}
+  kindSelect.onchange=updateOperation;prepare.onclick=prepareOperation;opsClose.onclick=closeOps;
+  confirm.onclick=approve;
+  cancel.onclick=()=>{clearProposal();bubble('Borrador descartado. Ningún registro del negocio fue modificado.');};
+  diag.onclick=async()=>{
+    if(busy||!valid())return;setBusy(true);const line=bubble('Verificando conexión con Supabase…');
+    try{const x=await rpc('gestok_ai_summary',{p_org:ORG.id});
+      line.textContent=`Conexión correcta con Carlos. Ventas: ${x.cantidad_ventas}; compras: ${x.cantidad_compras}; pedidos: ${x.cantidad_pedidos}. No se usa OpenAI.`;
+    }catch(e){line.textContent='Falló la consulta: '+(e?.message||e);line.classList.add('warn')}
+    finally{setBusy(false)}
+  };
+  toggle.onclick=()=>{
+    if(!valid())return;panel.hidden=false;document.body.classList.add('gestok-ai-open');
+    if(!messages.children.length)bubble('Soy el asistente integrado de GestOK. No consumo créditos de OpenAI. Elegí una pregunta de arriba o abrí Operaciones para crear, editar o eliminar registros con tu confirmación.');
+  };
+  close.onclick=()=>{panel.hidden=true;document.body.classList.remove('gestok-ai-open');window.speechSynthesis?.cancel?.()};
+  send.onclick=ask;input.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ask()}};
+  voice.onclick=()=>{voiceEnabled=!voiceEnabled;voice.classList.toggle('active',voiceEnabled);
+    voice.textContent=voiceEnabled?'🔊':'🔇';voice.setAttribute('aria-pressed',String(voiceEnabled));
+    if(!voiceEnabled)window.speechSynthesis?.cancel?.();else say('Lectura por voz activada.');};
+  const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+  mic.onclick=()=>{
+    if(!Recognition){bubble('Este navegador no ofrece dictado por voz. Usá las preguntas predeterminadas o escribí.','warn');return}
+    try{const r=new Recognition();r.lang='es-AR';r.interimResults=false;r.maxAlternatives=1;
+      r.onresult=e=>{input.value=(input.value+' '+(e.results?.[0]?.[0]?.transcript||'')).trim();input.focus()};
+      r.onerror=e=>bubble('El dictado del navegador no está disponible ('+e.error+'). Las preguntas siguen funcionando sin micrófono.','warn');
+      r.start();}catch{bubble('No se pudo iniciar el dictado de voz.','warn')}
+  };
+  const appNode=el('app');if(appNode){
+    new MutationObserver(()=>{
+      if(appNode.classList.contains('hidden')){
+        panel.hidden=true;document.body.classList.remove('gestok-ai-open');clearProposal();ops.hidden=true;
+        messages.textContent='';window.speechSynthesis?.cancel?.();
+      }
+    }).observe(appNode,{attributes:true,attributeFilter:['class']});
+  }
 })();
 
 </script>
