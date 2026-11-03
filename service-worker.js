@@ -1,5 +1,5 @@
 
-const CACHE_NAME='gestok-web-control-v51-44';
+const CACHE_NAME='gestok-web-control-v51-45';
 
 const APP_SHELL=[
   './manifest.webmanifest',
@@ -39,7 +39,8 @@ self.addEventListener('fetch',event=>{
   const req=event.request;
   const url=new URL(req.url);
 
-  // Evita que el HTML principal quede desactualizado.
+  // El HTML principal siempre intenta cargarse
+  // desde internet para evitar versiones anteriores.
   if(
     req.mode==='navigate' ||
     url.pathname.endsWith('/index.html') ||
@@ -57,7 +58,8 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  // Caché para archivos secundarios.
+  // Recursos secundarios:
+  // utiliza caché y actualiza cuando hay conexión.
   event.respondWith(
     caches.match(req).then(cached=>{
 
