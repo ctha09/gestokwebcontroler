@@ -3944,6 +3944,72 @@ body.carlos-business .carlos-trend-empty{font-size:14px;color:#b9c4d0;margin:10p
 .scr-delete-actions [data-action="delete"]{color:white;background:#ba3d51;border:1px solid #df5368}
 .scr-delete-actions [data-action="delete"]:disabled{opacity:.6}
 @media(max-width:440px){.scr-delete-confirm-dialog{padding:18px}.scr-delete-actions{grid-template-columns:1fr}}
+
+/* ============================================================
+   V51.45 · GestOK IA · solo empresa Carlos administrador
+   No modifica vistas existentes ni componentes de negocio.
+   ============================================================ */
+#gestokAiToggle{display:none;position:fixed;right:26px;bottom:105px;z-index:1100;
+  border:1px solid rgba(242,140,40,.55);border-radius:18px;padding:12px 17px;
+  color:#fff;font:800 14px system-ui,-apple-system,Segoe UI,sans-serif;
+  background:linear-gradient(145deg,rgba(33,41,52,.94),rgba(17,22,30,.96));
+  box-shadow:0 12px 32px #0008,0 0 24px #f28c2830;cursor:pointer;align-items:center;gap:9px}
+body.carlos-business #app:not(.hidden) #gestokAiToggle{display:flex}
+#gestokAiToggle .ai-dot{width:10px;height:10px;border-radius:50%;background:#f28c28;box-shadow:0 0 12px #f28c28}
+#gestokAiPanel[hidden]{display:none!important}
+#gestokAiPanel{position:fixed;right:24px;bottom:95px;width:min(470px,calc(100vw - 24px));
+  height:min(680px,calc(100dvh - 115px));z-index:1150;display:flex;flex-direction:column;
+  overflow:hidden;border-radius:22px;border:1px solid #ffffff22;
+  background:linear-gradient(145deg,rgba(24,32,43,.97),rgba(9,14,21,.98));
+  box-shadow:0 30px 90px #000c,0 0 0 1px #f28c2815;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);color:#f6f8fb;
+  font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+#gestokAiPanel *{box-sizing:border-box}
+#gestokAiPanel .ai-head{display:flex;gap:9px;align-items:center;padding:16px 17px;
+  background:linear-gradient(90deg,#f28c281c,transparent);border-bottom:1px solid #ffffff19}
+#gestokAiPanel .ai-head-text{flex:1;min-width:0}
+#gestokAiPanel .ai-head strong{display:block;font-size:18px;color:#fff}
+#gestokAiPanel .ai-head small{font-size:11px;color:#aeb8c5}
+#gestokAiPanel .ai-mini-btn{background:#26303d;color:#e6edf6;border:1px solid #ffffff1d;
+  min-height:36px;min-width:36px;border-radius:10px;cursor:pointer;font-size:16px}
+#gestokAiPanel .ai-mini-btn.active{background:#f28c28;color:#15191f}
+#gestokAiPanel .ai-info{font-size:11px;color:#c5cedb;padding:9px 14px;
+  background:#f28c280e;border-bottom:1px solid #ffffff0e}
+#gestokAiPanel .ai-messages{flex:1;overflow-y:auto;padding:16px 14px;display:flex;
+  flex-direction:column;gap:11px;overscroll-behavior:contain}
+#gestokAiPanel .ai-msg{max-width:92%;font-size:13px;line-height:1.55;white-space:pre-wrap;
+  overflow-wrap:anywhere;padding:12px 14px;border:1px solid #ffffff1b;border-radius:15px}
+#gestokAiPanel .ai-msg.user{align-self:flex-end;background:#f28c282e;border-color:#f28c284f}
+#gestokAiPanel .ai-msg.assistant{align-self:flex-start;background:#253040b0}
+#gestokAiPanel .ai-msg.warn{border-color:#edbb5360;background:#7a53182d}
+#gestokAiPanel .ai-proposal{display:none;margin:0 12px 9px;padding:12px;border-radius:14px;
+  border:1px solid #f28c285c;background:rgba(53,41,25,.93)}
+#gestokAiPanel .ai-proposal.visible{display:block}
+#gestokAiPanel .ai-proposal strong{display:block;margin-bottom:5px;color:#ffd2a2;font-size:14px}
+#gestokAiPanel .ai-proposal pre{white-space:pre-wrap;overflow:auto;max-height:150px;
+  background:#111820;border:1px solid #ffffff13;border-radius:9px;padding:10px;
+  color:#cbd7e5;font:12px/1.5 ui-monospace,Consolas,monospace}
+#gestokAiPanel .ai-proposal p{font-size:11px;color:#e8c9ae;margin:8px 0}
+#gestokAiPanel .ai-proposal .ai-actions{display:flex;gap:8px}
+#gestokAiPanel .ai-btn{background:#26303d;border:1px solid #ffffff24;color:#fff;
+  border-radius:11px;padding:10px 13px;font-weight:700;font-size:12px;cursor:pointer}
+#gestokAiPanel .ai-btn.primary{background:#f28c28;border-color:#f28c28;color:#12171d}
+#gestokAiPanel .ai-compose .ai-btn{flex:0 0 auto;min-width:76px;white-space:nowrap}
+#gestokAiPanel .ai-btn:disabled{opacity:.5;cursor:wait}
+#gestokAiPanel .ai-compose{border-top:1px solid #ffffff19;padding:12px;display:flex;gap:8px;align-items:end}
+#gestokAiPanel .ai-compose textarea{flex:1;min-width:0;min-height:46px;max-height:125px;resize:vertical;
+  background:#121a24;border:1px solid #ffffff27;border-radius:12px;color:#fff;
+  padding:11px 12px;font:13px/1.5 system-ui,Segoe UI,sans-serif;outline:none}
+#gestokAiPanel .ai-compose textarea:focus{border-color:#f28c28a0}
+#gestokAiPanel .ai-footer{font-size:10px;color:#8897aa;padding:0 14px 11px}
+body.carlos-business.gestok-ai-open .wa-float{display:none!important}
+body.carlos-business.gestok-ai-open .gestok-cursor-dot,body.carlos-business.gestok-ai-open .gestok-cursor-halo,body.carlos-business.gestok-ai-open .carlos-cursor{display:none!important}
+@media(max-width:600px){
+ #gestokAiToggle{right:12px;bottom:93px;padding:10px 13px;font-size:12px}
+ #gestokAiPanel{right:6px;left:6px;bottom:9px;width:auto;height:min(85dvh,720px);border-radius:18px}
+ #gestokAiPanel .ai-head{padding:12px}
+}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -4384,6 +4450,30 @@ body.carlos-business .carlos-trend-empty{font-size:14px;color:#b9c4d0;margin:10p
   <button data-v="activity"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17h4l2-6 3 9 2-6h5"/></svg></span><span>Actividad</span></button>
   <button id="more" type="button" onclick="openDockMore(event)"><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></span><span>Más</span></button>
 </nav>
+
+<button id="gestokAiToggle" type="button" title="Abrir GestOK IA"><span class="ai-dot"></span>GestOK IA</button>
+<div id="gestokAiPanel" role="dialog" aria-modal="false" aria-label="GestOK IA para Carlos" hidden>
+  <div class="ai-head">
+    <span style="font-size:26px;color:#f28c28">✦</span>
+    <div class="ai-head-text"><strong>Gest<span style="color:#f28c28">OK</span> IA</strong><small>Asistente de Carlos · datos en Supabase</small></div>
+    <button id="gestokAiVoice" class="ai-mini-btn" title="Activar o desactivar lectura por voz" aria-label="Lectura por voz" aria-pressed="false">🔇</button>
+    <button id="gestokAiClose" class="ai-mini-btn" title="Cerrar" aria-label="Cerrar">×</button>
+  </div>
+  <div class="ai-info">Consultá tu negocio o prepará operaciones. Ningún cambio se aplica sin tu confirmación.</div>
+  <div id="gestokAiMessages" class="ai-messages" aria-live="polite"></div>
+  <div id="gestokAiProposal" class="ai-proposal">
+    <strong>Operación pendiente de confirmación</strong>
+    <pre id="gestokAiDiff"></pre>
+    <p id="gestokAiWarning"></p>
+    <div class="ai-actions"><button id="gestokAiCancel" class="ai-btn" type="button">Cancelar</button><button id="gestokAiConfirm" class="ai-btn primary" type="button">Confirmar operación</button></div>
+  </div>
+  <div class="ai-compose">
+    <button id="gestokAiMic" class="ai-mini-btn" title="Dictar con micrófono" aria-label="Dictar">🎙</button>
+    <textarea id="gestokAiInput" maxlength="1200" rows="2" placeholder="Ej.: ¿Cuál es el saldo operativo?" aria-label="Preguntarle a GestOK IA"></textarea>
+    <button id="gestokAiSend" class="ai-btn primary" type="button">Enviar</button>
+  </div>
+  <div class="ai-footer">Los importes son datos reales de la empresa. El saldo operativo no equivale al dinero del banco.</div>
+</div>
 </section>
 
 <div id="back" class="backdrop"></div>
@@ -10224,4 +10314,168 @@ updateGestokInstallBanner();
   </div>
 </div>
 <a class="wa-float" href="https://wa.me/5493751232618?text=Hola%20GestOK%2C%20tengo%20una%20consulta%20sobre%20Web%20Control." target="_blank" rel="noopener" aria-label="Abrir WhatsApp de GestOK"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"/><path d="M9 8.8c.5 2.3 2 3.9 4.3 4.7"/><path d="M9 8.8 10.3 8l1.1 2-1 .7M13.3 13.5l.7-1 2 1.1-.8 1.3"/></svg></a>
+<script>
+
+/* ============================================================
+   V51.45 · GestOK IA Carlos · interfaz sin tocar módulos existentes
+   ============================================================ */
+(()=>{
+  const $id=id=>document.getElementById(id);
+  const toggle=$id('gestokAiToggle'),panel=$id('gestokAiPanel');
+  const messages=$id('gestokAiMessages'),input=$id('gestokAiInput');
+  const send=$id('gestokAiSend'),mic=$id('gestokAiMic');
+  const speak=$id('gestokAiVoice'),close=$id('gestokAiClose');
+  const proposalBox=$id('gestokAiProposal'),diff=$id('gestokAiDiff');
+  const warning=$id('gestokAiWarning'),confirmBtn=$id('gestokAiConfirm');
+  const cancelBtn=$id('gestokAiCancel');
+  if(!toggle||!panel)return;
+  let busy=false,voiceEnabled=false,pending=null;
+  let history=[],recognition=null;
+
+  const allowed=()=>{
+    try{return isCarlosBusiness()&&isActiveAdmin()&&sb&&ORG?.id&&!app.classList.contains('hidden')}
+    catch{return false}
+  };
+  function bubble(text,role='assistant'){
+    const el=document.createElement('div');
+    el.className='ai-msg '+role;
+    el.textContent=String(text||'');
+    messages.appendChild(el);
+    messages.scrollTop=messages.scrollHeight;
+    return el;
+  }
+  function tell(text){
+    if(!voiceEnabled||!('speechSynthesis' in window))return;
+    try{
+      window.speechSynthesis.cancel();
+      const utterance=new SpeechSynthesisUtterance(String(text).slice(0,750));
+      utterance.lang='es-AR';utterance.rate=1;utterance.pitch=1;
+      window.speechSynthesis.speak(utterance);
+    }catch{}
+  }
+  function setBusy(value){
+    busy=value;
+    send.disabled=value;input.disabled=value;
+    confirmBtn.disabled=value;mic.disabled=value;
+    send.textContent=value?'Procesando…':'Enviar';
+  }
+  function clearProposal(){
+    pending=null;proposalBox.classList.remove('visible');
+    diff.textContent='';warning.textContent='';
+  }
+  function showProposal(p){
+    pending=p;
+    const titles={
+      sale_create:'Crear venta',sale_update:'Editar venta',sale_delete:'Eliminar venta',
+      purchase_create:'Crear compra',purchase_update:'Editar compra',purchase_delete:'Eliminar compra',
+      order_create:'Crear pedido',order_update:'Editar pedido',order_delete:'Eliminar pedido'
+    };
+    const view={accion:titles[p.kind]||p.kind,datos:p.payload};
+    if(p.current)view.registro_actual=p.current;
+    diff.textContent=JSON.stringify(view,null,2);
+    warning.textContent=p.warning||'Revisá todos los datos antes de confirmar. La IA no ejecutó ningún cambio.';
+    proposalBox.classList.add('visible');
+    confirmBtn.focus();
+  }
+  async function invoke(body){
+    const {data,error}=await sb.functions.invoke('gestok-ai',{
+      body:{...body,organization_id:ORG.id}
+    });
+    if(error){
+      let detail='';
+      try{detail=(await error.context?.json?.())?.error||''}catch{}
+      throw new Error(detail||error.message||'No se pudo conectar con GestOK IA');
+    }
+    if(data?.error)throw new Error(data.error);
+    return data;
+  }
+  async function ask(){
+    if(busy||!allowed())return;
+    const message=input.value.trim();
+    if(!message)return;
+    clearProposal();input.value='';
+    bubble(message,'user');
+    const loading=bubble('Consultando los datos de Carlos…');
+    setBusy(true);
+    try{
+      const data=await invoke({mode:'chat',message,history:history.slice(-8)});
+      loading.remove();
+      const text=String(data.answer||'No recibí una respuesta.');
+      bubble(text);
+      tell(text);
+      history.push({role:'user',content:message},{role:'assistant',content:text});
+      if(history.length>16)history=history.slice(-16);
+      if(data.proposal)showProposal(data.proposal);
+    }catch(e){
+      loading.remove();bubble('No pude responder: '+(e?.message||e),'warn');
+    }finally{setBusy(false);input.focus()}
+  }
+  async function approve(){
+    if(busy||!pending||!allowed())return;
+    const p=pending;
+    setBusy(true);
+    try{
+      const data=await invoke({mode:'confirm',action_id:p.id});
+      clearProposal();
+      const label=data?.data?.result?.tipo||'operación ejecutada';
+      const text='Confirmado: '+label.replaceAll('_',' ')+'. Actualicé los datos de GestOK.';
+      bubble(text);tell(text);
+      const activeView=document.querySelector('.view.active')?.id;
+      await loadCommerceFromSupabase(U?.id);
+      render();
+      if(activeView==='stats')requestAnimationFrame(drawStatsChart);
+    }catch(e){
+      bubble('La operación NO se ejecutó: '+(e?.message||e),'warn');
+    }finally{setBusy(false)}
+  }
+  toggle.addEventListener('click',()=>{
+    if(!allowed())return;
+    panel.hidden=false;
+    document.body.classList.add('gestok-ai-open');
+    if(!messages.children.length){
+      bubble('Hola. Soy GestOK IA, conectada al panel de prueba Carlos. Preguntame por balance, compras, ventas, pedidos, historial o proveedores. También puedo preparar operaciones para que las revises y confirmes.');
+    }
+    input.focus();
+  });
+  close.addEventListener('click',()=>{panel.hidden=true;document.body.classList.remove('gestok-ai-open');window.speechSynthesis?.cancel?.()});
+  send.addEventListener('click',ask);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ask()}});
+  confirmBtn.addEventListener('click',approve);
+  cancelBtn.addEventListener('click',()=>{clearProposal();bubble('Operación descartada. No se modificó ningún registro.');});
+  speak.addEventListener('click',()=>{
+    voiceEnabled=!voiceEnabled;
+    speak.classList.toggle('active',voiceEnabled);
+    speak.textContent=voiceEnabled?'🔊':'🔇';
+    speak.setAttribute('aria-pressed',String(voiceEnabled));
+    if(!voiceEnabled)window.speechSynthesis?.cancel?.();
+    else tell('Lectura por voz activada.');
+  });
+  const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!Recognition){
+    mic.title='El reconocimiento de voz no está disponible en este navegador';
+  }else{
+    mic.addEventListener('click',()=>{
+      if(busy)return;
+      if(recognition){recognition.stop();return;}
+      const r=new Recognition();recognition=r;
+      r.lang='es-AR';r.interimResults=false;r.maxAlternatives=1;
+      mic.classList.add('active');
+      r.onresult=e=>{input.value=(input.value+' '+(e.results?.[0]?.[0]?.transcript||'')).trim();input.focus()};
+      r.onerror=e=>{if(e.error!=='no-speech')bubble('Micrófono: '+e.error,'warn')};
+      r.onend=()=>{mic.classList.remove('active');recognition=null};
+      try{r.start()}catch{mic.classList.remove('active');recognition=null}
+    });
+  }
+  // No persiste conversaciones ni datos sensibles en localStorage.
+  // Al salir de Carlos, se oculta la UI; el backend siempre revalida la sesión.
+  const appNode=$id('app');
+  if(appNode){new MutationObserver(()=>{
+    if(appNode.classList.contains('hidden')){
+      panel.hidden=true;document.body.classList.remove('gestok-ai-open');clearProposal();history=[];messages.textContent='';
+      window.speechSynthesis?.cancel?.();
+    }
+  }).observe(appNode,{attributes:true,attributeFilter:['class']})}
+})();
+
+</script>
 </body></html>
