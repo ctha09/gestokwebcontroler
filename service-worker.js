@@ -1,5 +1,5 @@
 
-const CACHE_NAME='gestok-web-control-v51-43';
+const CACHE_NAME='gestok-web-control-v51-44';
 
 const APP_SHELL=[
   './manifest.webmanifest',
@@ -39,8 +39,7 @@ self.addEventListener('fetch',event=>{
   const req=event.request;
   const url=new URL(req.url);
 
-  // El HTML principal siempre se carga desde internet
-  // para evitar versiones anteriores guardadas.
+  // Evita que el HTML principal quede desactualizado.
   if(
     req.mode==='navigate' ||
     url.pathname.endsWith('/index.html') ||
@@ -58,7 +57,7 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  // Recursos secundarios: caché y actualización.
+  // Caché para archivos secundarios.
   event.respondWith(
     caches.match(req).then(cached=>{
 
@@ -91,7 +90,9 @@ self.addEventListener('push',event=>{
   let data={};
 
   try{
-    data=event.data?event.data.json():{};
+    data=event.data
+      ?event.data.json()
+      :{};
   }catch{
     data={
       body:event.data
@@ -140,7 +141,6 @@ self.addEventListener('notificationclick',event=>{
       .then(windowClients=>{
 
         for(const client of windowClients){
-
           if('focus' in client){
             client.navigate(target);
             return client.focus();
