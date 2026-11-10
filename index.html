@@ -4038,6 +4038,275 @@ body.carlos-business.gestok-ai-open .gestok-cursor-dot,body.carlos-business.gest
 #gestokAiPanel .ai-proposal{max-height:54%;overflow:auto;flex-shrink:0}
 #gestokAiPanel .ai-msg{font-size:13.5px}
 @media(max-width:600px){#gestokAiPanel .ai-ops{max-height:49%}}
+
+
+/* ============================================================
+   V51.48 · MOBILE LAYOUT / PORTADA + LOGIN
+   Corrige recortes, scroll interno y bloque inferior de Safari.
+   Reglas acotadas al portal; no afectan datos ni otros módulos.
+   ============================================================ */
+@media (max-width: 760px) {
+  /* El portal forma parte del documento: no queda encerrado en
+     una capa fija de 100dvh al abrir el teclado o cambiar de vista. */
+  html {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow-x: clip !important;
+    overflow-y: auto !important;
+  }
+  body {
+    height: auto !important;
+    min-height: 100svh !important;
+    overflow-x: clip !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  #portal:not(.hidden) {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 100svh !important;
+    overflow: visible !important;
+    padding: 14px 0 calc(46px + env(safe-area-inset-bottom, 0px)) !important;
+    overscroll-behavior-y: auto !important;
+  }
+  #portal .portal-shell {
+    width: calc(100% - 32px) !important;
+    max-width: 600px !important;
+    min-width: 0 !important;
+    padding: 0 0 28px !important;
+    margin-inline: auto !important;
+  }
+  #portal .portal-top {
+    width: 100% !important;
+    min-height: 76px !important;
+    padding: 18px 17px !important;
+    margin: 2px 0 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 9px !important;
+    border-radius: 23px !important;
+  }
+  #portal .portal-top .wordmark {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: clamp(15px, 4.25vw, 18px) !important;
+    line-height: 1.25 !important;
+    overflow-wrap: anywhere;
+  }
+  #portal .portal-top .badge {
+    flex: 0 0 auto;
+    font-size: 10px !important;
+    white-space: nowrap;
+    padding: 8px 10px !important;
+  }
+  /* Portada con aire y ningún componente más ancho que su tarjeta. */
+  #typeStep:not(.hidden) {
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+  }
+  #portal .hero {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 27px 19px 24px !important;
+    margin: 26px 0 0 !important;
+    border-radius: 26px !important;
+    box-sizing: border-box !important;
+  }
+  #portal .hero h1 {
+    font-size: clamp(28px, 8.25vw, 38px) !important;
+    line-height: 1.11 !important;
+    letter-spacing: -1.1px !important;
+    text-wrap: balance;
+  }
+  #portal .hero p {
+    margin-top: 14px !important;
+    font-size: 14.5px !important;
+    line-height: 1.6 !important;
+  }
+  #portal #installBanner.install-banner {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 25px 0 0 !important;
+    padding: 18px 15px !important;
+    box-sizing: border-box !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+    border-radius: 18px !important;
+  }
+  #portal .install-banner-copy {
+    width: 100%;
+    min-width: 0;
+  }
+  #portal .install-banner-copy strong {
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+  }
+  #portal .install-banner-copy span {
+    font-size: 12px !important;
+    line-height: 1.55 !important;
+    margin-top: 6px !important;
+  }
+  #portal .install-banner .btn {
+    width: 100% !important;
+    min-height: 51px !important;
+    font-size: 15px !important;
+  }
+  #portal .types {
+    width: 100% !important;
+    min-width: 0 !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 20px !important;
+    margin: 24px 0 0 !important;
+    padding-bottom: 24px !important;
+  }
+  #portal .type {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 192px !important;
+    padding: 23px 20px !important;
+    border-radius: 25px !important;
+    box-sizing: border-box !important;
+  }
+  #portal .typeicon {
+    width: 55px !important;
+    height: 55px !important;
+  }
+  #portal .type h3 {
+    font-size: 25px !important;
+    line-height: 1.15 !important;
+    margin-top: 22px !important;
+    margin-bottom: 9px !important;
+  }
+  #portal .type p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    overflow-wrap: break-word;
+  }
+  /* Login: sin altura fija ni recorte en la parte inferior. */
+  #loginStep:not(.hidden) {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 26px 0 58px !important;
+    margin: 0 !important;
+  }
+  #loginStep .back {
+    display: inline-flex !important;
+    align-self: flex-start !important;
+    width: auto !important;
+    max-width: 100% !important;
+    padding: 10px 3px !important;
+    margin: 0 0 13px 5px !important;
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+  }
+  #loginStep > .card {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 27px 21px 26px !important;
+    /* Los brillos (::before/::after) exceden la tarjeta: recortarlos
+       dentro de ella evita el ancho fantasma y el bloque oscuro. */
+    overflow: hidden !important;
+    border-radius: 25px !important;
+    box-sizing: border-box !important;
+  }
+  #loginStep > .card h2 {
+    font-size: clamp(27px, 7vw, 33px) !important;
+    line-height: 1.12 !important;
+    margin: 17px 0 12px !important;
+  }
+  #loginStep > .card p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 23px !important;
+  }
+  #loginStep .form > div {
+    margin-bottom: 21px !important;
+  }
+  #loginStep .form label {
+    font-size: 13px !important;
+    font-weight: 700;
+    line-height: 1.35 !important;
+    margin-bottom: 10px !important;
+  }
+  #loginStep .input {
+    width: 100% !important;
+    min-height: 56px !important;
+    font-size: 16px !important; /* iOS: evita zoom automático */
+    padding: 13px 15px !important;
+  }
+  #loginStep .form > button,
+  #loginBtn {
+    min-height: 56px !important;
+    margin-top: 9px !important;
+    font-size: 15px !important;
+  }
+  #loginStep .login-scene,
+  #loginStep .scene-grid,
+  #loginStep .scene-floaters,
+  #loginStep .scene-rain,
+  #loginStep .scene-particles,
+  #loginStep .scene-center-shield {
+    display: none !important;
+  }
+  /* Evitar que el acceso / las tarjetas se oculten tras el botón de WA. */
+  #portal .wa-float {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  /* Paneles de la aplicación: más separación, sin cambiar lógica. */
+  #app:not(.hidden) .main {
+    padding: 16px 14px 0 !important;
+  }
+  #app:not(.hidden) .view {
+    padding: 7px 2px calc(124px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  #app:not(.hidden) .section { margin-bottom: 16px !important; }
+  #app:not(.hidden) .quick {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 11px !important;
+    margin-bottom: 13px !important;
+  }
+  #app:not(.hidden) .quick button {
+    min-height: 84px !important;
+    padding: 13px !important;
+  }
+  #app:not(.hidden) .quick button:first-child { grid-column: 1 / -1; }
+  #app:not(.hidden) .stats { gap: 11px !important; }
+  #app:not(.hidden) .twocol { gap: 13px !important; margin-top: 13px !important; }
+  #app:not(.hidden) .view > .card,
+  #app:not(.hidden) .view .metric {
+    padding: 15px !important;
+  }
+}
+@media (max-width: 355px) {
+  #portal .portal-shell { width: calc(100% - 24px) !important; }
+  #portal .portal-top { padding-inline: 13px !important; }
+  #portal .hero { padding-inline: 15px !important; }
+  #portal .hero h1 { font-size: 28px !important; }
+  #portal .type { padding: 20px 17px !important; }
+  #loginStep > .card { padding-inline: 17px !important; }
+  #app:not(.hidden) .stats { grid-template-columns: minmax(0, 1fr) !important; }
+}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -4068,7 +4337,7 @@ body.carlos-business.gestok-ai-open .gestok-cursor-dot,body.carlos-business.gest
     <button class="type" onclick="chooseType('restaurant')"><div class="typeicon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v8M4 3v5a3 3 0 0 0 6 0V3M7 11v10M15 3v18M15 3c4 2 4 8 0 10"/></svg></div><h3>Restaurantes</h3><p>Carta digital, QR por mesa, pedidos en vivo, cocina y seguimiento de órdenes.</p></button>
     <button class="type" onclick="chooseType('barbershop')"><div class="typeicon"><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1 12 12"/><path d="M20 4 8.1 15.9"/><path d="M14.8 14.8 20 20"/></svg></div><h3>Barbería</h3><p>Ventas, turnos, clientes, equipo, caja y estadísticas.</p></button>
   </div></div>
-  <div id="loginStep" class="loginbox hidden"><button class="back" onclick="backType()">← Volver</button><div class="card"><span id="typeBadge" class="badge"></span><h2>Ingresá a tu panel.</h2><p>El acceso está vinculado al tipo de empresa registrado por GestOK.</p><div class="form"><div><label>Usuario o empresa</label><input id="companyName" class="input" autocomplete="username"></div><div><label>Contraseña</label><input id="companyPassword" class="input" type="password"></div><button id="loginBtn" class="btn primary">Ingresar</button></div></div></div>
+  <div id="loginStep" class="loginbox hidden"><button class="back" onclick="backType()">← Volver</button><div class="card"><span id="typeBadge" class="badge"></span><h2>Ingresá a tu panel.</h2><p>Ingresá el usuario y la contraseña asignados en GestOK Control. El nombre comercial también funciona si está habilitada la actualización V38.</p><div class="form"><div><label>Usuario de acceso</label><input id="companyName" class="input" autocomplete="username" placeholder="El usuario indicado en GestOK Control"></div><div><label>Contraseña</label><input id="companyPassword" class="input" type="password"></div><button id="loginBtn" class="btn primary">Ingresar</button></div></div></div>
 </div></section>
 
 
@@ -5215,6 +5484,33 @@ function slugifyCompany(value){
 }
 
 
+
+/* ============================================================
+   V51.49 · RESOLVER USUARIO DE ACCESO POR SECTOR
+   Usa exclusivamente el RPC seguro; si el SQL V38 no esta
+   instalado, funciona igualmente con el usuario exacto.
+   Nunca consulta credenciales ni realiza escrituras.
+   ============================================================ */
+async function gestokResolveLoginSlug(rawInput, expectedType){
+  const fallback=slugifyCompany(rawInput);
+  if(!fallback || !sb || !expectedType) return fallback;
+  try{
+    const {data,error}=await sb.rpc('gestok_resolve_login_slug',{
+      p_login_raw:String(rawInput||'').trim(),
+      p_type:expectedType
+    });
+    if(!error && typeof data==='string'){
+      const resolved=String(data).trim();
+      if(/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(resolved)) return resolved;
+    }
+  }catch(err){
+    // La resolución del nombre comercial es opcional.
+    // Siempre queda habilitado el acceso con usuario exacto.
+    console.warn('GestOK: resolver de alias no disponible',err);
+  }
+  return fallback;
+}
+
 function vapidKeyToUint8Array(base64String){
  const padding='='.repeat((4-base64String.length%4)%4);
  const base64=(base64String+padding).replace(/-/g,'+').replace(/_/g,'/');
@@ -6102,13 +6398,13 @@ async function restoreSavedSession(){
 async function login(){
  const company=companyName.value.trim(),password=companyPassword.value;
  if(!company||!password)return toast('Completá empresa y contraseña');
- const email=`${slugifyCompany(company)}@login.gestok.local`;
+ const email=`${await gestokResolveLoginSlug(company,selectedType)}@login.gestok.local`;
  loginBtn.disabled=true;loginBtn.textContent='Ingresando...';
 
  const {data:authData,error:authError}=await sb.auth.signInWithPassword({email,password});
  if(authError||!authData.user){
    loginBtn.disabled=false;loginBtn.textContent='Ingresar';
-   return toast('Empresa o contraseña incorrectos');
+   return toast('Usuario o contraseña incorrectos');
  }
 
  const {data:member,error:memberError}=await sb.from('organization_members')
@@ -9646,30 +9942,21 @@ updateGestokInstallBanner();
 
     const result=await resolveCompany(value);
 
-    if(result.setup_error){
-      setStatus(window.companyName,null);
-
-      toast('No se pudo validar el usuario. Verificá que esté ejecutada la actualización de la base de datos.');
-      return false;
-    }
-
+    // La verificación visual es informativa: no debe impedir un
+    // inicio de sesión legítimo por falta del RPC V35, un alias
+    // comercial distinto del usuario o una suscripción vencida.
+    // La contraseña, el miembro y el sector se validan en Supabase.
     if(result.ok){
       setStatus(window.companyName,'ok');
       await playCheckSound();
-
-      if(opts.focusPassword){
-        setTimeout(()=>{
-          window.companyPassword?.focus();
-        },130);
-      }
-
-      return true;
+    }else{
+      setStatus(window.companyName,null);
     }
 
-    setStatus(window.companyName,'err');
-    await playErrorSound();
-
-    return false;
+    if(opts.focusPassword){
+      setTimeout(()=>window.companyPassword?.focus(),130);
+    }
+    return true;
   }
 
   async function validatePasswordField(){
@@ -9705,11 +9992,12 @@ updateGestokInstallBanner();
       playErrorSound();
       return toast('Completá empresa y contraseña');
     }
-    const userOk=await validateUsername();
-    if(!userOk) return toast('No detectamos ese usuario o empresa para este sector');
+    // V51.49: nunca denegar un ingreso usando la consulta pública
+    // previa al nombre. Supabase Auth y la organización deciden.
+    await validateUsername();
     const passOk=await validatePasswordField();
     if(!passOk) return toast('Completá empresa y contraseña');
-    const email=`${slugifyCompany(company)}@login.gestok.local`;
+    const email=`${await gestokResolveLoginSlug(company,selectedType)}@login.gestok.local`;
     loginBtn.disabled=true;loginBtn.textContent='Ingresando...';
 
     const {data:authData,error:authError}=await sb.auth.signInWithPassword({email,password});
@@ -9725,7 +10013,7 @@ updateGestokInstallBanner();
 
       await playErrorSound();
 
-      return toast('Contraseña incorrecta');
+      return toast('Usuario o contraseña incorrectos. Revisá el usuario de acceso de GestOK Control.');
     }
 
     // Recién ahora la contraseña está realmente validada.
