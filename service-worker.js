@@ -1,5 +1,5 @@
 
-const CACHE_NAME='gestok-web-control-v51-47';
+const CACHE_NAME='gestok-web-control-v51-49';
 
 const APP_SHELL=[
   './manifest.webmanifest',
@@ -10,9 +10,10 @@ const APP_SHELL=[
 ];
 
 self.addEventListener('install',event=>{
-  event.waitUntil(caches.open(CACHE_NAME)
-    .then(cache=>cache.addAll(APP_SHELL))
-    .catch(()=>null)
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache=>cache.addAll(APP_SHELL))
+      .catch(()=>null)
   );
 
   self.skipWaiting();
@@ -32,9 +33,9 @@ self.addEventListener('activate',event=>{
   self.clients.claim();
 });
 
-/* ============================================================
+/* =============================================
    CACHÉ Y ACTUALIZACIONES
-   ============================================================ */
+   ============================================= */
 
 self.addEventListener('fetch',event=>{
   if(event.request.method!=='GET')return;
@@ -42,7 +43,6 @@ self.addEventListener('fetch',event=>{
   const req=event.request;
   const url=new URL(req.url);
 
-  // El HTML principal intenta cargarse desde internet.
   if(
     req.mode==='navigate' ||
     url.pathname.endsWith('/index.html') ||
@@ -56,11 +56,9 @@ self.addEventListener('fetch',event=>{
             .then(cached=>cached||Response.error())
         )
     );
-
     return;
   }
 
-  // Caché para recursos secundarios.
   event.respondWith(
     caches.match(req).then(cached=>{
 
@@ -84,9 +82,9 @@ self.addEventListener('fetch',event=>{
   );
 });
 
-/* ============================================================
+/* =============================================
    NOTIFICACIONES PUSH
-   ============================================================ */
+   ============================================= */
 
 self.addEventListener('push',event=>{
   let data={};
@@ -103,28 +101,27 @@ self.addEventListener('push',event=>{
     };
   }
 
-  const title=data.title||'GestOK Web Control';
-
-  const options={
-    body:data.body||'Tenés una nueva notificación.',
-    icon:'./gestok-icon-192.png',
-    badge:'./gestok-icon-192.png',
-    tag:data.tag||'gestok',
-    renotify:true,
-
-    data:{
-      url:data.url||'./?open=gestok'
-    }
-  };
-
   event.waitUntil(
-    self.registration.showNotification(title,options)
+    self.registration.showNotification(
+      data.title||'GestOK Web Control',
+      {
+        body:data.body||'Tenés una nueva notificación.',
+        icon:'./gestok-icon-192.png',
+        badge:'./gestok-icon-192.png',
+        tag:data.tag||'gestok',
+        renotify:true,
+
+        data:{
+          url:data.url||'./?open=gestok'
+        }
+      }
+    )
   );
 });
 
-/* ============================================================
-   CLICK EN NOTIFICACIÓN
-   ============================================================ */
+/* =============================================
+   CLICK EN NOTIFICACIONES
+   ============================================= */
 
 self.addEventListener('notificationclick',event=>{
   event.notification.close();
@@ -134,23 +131,21 @@ self.addEventListener('notificationclick',event=>{
     './?open=gestok';
 
   event.waitUntil(
-    clients
-      .matchAll({
-        type:'window',
-        includeUncontrolled:true
-      })
-      .then(windowClients=>{
+    clients.matchAll({
+      type:'window',
+      includeUncontrolled:true
+    }).then(windowClients=>{
 
-        for(const client of windowClients){
-          if('focus' in client){
-            client.navigate(target);
-            return client.focus();
-          }
+      for(const client of windowClients){
+        if('focus' in client){
+          client.navigate(target);
+          return client.focus();
         }
+      }
 
-        if(clients.openWindow){
-          return clients.openWindow(target);
-        }
-      })
+      if(clients.openWindow){
+        return clients.openWindow(target);
+      }
+    })
   );
 });
