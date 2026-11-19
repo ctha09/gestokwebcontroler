@@ -1,5 +1,5 @@
 
-const CACHE_NAME='gestok-web-control-v51-49';
+const CACHE_NAME='gestok-web-control-v51-50';
 
 const APP_SHELL=[
   './manifest.webmanifest',
@@ -8,6 +8,10 @@ const APP_SHELL=[
   './gestok-icon-192.png',
   './gestok-icon-512.png'
 ];
+
+/* =============================================
+   INSTALACIÓN
+   ============================================= */
 
 self.addEventListener('install',event=>{
   event.waitUntil(
@@ -18,6 +22,10 @@ self.addEventListener('install',event=>{
 
   self.skipWaiting();
 });
+
+/* =============================================
+   ACTUALIZACIÓN DE CACHÉ
+   ============================================= */
 
 self.addEventListener('activate',event=>{
   event.waitUntil(
@@ -34,7 +42,7 @@ self.addEventListener('activate',event=>{
 });
 
 /* =============================================
-   CACHÉ Y ACTUALIZACIONES
+   CARGA DE ARCHIVOS
    ============================================= */
 
 self.addEventListener('fetch',event=>{
@@ -56,6 +64,7 @@ self.addEventListener('fetch',event=>{
             .then(cached=>cached||Response.error())
         )
     );
+
     return;
   }
 
