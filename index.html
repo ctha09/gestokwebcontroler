@@ -4307,6 +4307,21 @@ body.carlos-business.gestok-ai-open .gestok-cursor-dot,body.carlos-business.gest
   #app:not(.hidden) .stats { grid-template-columns: minmax(0, 1fr) !important; }
 }
 
+
+/* V51.50 · SCR · Cobros y señas, sin afectar otros negocios */
+.scr-pay-select{min-height:43px;max-width:270px;width:100%;font-size:13px}
+.scr-pay-filterline{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:12px 0}
+.scr-pay-filterline label{font-size:12px;font-weight:750;color:var(--muted)}
+.scr-deposit-summary{padding:12px 14px;background:rgba(242,140,40,.075);border:1px solid rgba(242,140,40,.32);border-radius:14px;margin-top:10px}
+.scr-deposit-summary strong{color:var(--orange)}
+.scr-deposit-summary small{display:block;color:var(--muted);margin-top:5px;line-height:1.5}
+.scr-order-deposit{margin-top:10px;border:1px solid rgba(242,140,40,.25);border-radius:13px;padding:12px;background:rgba(242,140,40,.055)}
+.scr-order-deposit .scr-order-deposit-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+.scr-order-deposit-grid span{font-size:11px;color:var(--muted)}
+.scr-order-deposit-grid strong{display:block;font-size:15px;margin-top:4px;color:var(--text)}
+.scr-order-deposit .scr-pending-note{display:block;color:var(--muted);font-size:11px;margin-top:9px}
+#scrPaymentModal .modal{max-width:480px}
+@media(max-width:600px){.scr-order-deposit .scr-order-deposit-grid{grid-template-columns:1fr 1fr}.scr-pay-filterline{align-items:stretch}.scr-pay-select{max-width:100%}}
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -4467,6 +4482,7 @@ body.carlos-business.gestok-ai-open .gestok-cursor-dot,body.carlos-business.gest
         <input id="scrHomeSalesSearch" class="input" placeholder="Buscar venta, cliente, empleado o medio de pago..." autocomplete="off">
         <button id="scrHomeSalesSearchClear" type="button" aria-label="Limpiar">×</button>
       </div>
+      <div class="scr-pay-filterline scr-only"><label for="scrHomePaymentFilter">Filtrar por tipo de pago</label><select id="scrHomePaymentFilter" class="select scr-pay-select" onchange="setSCRPaymentFilter('home',this.value)"><option>Todos</option><option>Transferencia</option><option>QR</option><option>Tarjeta</option><option>Efectivo</option></select></div>
       <div id="scrHomeSalesList" class="list"></div>
     </div>
 
@@ -4576,6 +4592,7 @@ body.carlos-business.gestok-ai-open .gestok-cursor-dot,body.carlos-business.gest
       <button id="historySearchClear" class="history-search-clear hidden" onclick="clearHistorySearch()" type="button">×</button>
     </div>
 
+    <div class="scr-pay-filterline scr-only"><label for="scrHistoryPaymentFilter">Filtrar por tipo de pago</label><select id="scrHistoryPaymentFilter" class="select scr-pay-select" onchange="setSCRPaymentFilter('history',this.value)"><option>Todos</option><option>Transferencia</option><option>QR</option><option>Tarjeta</option><option>Efectivo</option></select></div>
     <div class="history-summary">
       <span id="historyPeriodLabel">Período</span>
       <strong id="historyResultCount">0 movimientos</strong>
@@ -4587,6 +4604,7 @@ body.carlos-business.gestok-ai-open .gestok-cursor-dot,body.carlos-business.gest
 <section id="stats" class="view">
     <div class="section"><div><h2>Estadísticas</h2><p>Elegí la temporalidad para analizar el negocio.</p></div></div><div class="review-month-bar"><div class="review-month-copy"><strong>Mes a visualizar</strong><small>Filtra únicamente esta revisión; la información guardada no cambia.</small></div><select class="select" data-commerce-month onchange="setCommerceReviewMonth(this.value)"></select></div>
     <div class="periods" id="periodButtons"></div>
+    <div class="scr-pay-filterline scr-only"><label for="scrStatsPaymentFilter">Filtrar por tipo de pago</label><select id="scrStatsPaymentFilter" class="select scr-pay-select" onchange="setSCRPaymentFilter('stats',this.value)"><option>Todos</option><option>Transferencia</option><option>QR</option><option>Tarjeta</option><option>Efectivo</option></select></div>
     <div class="summarygrid stats-primary-grid"><div class="card metric"><span>Ingresos del período</span><strong id="stRevenue">$0</strong></div><div class="card metric"><span>Ventas</span><strong id="stSalesCount">0</strong></div><div id="stFinishedCard" class="card metric"><span id="stFinishedLabel">Pedidos finalizados</span><strong id="stFinished">0</strong></div><div id="stAverageCard" class="card metric"><span>Promedio por ingreso</span><strong id="stAverage">$0</strong></div></div><div class="summarygrid stats-outflow-grid" style="margin-top:8px"><div class="card metric"><span>Gastos del período</span><strong id="stExpenses" class="red">$0</strong></div><div class="card metric"><span>Sueldos pagados</span><strong id="stSalaries" class="red">$0</strong></div><div id="stNetCard" class="card metric"><span>Resultado neto</span><strong id="stNet">$0</strong></div><div class="card metric"><span>Salidas totales</span><strong id="stOutflows" class="red">$0</strong></div></div>
     <div id="carlosStatsPanel" class="carlos-only">
   <div class="carlos-compare">
@@ -4953,7 +4971,12 @@ body.carlos-business.gestok-ai-open .gestok-cursor-dot,body.carlos-business.gest
 </div>
 
 
-<div id="orderModal" class="modalbg hidden"><div class="modal"><h3 id="orderModalTitle">Nuevo pedido</h3><p id="orderModalDesc">Solo impacta en el balance cuando pasa a Finalizado.</p><div class="form"><div><label>Cliente</label><input id="oClient" class="input"></div><div><label id="oTitleLabel">Trabajo / pedido</label><input id="oTitle" class="input"></div><div><label>Monto acordado</label><input id="oAmount" class="input" type="number" min="0"></div><div><label>Estado inicial</label><select id="oStatus" class="select"></select></div><div><label>Fecha</label><input id="oDue" class="input" type="date"></div><div><label>Responsable</label><select id="oOwner" class="select"></select></div><div><label>Detalles</label><textarea id="oDesc" class="textarea"></textarea></div></div><div class="mactions"><button class="btn secondary" onclick="closeOrder()">Cancelar</button><button id="saveOrder" class="btn primary">Crear</button></div></div></div>
+<div id="orderModal" class="modalbg hidden"><div class="modal"><h3 id="orderModalTitle">Nuevo pedido</h3><p id="orderModalDesc">Solo impacta en el balance cuando pasa a Finalizado.</p><div class="form"><div><label>Cliente</label><input id="oClient" class="input"></div><div><label id="oTitleLabel">Trabajo / pedido</label><input id="oTitle" class="input"></div><div><label>Monto acordado</label><input id="oAmount" class="input" type="number" min="0"></div><div id="scrOrderDepositWrap" class="scr-only"><div><label for="oHasDeposit">Pago de seña</label><select id="oHasDeposit" class="select" onchange="updateSCRDepositPreview()"><option value="no">No</option><option value="si">Sí</option></select></div>
+<div id="scrDepositFields" hidden><div><label for="oDepositAmount">Importe de seña (ARS)</label><input id="oDepositAmount" class="input" type="number" min="0" step="0.01" inputmode="decimal" oninput="updateSCRDepositPreview()"></div><div><label for="oDepositMethod">Medio de pago de la seña</label><select id="oDepositMethod" class="select"><option>Transferencia</option><option>QR</option><option>Tarjeta</option><option>Efectivo</option></select></div></div>
+<div id="scrDepositPreview" class="scr-deposit-summary"><span>Sobrante a pagar: <strong id="scrDepositRemaining">$0</strong></span><small>La seña no se suma al historial ni a las estadísticas hasta finalizar y cobrar el pedido.</small></div></div>
+<div><label>Estado inicial</label><select id="oStatus" class="select"></select></div><div><label>Fecha</label><input id="oDue" class="input" type="date"></div><div><label>Responsable</label><select id="oOwner" class="select"></select></div><div><label>Detalles</label><textarea id="oDesc" class="textarea"></textarea></div></div><div class="mactions"><button class="btn secondary" onclick="closeOrder()">Cancelar</button><button id="saveOrder" class="btn primary">Crear</button></div></div></div>
+
+<div id="scrPaymentModal" class="modalbg hidden"><div class="modal"><h3>Confirmar cobro de SCR</h3><p>Este cobro se registrará en el historial y estadísticas solo si el pedido está Finalizado.</p><div class="form"><div id="scrPaymentOrderName" class="scr-deposit-summary"></div><div><label for="scrFinalPayMethod">Medio de pago del sobrante</label><select id="scrFinalPayMethod" class="select"><option>Transferencia</option><option>QR</option><option>Tarjeta</option><option>Efectivo</option></select></div><small id="scrPaymentModalTip" style="color:var(--muted)"></small></div><div class="mactions"><button class="btn secondary" type="button" onclick="closeSCRPaymentModal()">Cancelar</button><button class="btn primary" type="button" id="scrConfirmPaymentBtn">Confirmar cobro</button></div></div></div>
 
 <div id="activityModal" class="modalbg hidden"><div class="modal"><h3>Registrar actividad</h3><p>Registro escrito de lo realizado durante el trabajo.</p><div class="form"><div><label>Relacionado con</label><select id="aOrder" class="select"></select></div><div><label>Título</label><input id="aTitle" class="input"></div><div><label>Comentario</label><textarea id="aComment" class="textarea"></textarea></div></div><div class="mactions"><button class="btn secondary" onclick="closeActivity()">Cancelar</button><button id="saveActivity" class="btn primary">Registrar</button></div></div></div>
 
@@ -5089,7 +5112,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const DB_KEY='gestok_unified_platform_v4',WA='5493751232618';
 const COMMERCE_ST=['Prioritario','Pendiente','En proceso','Enviado a impresion','Finalizado'];
 const BARBER_ST=['Pendiente','Confirmado','En proceso','Finalizado','Cancelado'];
-let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null,orderEditingId=null,SCR_HOME_PERIOD='month',SCR_HOME_MONTH='',BALANCE_PERIOD='monthly',BALANCE_DAY='',BALANCE_WEEK='',BALANCE_MONTH='',BALANCE_SEARCH='',BALANCE_FILTERS={payments:[],employee:'all',client:'all'},HISTORY_FLOW='all',HISTORY_PERIOD='monthly',HISTORY_DAY='',HISTORY_WEEK='',HISTORY_MONTH='',HISTORY_YEAR='',HISTORY_SEARCH='',purchaseEditingId=null,supplierEditingId=null,expenseEditingId=null,purchaseReceiptId=null,COMMERCIAL_FLOW_FILTER='all',supportClientRows=[],supportClientChannel=null,lastSupportClientMessageId=null,supportSideTimer=null,SESSION_RESTORE_DONE=false,SCR_HOME_SALES_SEARCH='',PENDING_ADMIN_PROFILE_ID=null;
+let DB=loadDB(),selectedType=null,ORG=null,S=null,U=null,F='Todos',STAT_PERIOD='daily',COMMERCE_REVIEW_MONTH='all',AUTH_MEMBER_ID=null,commerceChannel=null,commerceReloadTimer=null,saleEditingId=null,saleReceiptId=null,salaryEditingId=null,userEditingId=null,orderEditingId=null,SCR_HOME_PERIOD='month',SCR_HOME_MONTH='',BALANCE_PERIOD='monthly',BALANCE_DAY='',BALANCE_WEEK='',BALANCE_MONTH='',BALANCE_SEARCH='',BALANCE_FILTERS={payments:[],employee:'all',client:'all'},HISTORY_FLOW='all',HISTORY_PERIOD='monthly',HISTORY_DAY='',HISTORY_WEEK='',HISTORY_MONTH='',HISTORY_YEAR='',HISTORY_SEARCH='',purchaseEditingId=null,supplierEditingId=null,expenseEditingId=null,purchaseReceiptId=null,COMMERCIAL_FLOW_FILTER='all',supportClientRows=[],supportClientChannel=null,lastSupportClientMessageId=null,supportSideTimer=null,SESSION_RESTORE_DONE=false,SCR_HOME_SALES_SEARCH='',SCR_HOME_PAYMENT='Todos',SCR_HISTORY_PAYMENT='Todos',SCR_STATS_PAYMENT='Todos',SCR_PAYMENT_ORDER_ID=null,PENDING_ADMIN_PROFILE_ID=null;
 
 function baseDB(){return{organizations:[],records:{},notifications:[],payments:[]}}
 function loadDB(){try{let d=JSON.parse(localStorage.getItem(DB_KEY))||baseDB();d.organizations=d.organizations||[];d.records=d.records||{};d.notifications=d.notifications||[];d.payments=d.payments||[];return d}catch{return baseDB()}}
@@ -5101,6 +5124,24 @@ function norm(s){return String(s||'').trim().toLowerCase().replace(/\s+/g,' ')}
 function isSCRBusiness(){
   return ORG?.type==='commerce' && norm(ORG?.name)==='scr';
 }
+// Filtros independientes para los tres paneles de SCR.
+window.setSCRPaymentFilter=(area,value)=>{
+  if(!isSCRBusiness())return;
+  const allowed=['Todos','Transferencia','QR','Tarjeta','Efectivo'];
+  const pay=allowed.includes(value)?value:'Todos';
+  if(area==='home'){SCR_HOME_PAYMENT=pay;renderSCRHomeSales();}
+  if(area==='history'){SCR_HISTORY_PAYMENT=pay;renderHistoryFinancial();}
+  if(area==='stats'){SCR_STATS_PAYMENT=pay;renderStats();requestAnimationFrame(drawStatsChart);}
+};
+function scrFinancialIncomeForStats(){
+  if(!isSCRBusiness())return isCarlosBusiness()?S.ledger.filter(x=>x.source==='sale'):S.ledger;
+  return (S.balanceMovements||[]).filter(x=>x.direction==='income'&&
+    (SCR_STATS_PAYMENT==='Todos'||x.payment===SCR_STATS_PAYMENT)).map(x=>({
+      date:x.date,amount:Number(x.amount||0),source:x.kind,payment:x.payment
+    }));
+}
+function scrDepositSum(order){return Math.max(0,Number(order.depositAmount||0));}
+function scrOrderRemaining(order){return Math.max(0,Number(order.amount||0)-scrDepositSum(order));}
 function isCarlosBusiness(){
  return ORG?.type==='commerce' && (
    norm(ORG?.name)==='carlos' ||
@@ -5486,7 +5527,7 @@ function slugifyCompany(value){
 
 
 /* ============================================================
-   V51.49 · RESOLVER USUARIO DE ACCESO POR SECTOR
+   V51.50 · RESOLVER USUARIO DE ACCESO POR SECTOR
    Usa exclusivamente el RPC seguro; si el SQL V38 no esta
    instalado, funciona igualmente con el usuario exacto.
    Nunca consulta credenciales ni realiza escrituras.
@@ -6517,22 +6558,27 @@ async function loadCommerceFromSupabase(preferredMemberId=AUTH_MEMBER_ID){
  next.users=members.map(m=>({id:m.id,authUserId:m.auth_user_id,name:m.display_name,role:m.role,active:m.active!==false,fixedSalary:Number(m.fixed_salary||0),commission:Number(m.commission_percent||0)}));
  next.stock=(stockR.data||[]).map(p=>({id:p.id,name:p.name,price:Number(p.sale_price||0),qty:Number(p.quantity||0),min:Number(p.min_quantity||0),unit:p.unit,updatedAt:p.updated_at}));
  next.sales=(salesR.data||[]).map(x=>({id:x.id,date:x.sale_at,client:x.customer_name,concept:x.concept,amount:Number(x.amount||0),payment:x.payment_method||'Otro',notes:x.notes||'',userId:x.member_id,userName:memberMap.get(x.member_id)?.display_name||'Usuario',mode:x.sale_type,productId:x.stock_item_id||'',qty:Number(x.quantity||1)}));
- next.orders=orders.map(o=>({id:o.id,createdAt:o.created_at,updatedAt:o.updated_at,client:o.client_name,title:o.title,amount:Number(o.amount||0),status:o.status,due:o.due_date||'',ownerId:o.responsible_member_id,ownerName:memberMap.get(o.responsible_member_id)?.display_name||'Sin asignar',description:o.description||'',ledgerPosted:o.ledger_posted===true,finalizedAt:o.finalized_at,paidAt:o.paid_at,paymentStatus:o.payment_status||'No cobrado'}));
+ next.orders=orders.map(o=>({id:o.id,createdAt:o.created_at,updatedAt:o.updated_at,client:o.client_name,title:o.title,amount:Number(o.amount||0),status:o.status,due:o.due_date||'',ownerId:o.responsible_member_id,ownerName:memberMap.get(o.responsible_member_id)?.display_name||'Sin asignar',description:o.description||'',ledgerPosted:o.ledger_posted===true,finalizedAt:o.finalized_at,paidAt:o.paid_at,paymentStatus:o.payment_status||'No cobrado',depositAmount:Number(o.deposit_amount||0),depositMethod:o.deposit_payment_method||'',finalPaymentMethod:o.final_payment_method||''}));
  next.activity=(activityR.data||[]).map(a=>({id:a.id,date:a.created_at,title:a.title,comment:a.comment||'',orderId:a.order_id||'',orderTitle:orderMap.get(a.order_id)?.title||'',userId:a.member_id,userName:memberMap.get(a.member_id)?.display_name||'Usuario'}));
  next.expenses=(expensesR.data||[]).map(x=>({id:x.id,date:x.expense_at,concept:x.concept,amount:Number(x.amount||0),payment:x.payment_method||'Otro',notes:x.notes||'',userId:x.member_id,userName:memberMap.get(x.member_id)?.display_name||'Usuario'}));
  next.salaryPayments=(salaryR.data||[]).map(x=>({id:x.id,date:x.paid_at,userId:x.employee_member_id,userName:memberMap.get(x.employee_member_id)?.display_name||'Empleado',amount:Number(x.amount||0),payment:x.payment_method||'Otro',notes:x.notes||'',registeredBy:memberMap.get(x.registered_by_member_id)?.display_name||'Administrador'}));
  next.suppliers=(suppliersR.data||[]).map(x=>({id:x.id,name:x.name,category:x.category||'',phone:x.phone||'',notes:x.notes||'',active:x.active!==false}));
  next.purchases=(purchasesR.data||[]).map(x=>({id:x.id,date:x.purchased_at,supplierId:x.supplier_id||'',supplierName:x.supplier_name||'Proveedor',userId:x.member_id,userName:memberMap.get(x.member_id)?.display_name||'Usuario',description:x.description,amount:Number(x.amount||0),payment:x.payment_method||'Otro',notes:x.notes||'',expenseId:x.expense_id||''}));
- next.ledger=[...next.sales.map(x=>({id:'sale-'+x.id,source:'sale',sourceId:x.id,date:x.date,amount:x.amount,description:x.concept,client:x.client,userName:x.userName})),...next.orders.filter(x=>x.ledgerPosted).map(x=>({id:'order-'+x.id,source:'order',sourceId:x.id,date:x.paidAt||x.updatedAt,amount:x.amount,description:x.title,client:x.client,userName:x.ownerName}))].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+ next.ledger=[...next.sales.map(x=>({id:'sale-'+x.id,source:'sale',sourceId:x.id,date:x.date,amount:x.amount,description:x.concept,client:x.client,userName:x.userName})),...next.orders.filter(x=>x.ledgerPosted&&(!isSCRBusiness()||(x.status==='Finalizado'&&x.paymentStatus==='Cobrado'))).map(x=>({id:'order-'+x.id,source:'order',sourceId:x.id,date:x.paidAt||x.updatedAt,amount:x.amount,description:x.title,client:x.client,userName:x.ownerName}))].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
  const localBalanceFallback=[
    ...next.sales.map(x=>({
      id:x.id,kind:'sale',date:x.date,concept:x.concept,client:x.client,
      employee:x.userName,payment:x.payment,amount:x.amount,direction:'income'
    })),
-   ...next.orders.filter(x=>x.ledgerPosted).map(x=>({
-     id:x.id,kind:'order',date:x.paidAt||x.updatedAt,concept:x.title,client:x.client,
-     employee:x.ownerName,payment:'Sin especificar',amount:x.amount,direction:'income'
-   })),
+   ...next.orders.filter(x=>x.ledgerPosted&&(!isSCRBusiness()||(x.status==='Finalizado'&&x.paymentStatus==='Cobrado'))).flatMap(x=>{
+     const base={id:x.id,kind:'order',date:x.paidAt||x.finalizedAt||x.updatedAt,client:x.client,employee:x.ownerName,direction:'income'};
+     if(!isSCRBusiness())return [{...base,concept:x.title,payment:'Sin especificar',amount:x.amount}];
+     const deposit=scrDepositSum(x),remaining=scrOrderRemaining(x);
+     return [
+       ...(deposit>0?[{...base,concept:x.title+' · Seña',payment:x.depositMethod||'Otro',amount:deposit}]:[]),
+       ...(remaining>0?[{...base,concept:x.title+(deposit>0?' · Saldo final':''),payment:x.finalPaymentMethod||'Otro',amount:remaining}]:[])
+     ];
+   }),
    ...next.expenses.map(x=>{const p=next.purchases.find(p=>p.expenseId===x.id);return {id:x.id,kind:p?'purchase':'expense',date:x.date,concept:p?`Compra · ${p.description}`:x.concept,client:p?p.supplierName:'',employee:x.userName,payment:x.payment,amount:x.amount,direction:'expense'}}),
    ...next.salaryPayments.map(x=>({
      id:x.id,kind:'salary',date:x.date,concept:`Sueldo de ${x.userName}`,client:'',
@@ -7036,6 +7082,7 @@ function openOrder(){
   orderModal.classList.remove('hidden');
   oClient.value='';oTitle.value='';oAmount.value='';oDue.value=today();oDesc.value='';
   oStatus.disabled=false;oStatus.value='Pendiente';oOwner.value=U?.id||S.users[0]?.id;
+  if(isSCRBusiness()){oHasDeposit.value='no';oDepositAmount.value='';oDepositMethod.value='Transferencia';updateSCRDepositPreview();}
 }
 window.openEditOrder=id=>{
   if(!isSCRBusiness())return toast('Esta opción está habilitada únicamente para SCR');
@@ -7053,17 +7100,48 @@ window.openEditOrder=id=>{
   oStatus.innerHTML=`<option>${o.status}</option>`;
   oStatus.value=o.status;
   oStatus.disabled=true;
+  oHasDeposit.value=scrDepositSum(o)>0?'si':'no';oDepositAmount.value=scrDepositSum(o)||'';oDepositMethod.value=o.depositMethod||'Transferencia';updateSCRDepositPreview();
 };
+window.updateSCRDepositPreview=()=>{
+  if(!isSCRBusiness())return;
+  const yes=oHasDeposit.value==='si';
+  const amount=Number(oAmount.value)||0;
+  const deposit=yes?Number(oDepositAmount.value)||0:0;
+  document.getElementById('scrDepositFields').hidden=!yes;
+  scrDepositRemaining.textContent=money(Math.max(0,amount-deposit));
+  scrDepositRemaining.style.color=deposit>amount?'var(--red)':'var(--orange)';
+};
+oAmount.addEventListener('input',()=>{if(isSCRBusiness())updateSCRDepositPreview()});
 function closeOrder(){orderEditingId=null;oStatus.disabled=false;orderModal.classList.add('hidden')}
 window.openOrder=openOrder;window.closeOrder=closeOrder;
 
 saveOrder.onclick=async()=>{
   const c=oClient.value.trim(),t=oTitle.value.trim(),a=Number(oAmount.value),
         own=S.users.find(x=>x.id===oOwner.value)||U;
-  if(!c||!t||a<=0||!own)return toast('Completá cliente, descripción, monto y responsable');
+  if(!c||!t||!Number.isFinite(a)||a<=0||!own)return toast('Completá cliente, descripción, monto y responsable');
 
   saveOrder.disabled=true;
-
+  if(isSCRBusiness()){
+    const hasDeposit=oHasDeposit.value==='si';
+    const deposit=hasDeposit?Number(oDepositAmount.value):0;
+    const method=hasDeposit?oDepositMethod.value:null;
+    if(!Number.isFinite(deposit)||deposit<0||(hasDeposit&&deposit<=0)||deposit>a){
+      saveOrder.disabled=false;return toast('La seña debe ser mayor a $0 y no superar el monto total');
+    }
+    const {error}=await sb.rpc('scr_save_order',{
+      p_organization_id:ORG.id,p_order_id:orderEditingId||null,
+      p_client_name:c,p_title:t,p_amount:a,p_due_date:oDue.value||null,
+      p_responsible_member_id:own.id,p_description:oDesc.value.trim(),
+      p_status:orderEditingId?null:oStatus.value,
+      p_deposit_amount:deposit,p_deposit_payment_method:method
+    });
+    saveOrder.disabled=false;
+    if(error)return toast('Supabase: '+error.message);
+    const wasEdit=!!orderEditingId;
+    closeOrder();await loadCommerceFromSupabase(U?.id);render();
+    toast(wasEdit?'Pedido actualizado':'Pedido creado · la seña no afecta los ingresos');
+    return;
+  }
   if(orderEditingId){
     const {error}=await sb.rpc('scr_update_order',{
       p_organization_id:ORG.id,p_order_id:orderEditingId,p_client_name:c,p_title:t,
@@ -7073,7 +7151,6 @@ saveOrder.onclick=async()=>{
     if(error)return toast(error.message);
     closeOrder();await loadCommerceFromSupabase(U?.id);render();toast('Pedido actualizado');return;
   }
-
   const {error}=await sb.from('orders').insert({
     organization_id:ORG.id,responsible_member_id:own.id,client_name:c,title:t,amount:a,
     status:oStatus.value,due_date:oDue.value||null,description:oDesc.value.trim()||null,ledger_posted:false
@@ -7191,18 +7268,53 @@ window.deleteOrder=id=>{
   };
 };
 
+window.closeSCRPaymentModal=()=>{
+  SCR_PAYMENT_ORDER_ID=null;
+  scrPaymentModal.classList.add('hidden');
+};
 window.changePaymentStatus=async(oid,paymentStatus)=>{
+  if(isSCRBusiness()){
+    const order=S.orders.find(o=>o.id===oid);
+    if(!order)return toast('Pedido no encontrado');
+    if(paymentStatus==='Cobrado'){
+      if(order.status!=='Finalizado')return toast('Primero finalizá el pedido. La seña no se contabiliza.');
+      SCR_PAYMENT_ORDER_ID=oid;
+      scrPaymentOrderName.textContent=`${order.title} · Total: ${money(order.amount)} · Seña: ${money(scrDepositSum(order))} · Saldo: ${money(scrOrderRemaining(order))}`;
+      scrFinalPayMethod.value=order.finalPaymentMethod&&['Transferencia','QR','Tarjeta','Efectivo'].includes(order.finalPaymentMethod)?order.finalPaymentMethod:'Transferencia';
+      scrPaymentModalTip.textContent=scrOrderRemaining(order)>0?'Elegí cómo se abonó el saldo restante. El total se registrará una sola vez al confirmar.':'El pedido está cubierto totalmente con la seña; no hay saldo restante.';
+      scrFinalPayMethod.parentElement.hidden=scrOrderRemaining(order)===0;
+      scrPaymentModal.classList.remove('hidden');
+      return;
+    }
+    if(!confirm('¿Marcar este pedido como No cobrado? El ingreso dejará de figurar en historial y estadísticas. La seña seguirá asociada al pedido.'))return;
+    const {error}=await sb.rpc('scr_set_order_payment',{
+      p_organization_id:ORG.id,p_order_id:oid,p_payment_status:'No cobrado',p_final_payment_method:null
+    });
+    if(error)return toast('Supabase: '+error.message);
+    await loadCommerceFromSupabase(U?.id);render();toast('Cobro pendiente · sin contabilizar');
+    return;
+  }
   const {error}=await sb.rpc('commerce_set_order_payment_status',{
-    p_organization_id:ORG.id,
-    p_order_id:oid,
-    p_payment_status:paymentStatus
+    p_organization_id:ORG.id,p_order_id:oid,p_payment_status:paymentStatus
   });
   if(error)return toast(error.message);
-  await loadCommerceFromSupabase(U?.id);
-  render();
-  toast(paymentStatus==='Cobrado'
-    ?'Pedido cobrado · sumado al balance'
-    :'Pedido marcado como no cobrado');
+  await loadCommerceFromSupabase(U?.id);render();
+  toast(paymentStatus==='Cobrado'?'Pedido cobrado · sumado al balance':'Pedido marcado como no cobrado');
+};
+scrConfirmPaymentBtn.onclick=async()=>{
+  if(!isSCRBusiness()||!SCR_PAYMENT_ORDER_ID)return;
+  const id=SCR_PAYMENT_ORDER_ID;
+  const order=S.orders.find(o=>o.id===id);
+  if(!order)return;
+  scrConfirmPaymentBtn.disabled=true;
+  const {error}=await sb.rpc('scr_set_order_payment',{
+    p_organization_id:ORG.id,p_order_id:id,p_payment_status:'Cobrado',
+    p_final_payment_method:scrOrderRemaining(order)>0?scrFinalPayMethod.value:null
+  });
+  scrConfirmPaymentBtn.disabled=false;
+  if(error)return toast('Supabase: '+error.message);
+  closeSCRPaymentModal();await loadCommerceFromSupabase(U?.id);render();
+  toast('Cobro confirmado · seña y saldo registrados una sola vez');
 };
 
 window.changeStatus=async(oid,status)=>{
@@ -8075,6 +8187,7 @@ function filteredHistoryFinancial(){
   return allBalanceMovements().filter(x=>{
     if(!historyPeriodMatch(x.date))return false;
     if(HISTORY_FLOW!=='all' && x.direction!==HISTORY_FLOW)return false;
+    if(isSCRBusiness()&&SCR_HISTORY_PAYMENT!=='Todos'&&x.payment!==SCR_HISTORY_PAYMENT)return false;
 
     if(q){
       const haystack=norm([
@@ -8114,6 +8227,7 @@ function renderHistoryControls(){
     historyDateControl.value=HISTORY_YEAR;
   }
 
+  const scrHistorySelect=document.getElementById('scrHistoryPaymentFilter');if(scrHistorySelect)scrHistorySelect.value=SCR_HISTORY_PAYMENT;
   historySearch.value=HISTORY_SEARCH;
   historySearchClear.classList.toggle('hidden',!HISTORY_SEARCH);
 }
@@ -8330,9 +8444,10 @@ function renderCommercialFlow(){
 
 /* Render */
 function renderOrders(){
- let st=states(),all=['Todos',...st],monthOrders=S.orders.filter(o=>commerceMonthMatch(commerceOrderReviewDate(o)));
- filters.innerHTML=all.map(x=>`<button class="filter ${F===x?'active':''}" onclick="setFilter('${x}')">${x}${x==='Todos'?'':` · ${monthOrders.filter(o=>o.status===x).length}`}</button>`).join('');
- let arr=F==='Todos'?monthOrders:monthOrders.filter(o=>o.status===F);
+ if(!isSCRBusiness()&&F==='Con seña')F='Todos';
+ let st=states(),all=['Todos',...st,...(isSCRBusiness()?['Con seña']:[])],monthOrders=S.orders.filter(o=>commerceMonthMatch(commerceOrderReviewDate(o)));
+ filters.innerHTML=all.map(x=>`<button class="filter ${F===x?'active':''}" onclick="setFilter('${x}')">${x}${x==='Todos'?'':` · ${monthOrders.filter(o=>x==='Con seña'?scrDepositSum(o)>0:o.status===x).length}`}</button>`).join('');
+ let arr=F==='Todos'?monthOrders:monthOrders.filter(o=>F==='Con seña'?scrDepositSum(o)>0:o.status===F);
  ordersList.innerHTML=arr.length?arr.map(o=>`<article class="order ${o.status==='Prioritario'?'prio':''}">
    <div class="otop">
      <div><div class="otitle">${o.title}</div><div class="oclient">${o.client}</div></div>
@@ -8345,6 +8460,7 @@ function renderOrders(){
      <div><span>Fecha</span><strong>${o.due||'Sin fecha'}</strong></div>
      <div><span>Pago</span><strong>${o.paymentStatus||'No cobrado'}</strong></div>
    </div>
+   ${isSCRBusiness()?`<div class="scr-order-deposit"><strong>${scrDepositSum(o)>0?'✓ Pedido con seña':'Pedido sin seña'}</strong><div class="scr-order-deposit-grid"><div><span>Total acordado</span><strong>${money(o.amount)}</strong></div><div><span>Seña registrada</span><strong>${money(scrDepositSum(o))}</strong></div><div><span>Sobrante a pagar</span><strong>${money(scrOrderRemaining(o))}</strong></div></div><small class="scr-pending-note">${o.status==='Finalizado'&&o.paymentStatus==='Cobrado'?'Contabilizado al finalizar y cobrar.':'Pendiente · No suma al historial ni a estadísticas.'}</small></div>`:''}
    <div style="margin-top:10px;padding:9px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.02)">
      <div style="font-size:9px;color:var(--muted);margin-bottom:7px">Estado de pago</div>
      <div style="display:flex;gap:6px;flex-wrap:wrap">
@@ -8409,32 +8525,27 @@ function renderSCRHomeSales(){
   if(!card||!list||!badge||!subtitle)return;
   if(!isSCRBusiness()){card.classList.remove('show');return}
   card.classList.add('show');
-
+  const header=card.querySelector('h3');if(header)header.textContent='Historial de ingresos';
   const q=norm(SCR_HOME_SALES_SEARCH||'');
-  let rows=S.sales
+  const paySelect=document.getElementById('scrHomePaymentFilter');
+  if(paySelect)paySelect.value=SCR_HOME_PAYMENT;
+  const rows=(S.balanceMovements||[]).filter(x=>x.direction==='income'&&['sale','order'].includes(x.kind))
     .filter(x=>scrHomePeriodMatch(x.date))
-    .filter(x=>{
-      if(!q)return true;
-      return norm([x.concept,x.client,x.userName,x.payment,x.amount,new Date(x.date).toLocaleDateString('es-AR')].join(' ')).includes(q);
-    })
+    .filter(x=>SCR_HOME_PAYMENT==='Todos'||x.payment===SCR_HOME_PAYMENT)
+    .filter(x=>!q||norm([x.concept,x.client,x.employee,x.payment,x.amount,new Date(x.date).toLocaleDateString('es-AR')].join(' ')).includes(q))
     .sort((a,b)=>String(b.date).localeCompare(String(a.date)));
-
-  badge.textContent=q?`${rows.length} resultado${rows.length===1?'':'s'}`:`${rows.length} venta${rows.length===1?'':'s'}`;
-  const labels={today:'Hoy',week:'Esta semana',month:scrMonthLabel(SCR_HOME_MONTH),year:`Año ${String(SCR_HOME_MONTH||new Date().getFullYear()).slice(0,4)}`,all:'Todas las ventas'};
-  subtitle.textContent=q?`${labels[SCR_HOME_PERIOD]||'Período seleccionado'} · resultados para “${SCR_HOME_SALES_SEARCH}”.`:`${labels[SCR_HOME_PERIOD]||'Período seleccionado'} · tocá una venta para ver el comprobante.`;
+  badge.textContent=`${rows.length} movimiento${rows.length===1?'':'s'}`;
+  const labels={today:'Hoy',week:'Esta semana',month:scrMonthLabel(SCR_HOME_MONTH),year:`Año ${String(SCR_HOME_MONTH||new Date().getFullYear()).slice(0,4)}`,all:'Todos los ingresos'};
+  subtitle.textContent=`Historial de ingresos confirmados · ${labels[SCR_HOME_PERIOD]||'Período seleccionado'}. Las señas pendientes no aparecen.`;
   if(search&&search.value!==SCR_HOME_SALES_SEARCH)search.value=SCR_HOME_SALES_SEARCH;
-
-  list.innerHTML=rows.length
-    ?rows.slice(0,50).map(x=>`
-      <div class="row sale-click" onclick="openSaleReceipt('${x.id}')">
-        <div><strong>${x.concept||'Venta'}</strong>
-        <small>${x.client||'Cliente ocasional'} · ${x.userName||'Usuario'} · ${x.payment||'Otro'} · ${new Date(x.date).toLocaleString('es-AR',{dateStyle:'short',timeStyle:'short'})}</small>
-        <span class="sale-open-hint">Ver comprobante</span></div>
-        <span class="money">+${money(x.amount)}</span>
-      </div>`).join('')
-    :`<div class="empty">${q?'No hay ventas que coincidan con la búsqueda.':'No hay ventas registradas en este período.'}</div>`;
+  list.innerHTML=rows.length?rows.slice(0,60).map(x=>`
+    <div class="row ${x.kind==='sale'?'sale-click':''}" ${x.kind==='sale'?`onclick="openSaleReceipt('${x.id}')"`:''}>
+      <div><strong>${x.kind==='order'?'Pedido · ':''}${x.concept||'Venta'}</strong>
+      <small>${x.client||'Cliente ocasional'} · ${x.employee||'Usuario'} · ${x.payment||'Otro'} · ${new Date(x.date).toLocaleString('es-AR',{dateStyle:'short',timeStyle:'short'})}</small>
+      ${x.kind==='sale'?'<span class="sale-open-hint">Ver comprobante</span>':''}</div>
+      <span class="money">+${money(x.amount)}</span>
+    </div>`).join(''):'<div class="empty">No hay ingresos confirmados para estos filtros.</div>';
 }
-
 
 if(document.getElementById('scrHomeSalesSearch')){
   scrHomeSalesSearch.addEventListener('input',e=>{
@@ -8531,7 +8642,7 @@ function periodSeries(){
      const days=new Date(y,m+1,0).getDate();
      for(let day=1;day<=days;day++){
        const key=`${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-       rows.push({label:String(day),key,amount:(isCarlosBusiness()?S.ledger.filter(x=>x.source==='sale'):S.ledger).filter(x=>String(x.date).slice(0,10)===key).reduce((a,x)=>a+Number(x.amount||0),0)});
+       rows.push({label:String(day),key,amount:scrFinancialIncomeForStats().filter(x=>String(x.date).slice(0,10)===key).reduce((a,x)=>a+Number(x.amount||0),0)});
      }
    }else if(STAT_PERIOD==='weekly'){
      const days=new Date(y,m+1,0).getDate();
@@ -8539,7 +8650,7 @@ function periodSeries(){
        const end=Math.min(days,start+6);
        rows.push({
          label:`${start}-${end}`,
-         amount:(isCarlosBusiness()?S.ledger.filter(x=>x.source==='sale'):S.ledger).filter(x=>{
+         amount:scrFinancialIncomeForStats().filter(x=>{
            if(commerceMonthKey(x.date)!==COMMERCE_REVIEW_MONTH)return false;
            const d=Number(String(x.date).slice(8,10));
            return d>=start&&d<=end;
@@ -8549,14 +8660,14 @@ function periodSeries(){
    }else if(STAT_PERIOD==='monthly'){
      rows.push({
        label:new Date(y,m,1).toLocaleDateString('es-AR',{month:'short'}).replace('.',''),
-       amount:(isCarlosBusiness()?S.ledger.filter(x=>x.source==='sale'):S.ledger).filter(x=>commerceMonthMatch(x.date)).reduce((a,x)=>a+Number(x.amount||0),0)
+       amount:scrFinancialIncomeForStats().filter(x=>commerceMonthMatch(x.date)).reduce((a,x)=>a+Number(x.amount||0),0)
      });
    }else{
      for(let mm=0;mm<12;mm++){
        const key=`${y}-${String(mm+1).padStart(2,'0')}`;
        rows.push({
          label:new Date(y,mm,1).toLocaleDateString('es-AR',{month:'short'}).replace('.',''),
-         amount:(isCarlosBusiness()?S.ledger.filter(x=>x.source==='sale'):S.ledger).filter(x=>commerceMonthKey(x.date)===key).reduce((a,x)=>a+Number(x.amount||0),0)
+         amount:scrFinancialIncomeForStats().filter(x=>commerceMonthKey(x.date)===key).reduce((a,x)=>a+Number(x.amount||0),0)
        });
      }
    }
@@ -8567,23 +8678,23 @@ function periodSeries(){
    for(let i=6;i>=0;i--){
      let d=new Date(now);d.setDate(d.getDate()-i);
      let key=d.toISOString().slice(0,10);
-     rows.push({label:d.toLocaleDateString('es-AR',{weekday:'short'}).replace('.',''),key,amount:(isCarlosBusiness()?S.ledger.filter(x=>x.source==='sale'):S.ledger).filter(x=>String(x.date).slice(0,10)===key).reduce((a,x)=>a+Number(x.amount||0),0)});
+     rows.push({label:d.toLocaleDateString('es-AR',{weekday:'short'}).replace('.',''),key,amount:scrFinancialIncomeForStats().filter(x=>String(x.date).slice(0,10)===key).reduce((a,x)=>a+Number(x.amount||0),0)});
    }
  }else if(STAT_PERIOD==='weekly'){
    for(let i=7;i>=0;i--){
      let d=new Date(now);d.setDate(d.getDate()-i*7);
      let s=startOfWeek(d),e=new Date(s);e.setDate(e.getDate()+7);
-     rows.push({label:`${s.getDate()}/${s.getMonth()+1}`,start:s,end:e,amount:(isCarlosBusiness()?S.ledger.filter(x=>x.source==='sale'):S.ledger).filter(x=>{let z=new Date(x.date);return z>=s&&z<e}).reduce((a,x)=>a+Number(x.amount||0),0)});
+     rows.push({label:`${s.getDate()}/${s.getMonth()+1}`,start:s,end:e,amount:scrFinancialIncomeForStats().filter(x=>{let z=new Date(x.date);return z>=s&&z<e}).reduce((a,x)=>a+Number(x.amount||0),0)});
    }
  }else if(STAT_PERIOD==='monthly'){
    for(let i=11;i>=0;i--){
      let d=new Date(now.getFullYear(),now.getMonth()-i,1),y=d.getFullYear(),m=d.getMonth();
-     rows.push({label:d.toLocaleDateString('es-AR',{month:'short'}).replace('.',''),y,m,amount:(isCarlosBusiness()?S.ledger.filter(x=>x.source==='sale'):S.ledger).filter(x=>{let z=new Date(x.date);return z.getFullYear()===y&&z.getMonth()===m}).reduce((a,x)=>a+Number(x.amount||0),0)});
+     rows.push({label:d.toLocaleDateString('es-AR',{month:'short'}).replace('.',''),y,m,amount:scrFinancialIncomeForStats().filter(x=>{let z=new Date(x.date);return z.getFullYear()===y&&z.getMonth()===m}).reduce((a,x)=>a+Number(x.amount||0),0)});
    }
  }else{
    for(let i=4;i>=0;i--){
      let y=now.getFullYear()-i;
-     rows.push({label:String(y),y,amount:(isCarlosBusiness()?S.ledger.filter(x=>x.source==='sale'):S.ledger).filter(x=>new Date(x.date).getFullYear()===y).reduce((a,x)=>a+Number(x.amount||0),0)});
+     rows.push({label:String(y),y,amount:scrFinancialIncomeForStats().filter(x=>new Date(x.date).getFullYear()===y).reduce((a,x)=>a+Number(x.amount||0),0)});
    }
  }
  return rows;
@@ -8622,12 +8733,13 @@ function currentPeriodFilter(date){
 }
 function renderStats(){
  periodButtons.innerHTML=periods.map(([k,l])=>`<button class="period ${STAT_PERIOD===k?'active':''}" onclick="setPeriod('${k}')">${l}</button>`).join('');
+ const scrStatsSelect=document.getElementById('scrStatsPaymentFilter');if(scrStatsSelect)scrStatsSelect.value=SCR_STATS_PAYMENT;
 
- let led=(isCarlosBusiness()?S.ledger.filter(x=>x.source==='sale'):S.ledger).filter(x=>currentPeriodFilter(x.date)),
-     sales=S.sales.filter(x=>currentPeriodFilter(x.date)),
-     fin=isCarlosBusiness()?[]:S.orders.filter(x=>x.finalizedAt&&currentPeriodFilter(x.finalizedAt)),
-     periodExpenses=S.expenses.filter(x=>currentPeriodFilter(x.date)),
-     periodSalaries=S.salaryPayments.filter(x=>currentPeriodFilter(x.date));
+ let led=scrFinancialIncomeForStats().filter(x=>currentPeriodFilter(x.date)),
+     sales=S.sales.filter(x=>currentPeriodFilter(x.date)&&(!isSCRBusiness()||SCR_STATS_PAYMENT==='Todos'||x.payment===SCR_STATS_PAYMENT)),
+     fin=isCarlosBusiness()?[]:S.orders.filter(x=>x.finalizedAt&&currentPeriodFilter(x.finalizedAt)&&(!isSCRBusiness()||(x.status==='Finalizado'&&x.paymentStatus==='Cobrado'&&x.ledgerPosted&&(SCR_STATS_PAYMENT==='Todos'||[x.depositMethod,x.finalPaymentMethod].includes(SCR_STATS_PAYMENT))))),
+     periodExpenses=S.expenses.filter(x=>currentPeriodFilter(x.date)&&(!isSCRBusiness()||SCR_STATS_PAYMENT==='Todos'||x.payment===SCR_STATS_PAYMENT)),
+     periodSalaries=S.salaryPayments.filter(x=>currentPeriodFilter(x.date)&&(!isSCRBusiness()||SCR_STATS_PAYMENT==='Todos'||x.payment===SCR_STATS_PAYMENT));
 
  let total=led.reduce((a,x)=>a+Number(x.amount||0),0),
      expensesValue=periodExpenses.reduce((a,x)=>a+Number(x.amount||0),0),
@@ -9992,7 +10104,7 @@ updateGestokInstallBanner();
       playErrorSound();
       return toast('Completá empresa y contraseña');
     }
-    // V51.49: nunca denegar un ingreso usando la consulta pública
+    // V51.50: nunca denegar un ingreso usando la consulta pública
     // previa al nombre. Supabase Auth y la organización deciden.
     await validateUsername();
     const passOk=await validatePasswordField();
