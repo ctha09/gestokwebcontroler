@@ -1,5 +1,5 @@
 
-const CACHE_NAME='gestok-web-control-v51-50';
+const CACHE_NAME='gestok-web-control-v51-53-validation';
 
 const APP_SHELL=[
   './manifest.webmanifest',
@@ -50,6 +50,14 @@ self.addEventListener('fetch',event=>{
 
   const req=event.request;
   const url=new URL(req.url);
+
+  // La caché del sitio es compartida por todas las sesiones del navegador.
+  if(req.headers.has('authorization')||req.headers.has('apikey')||
+    url.hostname.endsWith('.supabase.co')||
+    /^\/(?:rest|auth|storage|functions|realtime)\/v1(?:\/|$)/.test(url.pathname)){
+    event.respondWith(fetch(req,{cache:'no-store'}));
+    return;
+  }
 
   if(
     req.mode==='navigate' ||
